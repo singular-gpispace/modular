@@ -1,1 +1,1 @@
-# modular
+# Massively parallel modular computations
