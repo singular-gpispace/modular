@@ -1,0 +1,44 @@
+///////////////////////////////////////
+/*version="version gpispacemod.lib 0.1 August_2021 "*/;
+/*category=/"Algebraic geometry"*/;
+/*info=""*/;
+/*LIBRARY:*/
+
+/*OVERVIEW:*/
+
+/*TYPES:*/
+
+/*PROCEDURES:*/
+
+
+proc mod_init()           
+{
+	newstruct("configToken", "string tokentype, def options");
+  newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
+	newstruct("modularConfigToken", "string InTokenTypeName, string InTokenTypeDescription, string OutTokenTypeName, string OutTokenTypeDescription, string loadlib, string transitionProcedure");
+}
+
+proc configure_gspc()
+{
+	gspcConfigToken gc;
+	gc.rifstrategy = "ssh";
+	configToken ct;
+	ct.tokentype = "gspcConfigToken";
+	ct.options =gc;
+	return(ct);
+}
+
+proc configure_modular()
+{
+	modularConfigToken mc;
+	configToken ct;
+	ct.tokentype = "modularConfigToken";
+	ct.options = mc;
+	return(ct);
+}
+
+proc generateIOTokenTypes(configToken mc)
+{
+	newstruct(mc.options.InTokenTypeName, mc.options.InTokenTypeDescription);
+	newstruct(mc.options.OutTokenTypeName, mc.options.OutTokenTypeDescription);
+}
