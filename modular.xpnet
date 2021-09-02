@@ -1,0 +1,99 @@
+<defun name="modular">
+
+	<struct name="option_token_type">
+		<field name="function_name" type="string"/>
+		<field name="needed_library" type="string"/>
+		<field name="in_struct_name" type="string"/>
+		<field name="in_struct_desc" type="string"/>
+		<field name="out_struct_name" type="string"/>
+		<field name="out_struct_name" type="string"/>
+	</struct>
+
+	<struct name="task_token_type"/>
+		<field name="base_filename" type="string"/>
+		<field name="id" type="unsigned int"/>
+	</struct>
+
+	<struct name="generator_token_type"/>
+		<field name="base_filename" type="string"/>
+		<field name="state"  type="bool"/>
+		<field name="counter" type="unsigned int"/>
+	</struct>
+
+	<in name="base_filename" type="string" place="base_filename"/>
+	<in name="generate_implementation" type="string" place="generate_implementation"/>
+	<in name="generate_function_name" type="string" place="generate_function_name"/>
+	<in name="generate_needed_library" type="string" place="generate_needed_library"/>
+	<in name="generate_in_struct_name" type"string" place="generate_in_struct_name"/>
+	<in name="generate_in_struct_desc" type="string" place="generate_in_struct_desc"/>
+	<in name="generate_out_struct_name" type="string" place="generate_out_struct_name"/>
+	<in name="generate_out_struct_desc" type="string" place="generate_out_struct_desc"/>
+	<out name="output" type="string" place="output"/>
+	<net>
+		<place name="base_filename" type="string" place="base_filename"/>
+		<place name="generate_implementation" type="string" place="generate_implementation"/>
+		<place name="generate_function_name" type="string" place="generate_function_name"/>
+		<place name="generate_needed_library" type="string" place="generate_needed_library"/>
+		<place name="generate_in_struct_name" type"string" place="generate_in_struct_name"/>
+		<place name="generate_in_struct_desc" type="string" place="generate_in_struct_desc"/>
+		<place name="generate_out_struct_name" type="string" place="generate_out_struct_name"/>
+		<place name="generate_out_struct_desc" type="string" place="generate_out_struct_desc"/>
+		<place name="generator_state" type="generator_token_type"/>
+		<place name="state" type="bool"/>
+		<place name="generate_options" type="option_token_type"/>
+		<place name="mod_input" type="task_token_type"/>
+
+	<transition name="initialize">
+		<defun>
+			<in name=base_filename" type="string"/>
+			<in name="generate_function_name" type="string"/>
+			<in name="generate_needed_library" type="string"/>
+			<in name="generate_in_struct_name" type"string"/>
+			<in name="generate_in_struct_desc" type="string"/>
+			<in name=generate_"out_struct_name" type="string"/>
+			<in name="generate_out_struct_desc" type="string"/>
+			<in name="state" type="bool"/>
+			<out name="generator_state" type="generator_token_type"/>
+			<out name="generate_options" type="option_token_type"/>
+			<expression>
+			${generator_state.base_filename} := ${base_filename};
+			${generator_state.state} := ${state};
+			${generator_state.counter} := 0U;
+		  ${generate_options.function_name} := ${function_name};
+		  ${generate_options.needed_library} := ${needed_library};
+			${generate_options.in_struct_name} := ${in_struct_name};
+		  ${generate_options.in_struct_desc} := ${in_struct_desc};
+		  ${generate_options.out_struct_name} := ${out_struct_name};
+			${generate_options.out_struct_desc} := ${out_struct_desc};
+			</expression>
+		</defun>
+		<connect-in port="base_filename" place="base_filename"/>
+		<connect-in port="function_name" place="generate_function_name"/>
+		<connect-in port="needed_library" place="generate_needed_library"/>
+		<connect-in port="in_struct_name" place="generate_in_struct_name"/>
+		<connect-in port="in_struct_desc" place="generate_in_struct_desc"/>
+		<connect-in port="out_struct_name" place="generate_out_struct_name"/>
+		<connect-in port="out_struct_desc" place="generate_out_struct_desc"/>
+		<connect-in port="state" place="state"/>                                    
+		<connect-out port="generator_state" place="generator_state"/>
+		<connect-out port="generate_options" place="generate_options"/>
+	</transition>
+
+	<transition name="generate">
+		<defun>
+			<inout name="generator_state" type="generator_token_type"/>
+			<out name="mod_input" type="task_token_type"/>
+			<condition>
+			${generator_state.state}
+			<condition/>
+			<module>
+			
+			generator_state.state = ;
+			generator_state.counter = generator_state.counter+1;
+			mod_input.id = gnerator_state.counter;
+
+			</module>
+		</defun>
+		<connect-in port="generator_state" place="generator_state"/>
+		<connect-out port="mod_input" place="mod_input"/>
+</defun>
