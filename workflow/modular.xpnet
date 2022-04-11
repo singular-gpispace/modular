@@ -1,0 +1,416 @@
+<defun name="modular_method">
+
+	<struct name="input_type">
+		<field name="data" type="string"/>
+		<field name="bal1" type="unsigned long"/>
+		<field name="bal2" type="unsigned long"/>
+	</struct>
+	
+	<struct name="modular_data">
+		<field name="data" type="string"/>
+		<field name="nb_prime" type="unsigned long"/>
+	</struct>
+
+	<struct name="result_bool_type">
+		<field name="farey_lift" type="string"/>
+		<field name="chr_lift" type="string"/>
+		<field name="test" type="bool"/>
+	</struct>
+
+	<in name="prime" type="string" place="place_prime"/>
+	<in name="implementation" type="string" place="implementation"/>
+	<in name="accumulator" type="string" place="place_accumulator"/>
+	<out name="output" type="string" place="place_output"/>
+	<net>
+		<place name="place_input" type="input_type"/>
+		<place name="place_prime" type="string"/>
+		<place name="place_init" type="control"><token><value>[]</value></token></place>
+		<place name="implementation" type="string"/>
+		<place name="place_mod_input" type="modular_data"/>
+		<place name="place_mod_res1" type="modular_data"/>
+		<place name="up1" type="control"/>
+		<place name="down1" type="control"/>
+		<place name="place_lhs1" type="modular_data"/>
+		<place name="place_rhs1" type="modular_data"/>
+		<place name="place_lhs2" type="string"/>
+		<place name="place_rhs2" type="string"/>
+		<place name="place_mod_res2" type="modular_data"/>
+		<place name="place_bal1" type="control"/>
+		<place name="place_bal2" type="control"/>
+		<place name="place_lifted_res" type="string"/>
+		<place name="place_rand_res" type="result_bool_type"/>
+		<place name="place_accumulator" type="string"/>
+		<place name="place_rand_out" type="result_bool_type"/>
+		<place name="place_result" type="result_bool_type"/>
+		<place name="place_output" type="string"/>
+
+		<transition name="generate">
+			<defun>
+				<in name="input" type="input_type"/>
+				<in name="implementation" type="string"/>
+				<in name="function_name" type="string"/>
+				<in name="needed_library" type="string"/>
+				<in name="prime" type="string"/>
+				<in name="balance" type="control"/>
+				<out name="mod_input" type="modular_data"/>
+				<module name="singular_modular_generate"
+							require_function_unloads_without_rest="false"
+							function="generate(implementation,mod_input,input,prime)">
+					<cinclude href="share/include/modular_interface.hpp" />
+					<cinclude href="util-generic/dynamic_linking.hpp"/>
+					<code><![CDATA[
+					fhg::util::scoped_dlhandle
+						(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+						.sym<decltype(singular_modular_generate> ("singular_modular_generate")
+						( mod_input, input.data
+						, funtion_name, needed_library
+						);
+						mod_input.nb_prime=1;
+						]]></code>
+				</module>
+			</defun>
+			<connect-read port="input" place="place_input"/>
+			<connect-read port="implementation" place="implementation"/>
+			<connect-read port="function_name" place="fucntion_name"/>
+			<connect-read port="needed_library" place="needed_library"/>
+			<connect-inout port="balance" place="place_bal1"/>
+			<connect-out port="mod_input" place="place_mod_input"/>
+		</transition>
+
+		<transition name="compute">
+      <defun>
+        <in name="mod_input" type="modular_data"/>
+        <in name="implementation" type="string"/>
+        <in name="function_name" type="string"/>
+        <in name="needed_library" type="string"/>
+        <in name="bal2" type="control"/>
+				<out name="bal1" type="control"/>
+        <out name="mod_res1" type="modular_data"/>
+        <module name="singular_modular_compute"
+              require_function_unloads_without_rest="false"
+              function="compute(implementation,mod_res1,mod_input,function_name,needed_library)">
+          <cinclude href="share/include/modular_interface.hpp" />
+          <cinclude href="util-generic/dynamic_linking.hpp"/>
+          <code><![CDATA[
+          fhg::util::scoped_dlhandle
+            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+            .sym<decltype(singular_modular_compute> ("singular_modular_compute")
+            ( mod_res1, mod_input
+            , funtion_name, needed_library);
+						mod_res1.nb_prime=1;
+					 ]]></code>
+					</module>
+				 </defun>
+		<connect-read port="mod_input" place="place_mod_input"/>
+		<connect-read port="implementation" place="implementation"/>
+		<connect-read port="function_name" place="fucntion_name"/>
+		<connect-read port="needed_library" place="needed_library"/>
+	  <connect-inout port="balance" place="place_bal2"/>
+		<connect-out port="mod_res1" place="place_mod_res1"/>
+		</transition>
+
+		<transition name="init">
+			<defun>
+				<in name="input" type="input_type"/>
+				<in name="one" type="control"/>
+				<out name="bal1" type="list"/>
+				<out name="bal2" type="list"/>
+				<module name="singular_modular_init" function="init(input,bal1,bal2)">
+					<code><![CDATA[
+						for(unsigned long i=0; i<input.bal1;i++)
+						{
+							bal1.emplace_back(we::type::literal::control{});
+						}
+						for(i=0; i<input.bal2; i++)
+						{
+							bal2.emplace_back(we::type::literal::control{});
+						}
+						]]>
+					</code>
+				</module>
+			</defun>
+			<connect-read port="input" place="place_input"/>
+			<connect-in port="one" place="place_init"/>
+			<connect-out-many port="bal1" place="place_bal1"/>
+			<connect-out-many port="bal2" place="place_bal2"/>
+		</transition>
+
+		<transition name="lhs1">
+			<defun>
+				<in name="mod_res1" type="string"/>
+				<in name="down" type="control"/>
+				<out name="up" type="control"/>
+				<out name="lhs" type="string"/>
+				<expression>
+					${lhs1} = ${mod_res1.data};
+				</expression>
+				<condition>
+					${mod_res1.nb_prime} :lt: 10
+				</condition>
+			</defun>
+			<connect-in port="mod_res1" place="place_mod_res1"/>
+			<connect-in port="down" place="place_down1"/>
+			<connect-out port="up" place="place_up1"/>
+			<connect-out port="lhs" place="place_lhs1"/>
+		</transition>
+
+		<transition name="rhs1">
+			<defun>
+			<in name="mod_res1" type="modular_data"/>
+			<in name="up" type="control"/>
+			<out name="down" type="control"/>
+			<out name="rhs" type="string"/>
+		 <expression>
+			 ${rhs1} = ${mod_res1.data};
+		 </expression>
+		 <condition>
+			 ${mod_res1.nb_prime} :lt: 10
+		</condition>
+		 </defun>
+		 <connect-in port="mod_res1" place="place_mod_res1"/>
+     <connect-in port="up" place="place_up1"/>
+     <connect-out port="down" place="place_down1"/>
+     <connect-out port="rhs" place="place_rhs1"/>
+	 </transition>
+
+	 <transition name="lift1">
+		<defun>
+			<in name="lhs" type="string"/>
+			<in name="rhs" type="string"/>
+			<in name="out" type="modular_data"/>
+			<module name="singular_modular_lift1"
+							require_function_unloads_without_rest="false"
+							function="lift1(implementation,lhs,rhs,out)">
+				<cinclude href="share/include/modular_interface.hpp"/>
+				<cinclude href="util-generic/dynamic_linking.hpp"/>
+				<code><![CDATA[
+					fhg::util::scoped_dlhandle
+						(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+							.sym<decltype (singular_modular_lift1)> ("singular_modular_lift1")
+					  ( lhs.data,rhs.data,out);
+					out.nb_prime = lhs.nb_prime + rhs.nb_prime;
+					]]>
+				</code>
+			</module>
+		</defun>
+		<connect-in port="lhs" place="place_lhs1"/>
+		<connect-in port="rhs" place="place_rhs1"/>
+		<connect-out port="out" place="place_mod_res1"/>
+	 </transition>
+
+	 <transition name="move">
+		 <defun>
+			<in name="mod_res1" type="modular_data"/>
+			<out name="mod_res2" type="string"/>
+			<out name="balance" type="list"/>
+			<module name="singular_modular_move" function="move (mod_res1,mod_res2,balance)">
+        <code><![CDATA[
+        for (unsigned long i (0); i < mod_res1.nb_prime; ++i)
+        {
+          balance.emplace_back (we::type::literal::control{});
+        }
+				mod_res2 = mod_res1.data;
+        ]]>
+        </code>
+      </module>
+		  <condition>
+				${mod_res1.nb_prime} :gt: 10
+			</condition>
+		</defun>
+	 <connect-in port="mod_res1" place="place_mod_res1"/>
+	 <connect-out port="mod_res2" place="place_mod_res2"/>
+	 <connect-out-many port="balance" place="place_bal2"/>
+	 </transition>
+
+	 <transition name="lhs2">
+		<defun>
+			<in name="down2" type="control"/>
+			<in name="mod_res2" type="string"/>
+			<out name="up2" type="control"/>
+			<out name="lhs2" type="string"/>
+			<expression>
+				${lhs2} = ${mod_res2};
+			</expression>
+		</defun>
+		<connect-in port="down2" place="place_down2"/>
+		<connect-in port="mod_res2" place="place_mod_res2"/>
+		<connect-out port="up2" place="place_up2"/>
+		<connect-out port="lhs2" place="place_lhs2"/>
+	 </transition>
+
+	 <transition name="rhs2">
+		 <defun>
+			<in name="up2" type="control"/>
+			<in name="mod_res2" type="string"/>
+			<out name="down2" type="control"/>
+			<out name="rhs2" type="string"/>
+			<expression>
+				 ${rhs2} = ${mod_res2};
+			</expression>
+		</defun>
+		<connect-in port="up2" place="place_up2"/>
+		<connect-in port="mod_res2" place="place_mod_res2"/>
+		<connect-out port="down2" place="place_down2"/>
+		<connect-out port="rhs2" place="place_rhs2"/>
+	</transition>
+
+	<transition name="lift2">
+		<defun>
+			<in name="lhs" type="string"/>
+			<in name="rhs" type="string"/>
+			<out name="out" type="string"/>
+			<module name="singular_modular_lift2"
+           require_function_unloads_without_rest="false"
+           function="lift2(implementation,lhs,rhs,out)">
+				<cinclude href="share/include/modular_interface.hpp"/>
+				<cinclude href="util-generic/dynamic_linking.hpp"/>
+				<code><![CDATA[
+					 fhg::util::scoped_dlhandle
+					 (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+           .sym<decltype (singular_modular_lift2)> ("singular_modular_lift2")
+						( lhs,rhs,out);
+       ]]>
+			 </code>
+		  </module>
+		</defun>
+		<connect-in port="lhs" place="place_lhs2"/>
+		<connect-in port="rhs" place="place_rhs2"/>
+		<connect-out port="out" place="place_mod_res2"/>
+		</transition>
+
+		<transition name="lift3">
+		 <defun>
+			<in name="accumulator" type="string"/>
+			<in name="mod_res2" type="string"/>
+			<in name="out" type="string"/>
+			<module name="singular_modular_lift3"
+           require_function_unloads_without_rest="false"
+           function="lift3(implementation,accumulator,mod_res2,out)">
+				<cinclude href="share/include/modular_interface.hpp"/>
+				<cinclude href="util-generic/dynamic_linking.hpp"/>
+				<code><![CDATA[
+					fhg::util::scoped_dlhandle
+					(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+           .sym<decltype (singular_modular_lift3)> ("singular_modular_lift3")
+         ( accumulator,mod_res2,out);
+       ]]>
+				</code>
+			</module>
+		</defun>
+		<connect-in port="accumulator" place="place_accumulator"/>
+		<connect-in port="mod_res2" place="place_mod_res2"/>
+		<connect-out port="out" place="place_lifted_res"/>
+	</transition>
+
+	<transition name="reconstest">
+		 <defun>
+			<in name="lifted_res" type="string"/>
+			<in name="mod_res2" type="string"/>
+			<in name="out" type="result_bool_type"/>
+			<module name="singular_modular_reconstest"
+					require_function_unloads_without_rest="false"
+					function="reconstest(implementation,lifted_res,mod_res2,out)">
+				<cinclude href="share/include/modular_interface.hpp"/>
+				<cinclude href="util-generic/dynamic_linking.hpp"/>
+				<code><![CDATA[
+						 fhg::util::scoped_dlhandle
+						 (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+							.sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
+						 ( lifted_res,mod_res2,out);
+					]]>
+					</code>
+				</module>
+		</defun>
+		<connect-in port="lifted_res" place="place_lifted_res"/>
+		<connect-in port="mod_res2" place="place_mod_res2"/>
+		<connect-out port="out" place="place_rand_res"/>
+	</transition>
+
+	<transition name="Break1">
+		<defun>
+			<in name="rand_res" type="result_bool_type"/>
+			<out name="rand_out" type="reult_bool_type"/>
+			<expression>
+				${rand_out.farey_lift} = ${rand_res.farey_lift};
+				${rand_out.chr_lift} = ${rand_res.chr_lift};
+				${rand_out.test}=${rand_res.test};
+			</expression>
+			<condition>
+				${rand_res.test} :eq: True
+			</condition>
+		</defun>
+		<connect-in port="rand_res" place="place_rand_res"/>
+		<connect-out port="rand_out" place="place_rand_out"/>
+	</transition>
+
+	<transition name="Continue1">
+	 <defun>
+    <in name="rand_res" type="result_bool"/>
+    <out name="accumulator" type="string"/>
+    <expression>
+      ${accumulator} = ${rand_res.chr_lift};
+    </expression>
+    <condition>
+      ${rand_res.test} :eq: False
+    </condition>
+	 </defun>
+	 <connect-in port="rand_res" place="place_rand_res"/>
+	 <connect-out port="accumulator" place="place_accumulator"/>
+	</transition>
+	
+	<transition name="verify">
+   <defun>
+    <in name="input" type="input_type"/>
+    <in name="rand_out" type="result_bool_type"/>
+    <out name="out" type="result_bool_type"/>
+    <module name="singular_modular_verify"
+        require_function_unloads_without_rest="false"
+        function="verify(implementation,input,rand_out,out)">
+      <cinclude href="share/include/modular_interface.hpp"/>
+      <cinclude href="util-generic/dynamic_linking.hpp"/>
+      <code><![CDATA[
+           fhg::util::scoped_dlhandle
+           (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+            .sym<decltype (singular_modular_verify)> ("singular_modular_verify")
+           ( input,rand_out,out);
+        ]]>
+        </code>
+      </module>
+		</defun>
+		<connect-read port="input" place="place_input"/>
+		<connect-in port="rand_out" place="place_rand_out"/>
+		<connect-out port="out" place="place_result"/>
+	</transition>
+
+	<transition name="Break2">
+		<defun>
+		 <in name="result" type="result_bool"/>
+		 <out name="output" type="string"/>
+		 <expression>
+      ${output} = ${result.farey_lift};
+		 </expression>
+		 <condition>
+      ${result.test} :eq: True
+		 </condition>
+	  </defun>
+		<connect-in port="result" place="place_result"/>
+		<connect-out port="output" place="place_output"/>
+	</transition>
+
+	<transition name="Continue2">
+		<defun>
+			<in name="result" type="result_bool"/>
+			<out name="accumulator" type="string"/>
+			<expression>
+				${accumulator} = ${rand_res.chr_lift};
+			</expression>
+			<condition>
+				${result.test} :eq: False
+			</condition>
+		</defun>
+		<connect-in port="result" place="result"/>
+		<connect-out port="accumulator" place="place_accumulator"/>
+	</transition>
+
+	</net>
+</defun>
