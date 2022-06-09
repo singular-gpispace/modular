@@ -29,3 +29,21 @@ std::string  singular_modular_generate( std::string in_filename
 	return out_filename;
 }
 
+std::string  singular_modular_compute(  std::string in_filename
+                                      , std::string function_name
+																			, std::string needed_library
+																		)
+{
+	std::pair<int, lists> input;
+	std::pair<int, lists> out;
+	std::string ids;
+	std::string out_filename;
+	ids = worker();
+	std::cout << ids << " in singular_..._compute" << std::endl;
+	input = deserialize(in_filename,ids);
+	scoped_leftv arg( input.first, input.second);
+	out = call_user_proc(function_name, needed_library, arg);
+	out_filename  =  serialize(out.second);
+return out_filename;
+
+}
