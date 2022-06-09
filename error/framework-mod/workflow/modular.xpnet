@@ -1,0 +1,63 @@
+<defun name="modular">
+
+	
+	<struct name="modular_data">
+		<field name="data" type="string"/>
+		<field name="nb_prime" type="unsigned long"/>
+	</struct>
+
+	<struct name="result_bool_type">
+		<field name="farey_lift" type="string"/>
+		<field name="chr_lift" type="string"/>
+		<field name="test" type="bool"/>
+	</struct>
+
+	<in name="primes" type="string" place="place_prime"/>
+	<in name="implementation" type="string" place="place_implementation"/>
+	<in name="input" type="string" place="place_input"/>
+	<in name="function_name" type="string" place="place_function_name"/>
+	<in name="needed_library" type="string" place="place_needed_library"/>
+	<out name="mod_input" type="string" place="place_mod_input"/>
+	<net>
+		<place name="place_input" type="string"/>
+		<place name="place_prime" type="string"/>
+		<place name="place_implementation" type="string"/>
+		<place name="place_mod_input" type="string"/>
+		<place name="place_function_name" type="string"/>
+		<place name="place_needed_library" type="string"/>
+
+		<transition name="generate">
+			<defun>
+			  <require key="worker" mandatory="true"/> 
+				<in name="input" type="string"/>
+				<in name="implementation" type="string"/>
+				<in name="function_name" type="string"/>
+				<in name="needed_library" type="string"/>
+				<in name="primes" type="string"/>
+				<out name="mod_input" type="string"/>
+				<module name="singular_modular"
+							require_function_unloads_without_rest="false"
+							function="generate(implementation,input,primes,function_name,needed_library,mod_input)">
+					<cinclude href="share/include/modular_interface.hpp" />
+					<cinclude href="util-generic/dynamic_linking.hpp"/>
+					<code><![CDATA[
+							std::string out;
+	  					out = fhg::util::scoped_dlhandle
+  (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+  .sym<decltype (singular_modular_generate)> ("singular_modular_generate")
+						( input, primes
+						, function_name, needed_library
+						);
+						mod_input =   out ;
+						]]></code>
+				</module>
+			</defun>
+			<connect-read port="input" place="place_input"/>
+			<connect-read port="implementation" place="place_implementation"/>
+			<connect-read port="function_name" place="place_function_name"/>
+			<connect-read port="needed_library" place="place_needed_library"/>
+			<connect-in port="primes" place="place_prime"/>
+			<connect-out port="mod_input" place="place_mod_input"/>
+		</transition>
+	</net>
+</defun>
