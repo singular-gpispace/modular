@@ -1,0 +1,68 @@
+///////////////////////////////////////
+version="version modulargp.lib 0.1 May_2022 ";
+category="Algebraic geometry";
+info="
+LIBRARY: modulargp.lib  demo procedures for modular pattern
+
+OVERVIEW:
+This library contains SINGULAR procedures to demonstrate the modular pattern of the Singular/GPI-Space framework.
+           The newstruct types modular_data and outputToken must be defined.
+
+PROCEDURES:
+stdmodp(token)               computes a standard basis modulo p
+generate(token,token)        generate a modular input
+";
+
+proc stdmodp (token input)
+"USAGE: stdmodp(input); input token
+RETURN: an token output containing a standard basis output.generators of the ideal input.generators in a ring with prescribed characteristic input.modulus
+NOTE: The types token are defined . This procedure is intended to be called
+as a transition procedure inside the worker process (that is, the "inner" instances of SINGULAR).
+"
+{
+  ideal I = std(input.data[1]);
+  int p = input.data[2];
+  ring br = basering;
+  list rl = ringlist(br);
+  rl[1]= 0;
+  ring S = ring(rl);
+  ideal I = fetch(br,I);
+  token output;
+  output.fieldnames = list("generators","modulus","numberofprimes");
+  output.data[1] = I;
+  output.data[2] = bigint(p);
+  output.data[3] = int(1);
+  return(output);
+}
+
+proc generate (token input, token in_prime)
+"USAGE: generate(input,in_prime); input, in_prime token
+RETURN: a token  output 
+NOTE: The types token are defined . This procedure is intended to be called
+as a transition procedure inside the worker process (that is, the "inner" instances of SINGULAR).
+"
+{
+  def br = basering;
+  def I = input.data[1];
+  def lbr = ringlist(br);
+  lbr[1] = in_prime.data[1];
+  def rp = ring(lbr);
+  setring(rp);
+  token output;
+  output.fieldnames = list("generators","modulus");
+  output.data[1] = imap(br,I);
+  output.data[2] = in_prime.data[1];
+  return(output);
+}
+
+proc gen ()
+"USAGE: gen(); input, in_prime token
+RETURN: a token  output 
+NOTE: The types token are defined . This procedure is intended t
+as a transition procedure inside the worker process (that is, th
+"
+           {
+           token t;
+           t.fieldnames = list("hello");
+           t.data= list(int(3));
+           return(t);}
