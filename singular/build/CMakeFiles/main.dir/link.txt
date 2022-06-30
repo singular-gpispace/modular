@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/main.dir/src/main.cpp.o  -o main   -L/opt/Singular430/Singular/lib  -Wl,-rpath,/opt/Singular430/Singular/lib -lSingular -lpolys -lsingular_resources -lfactory -lomalloc -ldl 

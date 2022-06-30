@@ -1,3 +1,0 @@
-/home/hbn/Documents/AIMS/projet/master/modular/singular/build/CMakeFiles/rebuild_cache.dir
-/home/hbn/Documents/AIMS/projet/master/modular/singular/build/CMakeFiles/edit_cache.dir
-/home/hbn/Documents/AIMS/projet/master/modular/singular/build/CMakeFiles/main.dir
