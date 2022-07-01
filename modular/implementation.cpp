@@ -40,6 +40,7 @@ std::string  singular_modular_lift( std::string const& left
                                       , std::string const& function_name
                                       , std::string const& needed_library
                                       , std::string const& base_filename
+																			, std::string const& number
                                       )
 {
   init_singular (config::library().string());
@@ -50,7 +51,7 @@ std::string  singular_modular_lift( std::string const& left
   std::string ids;
   std::string out_filename;
   ids = worker();
-  std::cout << ids << " in singular_..._lift1" << std::endl;
+  std::cout << ids << " in singular_..._lift"+number << std::endl;
   l = deserialize(left,ids);
   r = deserialize(right,ids);
   ScopedLeftv args( l.first, lCopy(l.second));

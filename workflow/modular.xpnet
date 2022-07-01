@@ -38,6 +38,11 @@
 		<place name="place_down1" type="control"/>
 		<place name="place_lhs1" type="modular_data"/>
 		<place name="place_rhs1" type="modular_data"/>
+		<place name="place_mod_res2" type="string"/>
+		<place name="place_up2" type="control"><token><value>[]</value></token></place>
+		<place name="place_down2" type="control"/>
+		<place name="place_lhs2" type="string"/>
+		<place name="place_rhs2" type="string"/>
 
 		<transition name="generate">
 			<defun>
@@ -152,7 +157,7 @@
 					out_filename = fhg::util::scoped_dlhandle
 						(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
 							.sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-					  ( lhs.data,rhs.data,function_name,needed_library,base_filename);
+					  ( lhs.data,rhs.data,function_name,needed_library,base_filename,"1");
 					out.data = out_filename;
 					out.nb_prime = lhs.nb_prime + rhs.nb_prime;
 					]]>
@@ -167,6 +172,98 @@
 		<connect-read port="base_filename" place="place_base_filename"/>
 		<connect-out port="out" place="place_mod_res1"/>
 	 </transition>
+
+	 <transition name="move">
+   <defun>
+    <in name="mod_res1" type="modular_data"/>
+    <out name="mod_res2" type="string"/>
+    <module name="singular_modular"
+		  require_function_unloads_without_rest="false"
+		  function="move (mod_res1,mod_res2)">
+			<cinclude href="iostream"/>
+      <code><![CDATA[
+      mod_res2 = mod_res1.data;
+			std::cout << "in singular_..._move" << std::endl;
+     ]]>
+     </code>
+   </module>
+   <condition>
+     ${mod_res1.nb_prime} :gt: 9UL
+   </condition>
+  </defun>
+  <connect-in port="mod_res1" place="place_mod_res1"/>
+  <connect-out port="mod_res2" place="place_mod_res2"/>
+  </transition>
+	
+	<transition name="lhs2">
+  <defun>
+   <in name="down" type="control"/>
+   <in name="mod_res2" type="string"/>
+   <out name="up" type="control"/>
+   <out name="lhs" type="string"/>
+   <expression>
+     ${lhs} := ${mod_res2};
+		 ${up} := ${down} ;
+   </expression>
+	</defun>
+	<connect-in port="down" place="place_down2"/>
+	<connect-in port="mod_res2" place="place_mod_res2"/>
+	 <connect-out port="up" place="place_up2"/>
+	<connect-out port="lhs" place="place_lhs2"/>
+	</transition>
+
+	<transition name="rhs2">
+		<defun>
+		<in name="up" type="control"/>
+		<in name="mod_res2" type="string"/>
+		<out name="down" type="control"/>
+		<out name="rhs" type="string"/>
+		<expression>
+      ${rhs} := ${mod_res2};
+			${down} := ${up};
+		</expression>
+	</defun>
+	<connect-in port="up" place="place_up2"/>
+	<connect-in port="mod_res2" place="place_mod_res2"/>
+	<connect-out port="down" place="place_down2"/>
+	<connect-out port="rhs" place="place_rhs2"/>
+	</transition>
+
+	<transition name="lift2">
+  <defun>
+    <in name="lhs" type="string"/>
+    <in name="rhs" type="string"/>
+		<in name="implementation" type="string"/>
+		<in name="base_filename" type="string"/>
+		<in name="function_name" type="string"/>
+		<in name="needed_library" type="string"/>
+    <out name="out" type="string"/>
+    <module name="singular_modular"
+         require_function_unloads_without_rest="false"
+         function="lift2(implementation,lhs,rhs,function_name,needed_library,base_filename,out)">
+      <cinclude href="share/include/modular_interface.hpp"/>
+      <cinclude href="util-generic/dynamic_linking.hpp"/>
+			<cinclude href="iostream"/>
+      <code><![CDATA[
+				std::string filename;
+         filename = fhg::util::scoped_dlhandle
+         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+         .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
+          ( lhs,rhs,function_name, needed_library,base_filename,"2");
+					out = filename;
+					std::cout << filename << std::endl;
+     ]]>
+     </code>
+    </module>
+  </defun>
+  <connect-in port="lhs" place="place_lhs2"/>
+  <connect-in port="rhs" place="place_rhs2"/>
+	<connect-read port="implementation" place="place_implementation"/>
+	<connect-read port="base_filename" place="place_base_filename"/>
+	<connect-read port="function_name" place="place_function_name_lift"/>
+	<connect-read port="needed_library" place="place_needed_library"/>
+  <connect-out port="out" place="place_mod_res2"/>
+  </transition>
 
 	</net>
 </defun>

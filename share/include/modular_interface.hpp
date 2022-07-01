@@ -18,5 +18,6 @@ std::string  singular_modular_lift( std::string const&
                                       , std::string const& 
                                       , std::string const& 
                                       , std::string const& 
+																			, std::string const&
                                       );
 
