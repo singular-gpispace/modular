@@ -414,13 +414,13 @@ BOOLEAN sggspc_modular (leftv res, leftv args)
 try {
   ArgumentState as (args);
   auto result = gpis_launch_with_workflow (as.singPI().workflow_all(), as);
-  //if (!result.has_value()) {
-   // res->rtyp = NONE;
-    //return FALSE;
- // }
- // std::multimap<std::string, pnet::type::value::value_type>::const_iterator
-  //  sm_result_it (result.value().find ("modinputs"));
- //if (sm_result_it == result.value().end())
+  if (!result.has_value()) {
+    res->rtyp = NONE;
+    return FALSE;
+  }
+//  std::multimap<std::string, pnet::type::value::value_type>::const_iterator
+  //  sm_result_it (result.value().find ("lifted_res"));
+// if (sm_result_it == result.value().end())
  // {
   //  throw std::runtime_error ("Petri net has not finished correctly");
  // }

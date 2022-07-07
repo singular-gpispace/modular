@@ -23,7 +23,7 @@
 	<in name="function_name_lift" type="string" place="place_function_name_lift"/>
 	<in name="needed_library" type="string" place="place_needed_library"/>
 	<in name="base_filename" type="string" place="place_base_filename"/>
-	<out name="mod_res1" type="modular_data" place="place_mod_res1"/>
+	<out name="lifted_res" type="string" place="place_lifted_res"/>
 	<net>
 		<place name="place_input" type="string"/>
 		<place name="place_prime" type="string"/>
@@ -43,6 +43,8 @@
 		<place name="place_down2" type="control"/>
 		<place name="place_lhs2" type="string"/>
 		<place name="place_rhs2" type="string"/>
+		<place name="place_accumulator" type="string"><token><value>""</value></token></place>
+		<place name="place_lifted_res" type="string"/>
 
 		<transition name="generate">
 			<defun>
@@ -140,6 +142,7 @@
 
 	 <transition name="lift1">
 		<defun>
+			<require key="worker" mandatory="true"/>
 			<in name="lhs" type="modular_data"/>
 			<in name="rhs" type="modular_data"/>
 			<in name="function_name" type="string"/>
@@ -175,6 +178,7 @@
 
 	 <transition name="move">
    <defun>
+		<require key="worker" mandatory="true"/>
     <in name="mod_res1" type="modular_data"/>
     <out name="mod_res2" type="string"/>
     <module name="singular_modular"
@@ -183,7 +187,7 @@
 			<cinclude href="iostream"/>
       <code><![CDATA[
       mod_res2 = mod_res1.data;
-			std::cout << "in singular_..._move" << std::endl;
+			std::cout << "in singular_..._move "<< mod_res1.nb_prime << std::endl;
      ]]>
      </code>
    </module>
@@ -195,7 +199,7 @@
   <connect-out port="mod_res2" place="place_mod_res2"/>
   </transition>
 	
-	<transition name="lhs2">
+	<transition name="lhs2" priority="0">
   <defun>
    <in name="down" type="control"/>
    <in name="mod_res2" type="string"/>
@@ -212,7 +216,7 @@
 	<connect-out port="lhs" place="place_lhs2"/>
 	</transition>
 
-	<transition name="rhs2">
+	<transition name="rhs2" priority="0">
 		<defun>
 		<in name="up" type="control"/>
 		<in name="mod_res2" type="string"/>
@@ -231,6 +235,7 @@
 
 	<transition name="lift2">
   <defun>
+		<require key="worker" mandatory="true"/>
     <in name="lhs" type="string"/>
     <in name="rhs" type="string"/>
 		<in name="implementation" type="string"/>
@@ -243,7 +248,6 @@
          function="lift2(implementation,lhs,rhs,function_name,needed_library,base_filename,out)">
       <cinclude href="share/include/modular_interface.hpp"/>
       <cinclude href="util-generic/dynamic_linking.hpp"/>
-			<cinclude href="iostream"/>
       <code><![CDATA[
 				std::string filename;
          filename = fhg::util::scoped_dlhandle
@@ -251,7 +255,6 @@
          .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
           ( lhs,rhs,function_name, needed_library,base_filename,"2");
 					out = filename;
-					std::cout << filename << std::endl;
      ]]>
      </code>
     </module>
@@ -264,6 +267,48 @@
 	<connect-read port="needed_library" place="place_needed_library"/>
   <connect-out port="out" place="place_mod_res2"/>
   </transition>
+
+	<transition name="lift3" priority="1">
+		<defun>
+		<require key="worker" mandatory="true"/>
+		<in name="mod_res2" type="string"/>
+		<in name="accumulator" type="string"/>
+		<in name="implementation" type="string"/>
+		<in name="base_filename" type="string"/>
+		<in name="function_name" type="string"/>
+	  <in name="needed_library" type="string"/>
+	  <out name="out" type="string"/>
+		<module name="singular_modular"
+       require_function_unloads_without_rest="false"
+       function="lift3(implementation,mod_res2,accumulator,function_name,needed_library,base_filename,out)">
+			 <cinclude href="share/include/modular_interface.hpp"/>
+       <cinclude href="util-generic/dynamic_linking.hpp"/>
+			 <cinclude href="iostream"/>
+       <code><![CDATA[
+				 if(accumulator.empty())
+				 {
+					std::cout << "in singular_..._lift3" << std::endl;
+					out = mod_res2;
+				 }
+				 else
+				 {
+					out = fhg::util::scoped_dlhandle
+         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+         .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
+          ( mod_res2,accumulator,function_name, needed_library,base_filename,"3");
+         }
+        ]]>
+       </code>
+	    </module>
+		</defun>
+		<connect-in port="mod_res2" place="place_mod_res2"/>
+		<connect-in port="accumulator" place="place_accumulator"/>
+		<connect-read port="implementation" place="place_implementation"/>
+		<connect-read port="base_filename" place="place_base_filename"/>
+		<connect-read port="function_name" place="place_function_name_lift"/>
+		<connect-read port="needed_library" place="place_needed_library"/>
+		<connect-out port="out" place="place_lifted_res"/>
+	</transition>
 
 	</net>
 </defun>
