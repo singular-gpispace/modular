@@ -1,0 +1,5 @@
+LDFLAGS += -L/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build
+LDFLAGS += -L/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/src/util-generic
+LDFLAGS += -Wl,-rpath='$$ORIGIN'
+LDFLAGS += -Wl,-rpath='/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/gpi-space-21.12.1-4oorszmqdgqusyvqy2v7bhzk4dz3ujna/lib'
+LDFLAGS += -Wl,-rpath='/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/gpi-space-21.12.1-4oorszmqdgqusyvqy2v7bhzk4dz3ujna/external/boost/lib'

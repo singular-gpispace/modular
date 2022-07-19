@@ -1,0 +1,146 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_91591/fast && /usr/bin/make  -f CMakeFiles/cmTC_91591.dir/build.make CMakeFiles/cmTC_91591.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_91591.dir/src.c.o
+/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_91591.dir/src.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_91591
+/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/cmake-3.22.2-ttzogr7ytdda3on53tzkcvepe6qtqnbk/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91591.dir/link.txt --verbose=1
+/usr/bin/cc CMakeFiles/cmTC_91591.dir/src.c.o -o cmTC_91591 
+/usr/bin/ld: CMakeFiles/cmTC_91591.dir/src.c.o: in function `main':
+src.c:(.text+0x46): undefined reference to `pthread_create'
+/usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+/usr/bin/ld: src.c:(.text+0x5e): undefined reference to `pthread_cancel'
+/usr/bin/ld: src.c:(.text+0x6f): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_91591.dir/build.make:99: cmTC_91591] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_91591/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_781d6/fast && /usr/bin/make  -f CMakeFiles/cmTC_781d6.dir/build.make CMakeFiles/cmTC_781d6.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_781d6.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_781d6.dir/CheckFunctionExists.c.o -c /home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/cmake-3.22.2-ttzogr7ytdda3on53tzkcvepe6qtqnbk/share/cmake-3.22/Modules/CheckFunctionExists.c
+Linking C executable cmTC_781d6
+/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/cmake-3.22.2-ttzogr7ytdda3on53tzkcvepe6qtqnbk/bin/cmake -E cmake_link_script CMakeFiles/cmTC_781d6.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_781d6.dir/CheckFunctionExists.c.o -o cmTC_781d6  -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_781d6.dir/build.make:99: cmTC_781d6] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_781d6/fast] Error 2
+
+
+
+Performing C++ SOURCE FILE Test HAS_STD_VOID_T failed with the following compile output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_36a6e/fast && /usr/bin/make  -f CMakeFiles/cmTC_36a6e.dir/build.make CMakeFiles/cmTC_36a6e.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_36a6e.dir/src.cxx.o
+/usr/bin/c++ -DHAS_STD_VOID_T  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_36a6e.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx
+/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx: In function ‘int main(int, char**)’:
+/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx:5:1: error: ‘ote’ was not declared in this scope
+    5 | ote Clang interprets the standard differently than everyone
+      | ^~~
+/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx:14:51: error: expected primary-expression before ‘?’ token
+   14 |     return std::is_same<std::void_t<int>, void>{} ? 0 : 1;
+      |                                                   ^
+make[1]: *** [CMakeFiles/cmTC_36a6e.dir/build.make:78: CMakeFiles/cmTC_36a6e.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_36a6e/fast] Error 2
+
+
+...and run output:
+
+Return value: 1
+Source file was:
+  #include <type_traits>
+  int main (int, char**)
+  {
+  //! 
+ote Clang interprets the standard differently than everyone
+  //! else (https://wg21.cmeerw.net/cwg/issue1558), making the "select
+  //! the matching void_t" pattern impossible: there can always be at
+  //! most one void_t usage, regardless of SFINAE. Our
+  //! emulation-implementation does that exact workaround, so isn't
+  //! true c++17, making it work regardless of compiler.
+  #if defined(__clang__)
+    return 1;
+  #else
+    return std::is_same<std::void_t<int>, void>{} ? 0 : 1;
+    //                  ^^^^^^^^^^^
+  #endif
+  }
+  
+Performing C++ SOURCE FILE Test COMPILER_FLAG_EXISTS_WUNDEFINED_FUNC_TEMPLATE failed with the following output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_4611d/fast && /usr/bin/make  -f CMakeFiles/cmTC_4611d.dir/build.make CMakeFiles/cmTC_4611d.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_4611d.dir/src.cxx.o
+/usr/bin/c++ -DCOMPILER_FLAG_EXISTS_WUNDEFINED_FUNC_TEMPLATE  -Wall -Wextra -Werror    -Wundefined-func-template -std=gnu++17 -o CMakeFiles/cmTC_4611d.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wundefined-func-template'
+make[1]: *** [CMakeFiles/cmTC_4611d.dir/build.make:78: CMakeFiles/cmTC_4611d.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_4611d/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_COMPILER_SUPPORTS__Wundefined_reinterpret_cast failed with the following output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_d2363/fast && /usr/bin/make  -f CMakeFiles/cmTC_d2363.dir/build.make CMakeFiles/cmTC_d2363.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_d2363.dir/src.cxx.o
+/usr/bin/c++ -DCXX_COMPILER_SUPPORTS__Wundefined_reinterpret_cast  -Wall -Wextra -Werror    -Wundefined-reinterpret-cast -std=gnu++17 -o CMakeFiles/cmTC_d2363.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wundefined-reinterpret-cast'
+make[1]: *** [CMakeFiles/cmTC_d2363.dir/build.make:78: CMakeFiles/cmTC_d2363.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_d2363/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_COMPILER_SUPPORTS__Wextra_semi_stmt failed with the following output:
+Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_48fd9/fast && /usr/bin/make  -f CMakeFiles/cmTC_48fd9.dir/build.make CMakeFiles/cmTC_48fd9.dir/build
+make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_48fd9.dir/src.cxx.o
+/usr/bin/c++ -DCXX_COMPILER_SUPPORTS__Wextra_semi_stmt  -Wall -Wextra -Werror    -Wextra-semi-stmt -std=gnu++17 -o CMakeFiles/cmTC_48fd9.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp/src.cxx
+c++: error: unrecognized command line option '-Wextra-semi-stmt'; did you mean '-Wextra-semi'?
+make[1]: *** [CMakeFiles/cmTC_48fd9.dir/build.make:78: CMakeFiles/cmTC_48fd9.dir/src.cxx.o] Error 1
+make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_48fd9/fast] Error 2
+
+
+Source file was:
+int main() { return 0; }

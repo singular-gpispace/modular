@@ -94,6 +94,7 @@ namespace
       std::string neededLibrary() const;
       std::string functionNameCompute() const;
 			std::string functionNameLift() const;
+			std::string functionNameReconstest() const;
 
       singular_modular::installation singPI() const;
       lists argList() const;
@@ -114,6 +115,7 @@ namespace
       std::string neededlibrary;
       std::string functionnamecompute;
 			std::string functionnamelift;
+			std::string functionnamereconstest;
       int out_token;
       std::string base_filename;
 
@@ -161,6 +163,10 @@ namespace
 
 	std::string ArgumentState::functionNameLift() const {
 		return functionnamelift;
+	}
+
+	std::string ArgumentState::functionNameReconstest() const {
+		return functionnamereconstest;
 	}
 
   singular_modular::installation ArgumentState::singPI() const {
@@ -229,6 +235,11 @@ namespace
                                              STRING_CMD,
                                              "string",
                                              "function name lift"))
+	, functionnamereconstest (require_argument<10, char*> (args,
+                                           STRING_CMD,
+                                           "string",
+                                           "function name reconstest"))
+
   , out_token (fetch_token_value_from_sing_scope ("token"))
   , base_filename (tmpdir + "/")
   , singular_modular_installation ()
@@ -395,6 +406,7 @@ try
 		values_on_ports.emplace("implementation", implementation.string());
 		values_on_ports.emplace("function_name_compute", as.functionNameCompute());
 		values_on_ports.emplace("function_name_lift", as.functionNameLift());
+		values_on_ports.emplace("function_name_reconstest", as.functionNameReconstest());
 		values_on_ports.emplace("needed_library",as.neededLibrary());
 		values_on_ports.emplace("base_filename", as.baseFileName());
   std::multimap<std::string, pnet::type::value::value_type> result

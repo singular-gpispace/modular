@@ -61,3 +61,48 @@ std::string  singular_modular_lift( std::string const& left
   return out_filename;
 }
 
+std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lifted_res
+                                      , std::string const& mod_res2
+                                      , std::string const& function_name
+                                      , std::string const& needed_library
+                                      , std::string const& base_filename
+                                      )
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> lifted;
+  std::pair<int,lists> mod_res;
+  std::pair<int, lists> out;
+	bool test = 0;
+	std::string ids;
+	std::string out_filename;
+	ids = worker();
+	std::cout << ids << " in singular_..._reconstest" << std::endl;
+	lifted = deserialize(lifted_res,ids);
+	mod_res = deserialize(mod_res2,ids);
+//	char *fieldnames = static_cast<char*> (lifted.second->m[1].Data());
+//	std::cout <<*fieldnames[1] << std::endl;
+//	std::cout << LIST_CMD << std::endl;
+	ScopedLeftv args(lifted.first, lCopy(lifted.second));
+	ScopedLeftv arg(args,mod_res.first,lCopy(mod_res.second));
+	out = call_user_proc(function_name, needed_library, args);
+//	lists L = (lists) (omAlloc0Bin (slists_bin));
+//	L->Init(1);
+	//std::cout << lSize(out.second) << std::endl;
+//	leftv l = static_cast<leftv> (omAlloc0Bin (sleftv_bin));
+//	l->rtyp = out.second->m[0].Typ();
+//	l->data = out.second->m[0].Data();
+//	memcpy(&(L->m[0]),l,sizeof(sleftv));
+	//std::cout << L->m[0].Typ() << std::endl;
+	lists u = (lists)omAlloc0Bin(slists_bin);
+	u->Init(2);
+	leftv r = out.second->m[3].LData();
+	u=(lists)r->Data();
+	out_filename = serialize(out.second,base_filename,ids);
+	test = (int)(long)u->m[1].Data();
+	std::cout <<  test << std::endl;
+//	out_filename = base_filename+"file";
+//	test  = (int)(long) out.second->m[1].Data();
+	return {out_filename,test};
+
+}
