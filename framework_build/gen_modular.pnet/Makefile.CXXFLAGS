@@ -1,7 +1,0 @@
-CXXFLAGS += -O3
-CXXFLAGS += -std=c++17
-CXXFLAGS += -I/home/hbn/Documents/AIMS/projet/master/github/modular/framework_build
-CXXFLAGS += -I/home/hbn/Documents/AIMS/projet/master/github/modular
-CXXFLAGS += -I/home/hbn/Documents/AIMS/projet/master/github/modular/src
-CXXFLAGS += -I/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/gpi-space-21.12.1-4oorszmqdgqusyvqy2v7bhzk4dz3ujna/include
-CXXFLAGS += -I/home/hbn/Spack/spack/opt/spack/linux-ubuntu20.04-sandybridge/gcc-9.3.0/gpi-space-21.12.1-4oorszmqdgqusyvqy2v7bhzk4dz3ujna/external/boost/include
