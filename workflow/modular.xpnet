@@ -113,7 +113,7 @@
 					${up} := ${down};
 				</expression>
 				<condition>
-					${mod_res1.nb_prime} :lt: 10UL
+					${mod_res1.nb_prime} :lt: 3UL
 				</condition>
 			</defun>
 			<connect-in port="mod_res1" place="place_mod_res1"/>
@@ -134,7 +134,7 @@
 			 ${down} := ${up}
 		 </expression>
 		 <condition>
-			 ${mod_res1.nb_prime} :lt: 10UL
+			 ${mod_res1.nb_prime} :lt: 3UL
 		</condition>
 		 </defun>
 		 <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -195,7 +195,7 @@
      </code>
    </module>
    <condition>
-     ${mod_res1.nb_prime} :gt: 9UL
+     ${mod_res1.nb_prime} :gt: 2UL
    </condition>
   </defun>
   <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -313,7 +313,7 @@
 		<connect-out port="out" place="place_lifted_res"/>
 	</transition>
 
-	<transition name="reconstest">
+	<transition name="reconstest" priority="1">
 	<defun>
 	 <require key="worker" mandatory="true"/>
 	 <in name="lifted_res" type="string"/>
