@@ -113,7 +113,7 @@
 					${up} := ${down};
 				</expression>
 				<condition>
-					${mod_res1.nb_prime} :lt: 3UL
+					${mod_res1.nb_prime} :lt: 10UL
 				</condition>
 			</defun>
 			<connect-in port="mod_res1" place="place_mod_res1"/>
@@ -134,7 +134,7 @@
 			 ${down} := ${up}
 		 </expression>
 		 <condition>
-			 ${mod_res1.nb_prime} :lt: 3UL
+			 ${mod_res1.nb_prime} :lt: 10UL
 		</condition>
 		 </defun>
 		 <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -195,7 +195,7 @@
      </code>
    </module>
    <condition>
-     ${mod_res1.nb_prime} :gt: 2UL
+     ${mod_res1.nb_prime} :gt: 9UL
    </condition>
   </defun>
   <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -348,6 +348,21 @@
 		<connect-read port="needed_library" place="place_needed_library"/>
 		<connect-out port="out" place="place_rand_res"/>
 	</transition>
+	
+ <transition name="Continue1">
+	<defun>
+		<in name="rand_res" type="result_bool_type"/>
+	  <out name="accumulator" type="string"/>
+     <expression>
+      ${accumulator} := ${rand_res.chr_lift};
+     </expression>
+		<condition>
+		  ${rand_res.test}:eq:false
+		</condition>
+  </defun>
+  <connect-in port="rand_res" place="place_rand_res"/>
+  <connect-out port="accumulator" place="place_accumulator"/>
+ </transition>
 
 
 	</net>
