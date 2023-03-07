@@ -1,0 +1,21 @@
+<structs>
+    <struct name="mod_input_data">
+		<field name="input" type="string"/>
+		<field name="prime" type="string"/>
+	</struct>
+
+	<struct name="modular_data">
+		<field name="data" type="string"/>
+		<field name="nb_prime" type="unsigned long"/>
+		<field name="hashlead" type="string"/>
+	</struct>
+
+	<struct name="result_bool_type">
+		<field name="farey_lift" type="string"/>
+		<field name="chr_lift" type="string"/>
+		<field name="test" type="bool"/>
+		<field name="nb_prime" type="unsigned long"/>
+		<field name="hashlead" type="string"/>
+	</struct>
+
+</structs>

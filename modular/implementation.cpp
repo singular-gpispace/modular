@@ -10,7 +10,7 @@
 #include "singular_functions.hpp"
 NO_NAME_MANGLING
 
-std::string  singular_modular_compute( std::string const& input_filename 
+std::pair<std::string,std::string>  singular_modular_compute( std::string const& input_filename 
 																			,	std::string const& mod_input
 																			, std::string const& function_name
 																			, std::string const& needed_library
@@ -31,11 +31,16 @@ std::string  singular_modular_compute( std::string const& input_filename
 	ScopedLeftv args( input.first, lCopy(input.second));
 	ScopedLeftv arg(args,p.first,lCopy(p.second));
 	out = call_user_proc(function_name, needed_library, args);
-	out_filename = serialize(out.second, base_filename, ids);
-	return out_filename;
+	lists u = (lists)omAlloc0Bin(slists_bin);
+	u->Init(2);
+	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
+	std::string hash = (char*)u->m[3].Data();
+	out_filename = serialize(out.second,base_filename,ids);
+
+	return {out_filename,hash};
 }
 
-std::string  singular_modular_lift( std::string const& left
+std::string  singular_modular_lift1( std::string const& left
                                       , std::string const& right
                                       , std::string const& function_name
                                       , std::string const& needed_library
@@ -60,6 +65,33 @@ std::string  singular_modular_lift( std::string const& left
   out_filename = serialize(out.second, base_filename, ids);
   return out_filename;
 }
+
+std::string  singular_modular_lift( std::string const& left
+                                      , std::string const& right
+                                      , std::string const& function_name
+                                      , std::string const& needed_library
+                                      , std::string const& base_filename
+                                      , std::string const& number
+                                      )
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> l;
+  std::pair<int,lists> r;
+  std::pair<int, lists> out;
+  std::string ids;
+  std::string out_filename;
+  ids = worker();
+  std::cout << ids << " in singular_..._lift"+number << std::endl;
+  l = deserialize(left,ids);
+  r = deserialize(right,ids);
+  ScopedLeftv args( l.first, lCopy(l.second));
+  ScopedLeftv arg(args,r.first,lCopy(r.second));
+  out = call_user_proc(function_name, needed_library, args);
+  out_filename = serialize(out.second, base_filename, ids);
+  return out_filename;
+}
+
 
 std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lifted_res
                                       , std::string const& mod_res2

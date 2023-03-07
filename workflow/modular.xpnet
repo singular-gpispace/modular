@@ -1,369 +1,455 @@
 <defun name="modular">
+    <include-structs href="structures.xpnet"/>
 
-	<struct name="mod_input_data">
-		<field name="input" type="string"/>
-		<field name="prime" type="string"/>
-	</struct>
-
-	<struct name="modular_data">
-		<field name="data" type="string"/>
-		<field name="nb_prime" type="unsigned long"/>
-	</struct>
-
-	<struct name="result_bool_type">
-		<field name="farey_lift" type="string"/>
-		<field name="chr_lift" type="string"/>
-		<field name="test" type="bool"/>
-	</struct>
-
-	<in name="primes" type="string" place="place_prime"/>
-	<in name="implementation" type="string" place="place_implementation"/>
-	<in name="input" type="string" place="place_input"/>
-	<in name="function_name_compute" type="string" place="place_function_name_compute"/>
-	<in name="function_name_lift" type="string" place="place_function_name_lift"/>
+    <in name="primes" type="string" place="place_prime"/>
+    <in name="implementation" type="string" place="place_implementation"/>
+    <in name="input" type="string" place="place_input"/>
+    <in name="function_name_compute" type="string" place="place_function_name_compute"/>
+    <in name="function_name_lift" type="string" place="place_function_name_lift"/>
 	<in name="function_name_reconstest" type="string" place="place_function_name_reconstest"/>
 	<in name="needed_library" type="string" place="place_needed_library"/>
 	<in name="base_filename" type="string" place="place_base_filename"/>
-	<out name="lifted_res" type="string" place="place_lifted_res"/>
-	<net>
-		<place name="place_input" type="string"/>
+	<in name="input_bal1" type="int" place="place_input_bal1"/>
+	<in name="input_bal2" type="int" place="place_input_bal2"/>
+	<out name="rand_res" type="result_bool_type" place="place_rand_res"/>
+
+    <net>
+        <place name="place_input" type="string"/>
 		<place name="place_prime" type="string"/>
+		<place name="place_input_bal1" type="int"/>
+		<place name="place_input_bal2" type="int"/>
+		<place name="place_bal1" type="control"/>
+		<place name="place_bal2" type="control"/>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
 		<place name="place_function_name_compute" type="string"/>
 		<place name="place_function_name_lift" type="string"/>
 		<place name="place_function_name_reconstest" type="string"/>
 		<place name="place_needed_library" type="string"/>
-		<place name ="place_base_filename" type="string"/>
+		<place name="place_base_filename" type="string"/>
 		<place name="place_mod_res1" type="modular_data"/>
-		<place name="place_up1" type="control"><token><value>[]</value></token></place>
-		<place name="place_down1" type="control"/>
-		<place name="place_lhs1" type="modular_data"/>
-		<place name="place_rhs1" type="modular_data"/>
-		<place name="place_mod_res2" type="string"/>
-		<place name="place_up2" type="control"><token><value>[]</value></token></place>
-		<place name="place_down2" type="control"/>
-		<place name="place_lhs2" type="string"/>
-		<place name="place_rhs2" type="string"/>
-		<place name="place_accumulator" type="string"><token><value>""</value></token></place>
-		<place name="place_lifted_res" type="string"/>
+		<place name="place_mod_res2" type="modular_data"/>
+        <place name="place_mod_res3" type="modular_data"/>
+        <place name="place_mod_res4" type="modular_data"/>
+        <place name="place_mod_res5" type="modular_data"/>
+        <place name="place_ct1" type="long"><token><value>0L</value></token></place>
+        <place name="place_ct2" type="long"><token><value>0L</value></token></place>
+        <place name="place_right" type="modular_data"/>
+        <place name="place_left" type="modular_data"/>
+        <place name="place_up" type="control"><token><value>[]</value></token></place>
+        <place name="place_down" type="control"/>
+		<place name="place_test" type="modular_data"/>
+		<place name="place_accumulator" type="modular_data"/>
+		<place name="place_init_accumulator" type="string"><token><value>""</value></token></place>
+		<place name="place_lifted_res" type="modular_data"/>
 		<place name="place_rand_res" type="result_bool_type"/>
 
-		<transition name="generate">
-			<defun>
-				<in name="input" type="string"/>
-				<in name="primes" type="string"/>
-				<out name="mod_input" type="mod_input_data"/>
-				<expression>
-				  ${mod_input.input} := ${input};
-					${mod_input.prime} := ${primes};
-				</expression>
-			</defun>
-			<connect-read port="input" place="place_input"/>
-			<connect-in port="primes" place="place_prime"/>
-			<connect-out port="mod_input" place="place_mod_input"/>
-		</transition>
+        <transition name="init">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="input_bal1" type="int"/>
+                <in name="input_bal2" type="int"/>
+                <out name="bal1" type="list"/>
+                <out name="bal2" type="list"/>
+                <module name="singular_modular"
+                    require_function_unloads_without_rest="false"
+                    function="init(input_bal1,input_bal2,bal1,bal2)">
+                    <code><![CDATA[
+                    for (int i (0); i<input_bal1; ++i)
+                {
+                    bal1.emplace_back(we::type::literal::control{});
+                }
+                for (int i (0); i<input_bal2; ++i)
+                {
+                    bal2.emplace_back(we::type::literal::control{});
+                }
+                 ]]></code>
+            </module>
+        </defun>
+        <connect-in port="input_bal1" place="place_input_bal1"/>
+        <connect-in port="input_bal2" place="place_input_bal2"/>
+        <connect-out-many port="bal1" place="place_bal1"/>
+        <connect-out-many port="bal2" place="place_bal2"/>
+        </transition>
 
-		 <transition name="compute">
-      <defun>
-        <require key="worker" mandatory="true"/>
-        <in name="implementation" type="string"/>
-        <in name="function_name" type="string"/>
-        <in name="needed_library" type="string"/>
-        <in name="mod_input" type="mod_input_data"/>
-        <in name="base_filename" type="string"/>
-        <out name="mod_res1" type="modular_data"/>
-        <module name="singular_modular"
-              require_function_unloads_without_rest="false"
-              function="compute(implementation,mod_input,function_name,needed_library,base_filename,mod_res1)">
-          <cinclude href="share/include/modular_interface.hpp" />
-          <cinclude href="util-generic/dynamic_linking.hpp"/>
-          <code><![CDATA[
-              std::string out;
-              out = fhg::util::scoped_dlhandle
-  (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-  .sym<decltype (singular_modular_compute)> ("singular_modular_compute")
-            ( mod_input.input,mod_input.prime
-            , function_name, needed_library, base_filename
-            );
-            mod_res1.data =   out ;
-						mod_res1.nb_prime = 1UL;
-            ]]></code>
-        </module>
-      </defun>
-      <connect-read port="implementation" place="place_implementation"/>
-      <connect-read port="function_name" place="place_function_name_compute"/>
-      <connect-read port="needed_library" place="place_needed_library"/>
-			<connect-read port="base_filename" place="place_base_filename"/>
-		  <connect-in port="mod_input" place="place_mod_input"/>
-			<connect-out port="mod_res1" place="place_mod_res1"/>
-  </transition>
+        <transition name="generate">
+            <defun>
+                <in name="input" type="string"/>
+                <in name="primes" type="string"/>
+                <in name="bal1" type="control"/>
+                <out name="mod_input" type="mod_input_data"/>
+                <expression>
+                    ${mod_input.input} := ${input};
+                    ${mod_input.prime} := ${primes};
+                </expression>
+            </defun>
+            <connect-read port="input" place="place_input"/>
+            <connect-in port="primes" place="place_prime"/>
+            <connect-in port="bal1" place="place_bal1"/>
+            <connect-out port="mod_input" place="place_mod_input"/>
+        </transition>
 
+        <transition name="compute">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="implementation" type="string"/>
+                <in name="function_name" type="string"/>
+                <in name="needed_library" type="string"/>
+                <in name="bal2" type="control"/>
+                <in name="mod_input" type="mod_input_data"/>
+                <in name="base_filename" type="string"/>
+                <out name="mod_res1" type="modular_data"/>
+                <out name="bal1" type="control"/>
+                <module name="singular_modular" require_function_unloads_without_rest="false"
+                    function="compute(implementation,mod_input,function_name,needed_library,base_filename,mod_res1,bal1)">
+                    <cinclude href="share/include/modular_interface.hpp" />
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="iostream"/>
+                    <code><![CDATA[
+                        std::pair<std::string,std::string>  out;
+                        out = fhg::util::scoped_dlhandle
+                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                            .sym<decltype (singular_modular_compute)> ("singular_modular_compute")
+                            ( mod_input.input, mod_input.prime, function_name, needed_library, base_filename);
+                        mod_res1.data =   out.first ;
+                        mod_res1.hashlead = out.second;
+                        mod_res1.nb_prime = 1UL;
+                        bal1 = we::type::literal::control{};
+                    ]]></code>
+                </module>
+            </defun>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="function_name" place="place_function_name_compute"/>
+            <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-in port="mod_input" place="place_mod_input"/>
+            <connect-in port="bal2" place="place_bal2"/>
+            <connect-out port="mod_res1" place="place_mod_res1"/>
+            <connect-out port="bal1" place="place_bal1"/>
+        </transition>
 
+        <transition name="move_to_result">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="mod_res1" type="modular_data"/>
+                <inout name="counter" type="long"/>
+                <out name="mod_res2" type="modular_data"/>
+                <expression>
+                    ${mod_res2} := ${mod_res1};
+                    ${counter} := ${counter} + 1L;
+                    ${counter} := ${counter} mod 10L;
+                </expression>
+                <condition>
+                    ${counter} :gt: 0L 
+                </condition>
+            </defun>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-inout port="counter" place="place_ct1"/>
+            <connect-out port="mod_res2" place="place_mod_res2"/>
+        </transition>
 
-	<transition name="lhs1">
-			<defun>
-				<in name="mod_res1" type="modular_data"/>
-				<in name="down" type="control"/>
-				<out name="up" type="control"/>
-				<out name="lhs" type="modular_data"/>
-				<expression>
-					${lhs.data} := ${mod_res1.data};
-					${lhs.nb_prime} := ${mod_res1.nb_prime};
-					${up} := ${down};
-				</expression>
-				<condition>
-					${mod_res1.nb_prime} :lt: 10UL
-				</condition>
-			</defun>
-			<connect-in port="mod_res1" place="place_mod_res1"/>
-			<connect-in port="down" place="place_down1"/>
-			<connect-out port="up" place="place_up1"/>
-			<connect-out port="lhs" place="place_lhs1"/>
-		</transition>
+        <transition name="extract_test">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="mod_res1" type="modular_data"/>
+                <inout name="counter" type="long"/>
+                <out name="bal" type="control"/>
+                <out name="extract_test" type="modular_data"/>
+                <expression>
+                    ${extract_test} := ${mod_res1};
+                    ${counter} := ${counter} + 1L;
+                    ${counter} := ${counter} mod 10L;
+                    ${bal} := [];
+                </expression>
+                <condition>
+                    ${counter} :eq: 0L 
+                </condition>
+            </defun>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-inout port="counter" place="place_ct1"/>
+            <connect-out port="bal" place="place_bal2"/>
+            <connect-out port="extract_test" place="place_test"/>
+        </transition>
 
-		<transition name="rhs1">
-			<defun>
-			<in name="mod_res1" type="modular_data"/>
-			<in name="up" type="control"/>
-			<out name="down" type="control"/>
-			<out name="rhs" type="modular_data"/>
-		 <expression>
-			 ${rhs.data} := ${mod_res1.data};
-			 ${rhs.nb_prime} := ${mod_res1.nb_prime};
-			 ${down} := ${up}
-		 </expression>
-		 <condition>
-			 ${mod_res1.nb_prime} :lt: 10UL
-		</condition>
-		 </defun>
-		 <connect-in port="mod_res1" place="place_mod_res1"/>
-     <connect-in port="up" place="place_up1"/>
-     <connect-out port="down" place="place_down1"/>
-     <connect-out port="rhs" place="place_rhs1"/>
-	 </transition>
+        <transition name="lift1" inline="true">
+            <include-function href="lift1.xpnet"/>
+            <connect-in port="place_in" place="place_mod_res2"/>
+            <place-map virtual="place_out" real="place_mod_res3"/>
+            <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_bal" real="place_bal2"/>  
+        </transition>
 
-	 <transition name="lift1">
-		<defun>
-			<require key="worker" mandatory="true"/>
-			<in name="lhs" type="modular_data"/>
-			<in name="rhs" type="modular_data"/>
-			<in name="function_name" type="string"/>
-			<in name="needed_library" type="string"/>
-			<in name="implementation" type="string"/>
-			<in name="base_filename" type="string"/>
-			<out name="out" type="modular_data"/>
-			<module name="singular_modular"
-							require_function_unloads_without_rest="false"
-							function="lift1(implementation,lhs,rhs,function_name,needed_library,base_filename,out)">
-				<cinclude href="share/include/modular_interface.hpp"/>
-				<cinclude href="util-generic/dynamic_linking.hpp"/>
-				<code><![CDATA[
-					std::string out_filename;
-					out_filename = fhg::util::scoped_dlhandle
-						(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-							.sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-					  ( lhs.data,rhs.data,function_name,needed_library,base_filename,"1");
-					out.data = out_filename;
-					out.nb_prime = lhs.nb_prime + rhs.nb_prime;
-					]]>
-				</code>
-			</module>
-		</defun>
-		<connect-in port="lhs" place="place_lhs1"/>
-		<connect-in port="rhs" place="place_rhs1"/>
-		<connect-read port="implementation" place="place_implementation"/>
-		<connect-read port="function_name" place="place_function_name_lift"/>
-		<connect-read port="needed_library" place="place_needed_library"/>
-		<connect-read port="base_filename" place="place_base_filename"/>
-		<connect-out port="out" place="place_mod_res1"/>
-	 </transition>
+        <transition name="count_in_mod_res4">
+            <defun>
+                <in name="mod_res3" type="modular_data"/>
+                <inout name="counter" type="long"/>
+                <out name="mod_res4" type="modular_data"/>
+                <expression>
+                    ${counter} := ${counter} + 1L;
+                    ${mod_res4} := ${mod_res3};
+                </expression>
+            </defun>
+            <connect-in port="mod_res3" place="place_mod_res3"/>
+            <connect-inout port="counter" place="place_ct2"/>
+            <connect-out port="mod_res4" place="place_mod_res4"/>
+        </transition>
 
-	 <transition name="move">
-   <defun>
-		<require key="worker" mandatory="true"/>
-    <in name="mod_res1" type="modular_data"/>
-    <out name="mod_res2" type="string"/>
-    <module name="singular_modular"
-		  require_function_unloads_without_rest="false"
-		  function="move (mod_res1,mod_res2)">
-			<cinclude href="iostream"/>
-      <code><![CDATA[
-      mod_res2 = mod_res1.data;
-			std::cout << "in transition_..._move "<< std::endl;
-     ]]>
-     </code>
-   </module>
-   <condition>
-     ${mod_res1.nb_prime} :gt: 9UL
-   </condition>
-  </defun>
-  <connect-in port="mod_res1" place="place_mod_res1"/>
-  <connect-out port="mod_res2" place="place_mod_res2"/>
-  </transition>
-	
-	<transition name="lhs2" priority="0">
-  <defun>
-   <in name="down" type="control"/>
-   <in name="mod_res2" type="string"/>
-   <out name="up" type="control"/>
-   <out name="lhs" type="string"/>
-   <expression>
-     ${lhs} := ${mod_res2};
-		 ${up} := ${down} ;
-   </expression>
-	</defun>
-	<connect-in port="down" place="place_down2"/>
-	<connect-in port="mod_res2" place="place_mod_res2"/>
-	 <connect-out port="up" place="place_up2"/>
-	<connect-out port="lhs" place="place_lhs2"/>
-	</transition>
+        <transition name="rhs">
+            <defun>
+                <in name="in" type="modular_data"/>
+                <in name="up" type="control"/>
+                <in name="counter" type="long"/>
+                <out name="down" type="control"/>
+                <out name="right" type="modular_data"/>
+                <expression>
+                    ${right} := ${in};
+                    ${down} := [];
+                </expression>
+                <condition>
+                    ${counter} :ge: 2L :and: ${in.nb_prime} :le: 20UL
+                </condition>
+            </defun>
+            <connect-in port="in" place="place_mod_res4"/>
+            <connect-read port="counter" place="place_ct2"/>
+            <connect-in port="up" place="place_up"/>
+            <connect-out port="down" place="place_down"/>
+            <connect-out port="right" place="place_right"/>
+        </transition>
 
-	<transition name="rhs2" priority="0"> 
-		<defun>
-		<in name="up" type="control"/>
-		<in name="mod_res2" type="string"/>
-		<out name="down" type="control"/>
-		<out name="rhs" type="string"/>
-		<expression>
-      ${rhs} := ${mod_res2};
-			${down} := ${up};
-		</expression>
-	</defun>
-	<connect-in port="up" place="place_up2"/>
-	<connect-in port="mod_res2" place="place_mod_res2"/>
-	<connect-out port="down" place="place_down2"/>
-	<connect-out port="rhs" place="place_rhs2"/>
-	</transition>
-
-	<transition name="lift2">
-  <defun>
-		<require key="worker" mandatory="true"/>
-    <in name="lhs" type="string"/>
-    <in name="rhs" type="string"/>
-		<in name="implementation" type="string"/>
-		<in name="base_filename" type="string"/>
-		<in name="function_name" type="string"/>
-		<in name="needed_library" type="string"/>
-    <out name="out" type="string"/>
-    <module name="singular_modular"
-         require_function_unloads_without_rest="false"
-         function="lift2(implementation,lhs,rhs,function_name,needed_library,base_filename,out)">
-      <cinclude href="share/include/modular_interface.hpp"/>
-      <cinclude href="util-generic/dynamic_linking.hpp"/>
-      <code><![CDATA[
-				std::string filename;
-         filename = fhg::util::scoped_dlhandle
-         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-         .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-          ( lhs,rhs,function_name, needed_library,base_filename,"2");
-					out = filename;
-     ]]>
-     </code>
-    </module>
-  </defun>
-  <connect-in port="lhs" place="place_lhs2"/>
-  <connect-in port="rhs" place="place_rhs2"/>
-	<connect-read port="implementation" place="place_implementation"/>
-	<connect-read port="base_filename" place="place_base_filename"/>
-	<connect-read port="function_name" place="place_function_name_lift"/>
-	<connect-read port="needed_library" place="place_needed_library"/>
-  <connect-out port="out" place="place_mod_res2"/>
-  </transition>
-
-	<transition name="lift3" priority="2">
-		<defun>
-		<require key="worker" mandatory="true"/>
-		<in name="mod_res2" type="string"/>
-		<in name="accumulator" type="string"/>
-		<in name="implementation" type="string"/>
-		<in name="base_filename" type="string"/>
-		<in name="function_name" type="string"/>
-	  <in name="needed_library" type="string"/>
-	  <out name="out" type="string"/>
-		<module name="singular_modular"
-       require_function_unloads_without_rest="false"
-       function="lift3(implementation,mod_res2,accumulator,function_name,needed_library,base_filename,out)">
-			 <cinclude href="share/include/modular_interface.hpp"/>
-       <cinclude href="util-generic/dynamic_linking.hpp"/>
-			 <cinclude href="iostream"/>
-       <code><![CDATA[
-				 if(accumulator.empty())
-				 {
-					std::cout << "in transition_..._lift3" << std::endl;
-					out = mod_res2;
-				 }
-				 else
-				 {
-					out = fhg::util::scoped_dlhandle
-         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-         .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-          ( mod_res2,accumulator,function_name, needed_library,base_filename,"3");
-         }
-        ]]>
-       </code>
-	    </module>
-		</defun>
-		<connect-in port="mod_res2" place="place_mod_res2"/>
-		<connect-in port="accumulator" place="place_accumulator"/>
-		<connect-read port="implementation" place="place_implementation"/>
-		<connect-read port="base_filename" place="place_base_filename"/>
-		<connect-read port="function_name" place="place_function_name_lift"/>
-		<connect-read port="needed_library" place="place_needed_library"/>
-		<connect-out port="out" place="place_lifted_res"/>
-	</transition>
-
-	<transition name="reconstest" priority="1">
-	<defun>
-	 <require key="worker" mandatory="true"/>
-	 <in name="lifted_res" type="string"/>
-	 <in name="mod_res2" type="string"/>
-	 <in name="implementation" type="string"/>
-	 <in name="base_filename" type="string"/>
-	 <in name="function_name" type="string"/>
-	 <in name="needed_library" type="string"/>
-	 <out name="out" type="result_bool_type"/>
-	 <module name="singular_modular"
-       require_function_unloads_without_rest="false"
-       function="reconstest(implementation,lifted_res,mod_res2,function_name,needed_library,base_filename,out)">
-		   <cinclude href="share/include/modular_interface.hpp"/>
-			 <cinclude href="util-generic/dynamic_linking.hpp"/>
-			 <code><![CDATA[
-				 std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
-				 (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-				 .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
-				 ( lifted_res, mod_res2,function_name, needed_library,base_filename);
-						out.farey_lift = pair_result.first;
-						out.chr_lift = lifted_res;
-						out.test = pair_result.second;
-				 ]]>
-			 </code>
-			</module>
-		</defun>
-		<connect-in port="lifted_res" place="place_lifted_res"/>
-		<connect-in port="mod_res2" place="place_mod_res2"/>
-		<connect-read port="implementation" place="place_implementation"/>
-		<connect-read port="base_filename" place="place_base_filename"/>
-		<connect-read port="function_name" place="place_function_name_reconstest"/>
-		<connect-read port="needed_library" place="place_needed_library"/>
-		<connect-out port="out" place="place_rand_res"/>
-	</transition>
-	
- <transition name="Continue1">
-	<defun>
-		<in name="rand_res" type="result_bool_type"/>
-	  <out name="accumulator" type="string"/>
-     <expression>
-      ${accumulator} := ${rand_res.chr_lift};
-     </expression>
-		<condition>
-		  ${rand_res.test}:eq:false
-		</condition>
-  </defun>
-  <connect-in port="rand_res" place="place_rand_res"/>
-  <connect-out port="accumulator" place="place_accumulator"/>
- </transition>
+        <transition name="lhs">
+            <defun>
+                <in name="in" type="modular_data"/>
+                <in name="down" type="control"/>
+                <inout name="counter" type="long"/>
+                <out name="up" type="control"/>
+                <out name="left" type="modular_data"/>
+                <expression>
+                    ${left} := ${in};
+                    ${up} := [];
+                    ${counter} := ${counter} - 2L;
+                </expression>
+            </defun>
+            <connect-in port="in" place="place_mod_res4"/>
+            <connect-in port="down" place="place_down"/>
+            <connect-inout port="counter" place="place_ct2"/>
+            <connect-out port="up" place="place_up"/>
+            <connect-out port="left" place="place_left"/>
+        </transition>
+        
 
 
-	</net>
+
+        <transition name="init_accumulator">
+            <defun>
+                <in name="init" type="string"/>
+                <out name="accumulator" type="modular_data"/>
+                <expression>
+                    ${accumulator.data} := ${init};
+                    ${accumulator.nb_prime} := 0UL;
+                    ${accumulator.hashlead} := ${init};
+                </expression>
+            </defun>
+            <connect-in port="init" place="place_init_accumulator"/>
+            <connect-out port="accumulator" place="place_accumulator"/>
+        </transition>
+
+        <transition name="lift2">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="lhs" type="modular_data"/>
+                <in name="rhs" type="modular_data"/>
+                <in name="function_name" type="string"/>
+                <in name="needed_library" type="string"/>
+                <in name="implementation" type="string"/>
+                <in name="base_filename" type="string"/>
+                <out name="out" type="modular_data"/>
+                <module name="singular_modular"
+                    require_function_unloads_without_rest="false"
+                    function="lift2(implementation,lhs,rhs,function_name,needed_library,base_filename,out)">
+                    <cinclude href="share/include/modular_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="iostream"/>
+                    <code><![CDATA[
+                        if(lhs.hashlead.size() == rhs.hashlead.size())
+                        {
+                            if(lhs.hashlead == rhs.hashlead)
+                            {
+                                std::string out_filename = fhg::util::scoped_dlhandle
+                                    (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                    .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
+                                ( lhs.data,rhs.data,function_name,needed_library,base_filename,"2");
+                                out.data = out_filename;
+                                out.nb_prime = lhs.nb_prime + rhs.nb_prime;
+                                out.hashlead = lhs.hashlead;
+                            }
+                            else
+                            {
+                                if(lhs.nb_prime >= rhs.nb_prime)
+                                { 
+                                    std::cout << "in transition lift2" << std::endl;
+                                    out = lhs;
+                                }
+                                else
+                                {
+                                    std::cout << "in transition lift2" << std::endl;
+                                    out = rhs;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if(lhs.nb_prime >= rhs.nb_prime)
+                            { 
+                                std::cout << "in transition lift2" << std::endl;
+                                out = lhs;
+                            }
+                            else
+                            {
+                                std::cout << "in transition lift2" << std::endl;
+                                out = rhs;
+                            }
+                        }
+                        ]]>
+                    </code>
+                </module>
+            </defun>
+            <connect-in port="lhs" place="place_left"/>
+            <connect-in port="rhs" place="place_right"/>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="function_name" place="place_function_name_lift"/>
+            <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-out port="out" place="place_mod_res5"/>
+        </transition>
+
+        <transition name="back">
+            <defun>
+                <in name="mod_res5" type="modular_data"/>
+                <inout name="counter" type="long"/>
+                <out name="mod_res4" type="modular_data"/>
+                <expression>
+                    ${counter} := ${counter} + 1L;
+                    ${mod_res4} := ${mod_res5};
+                </expression>
+            </defun>
+            <connect-in port="mod_res5" place="place_mod_res5"/>
+            <connect-inout port="counter" place="place_ct2"/>
+            <connect-out port="mod_res4" place="place_mod_res4"/>
+        </transition>
+
+
+       <transition name="lift3">
+        <defun>
+            <require key="worker" mandatory="true"/>
+            <in name="mod_res4" type="modular_data"/>
+            <in name="accumulator" type="modular_data"/>
+            <in name="implementation" type="string"/>
+            <in name="base_filename" type="string"/>
+            <in name="function_name" type="string"/>
+            <in name="needed_library" type="string"/>
+            <inout name="counter" type="long"/>
+            <inout name="up" type="control"/>
+            <out name="out" type="modular_data"/>
+            <module name="singular_modular"
+                require_function_unloads_without_rest="false"
+                function="lift3(implementation,mod_res4,accumulator,function_name,needed_library,base_filename,up,counter,out)">
+                <cinclude href="share/include/modular_interface.hpp"/>
+                <cinclude href="util-generic/dynamic_linking.hpp"/>
+                <cinclude href="iostream"/>
+                <code><![CDATA[
+                    up = we::type::literal::control{};
+                    counter = counter - 1;
+                    if(mod_res4.hashlead.size() == accumulator.hashlead.size())
+                    {
+                        if(mod_res4.hashlead == accumulator.hashlead)
+                        {
+                            std::string out_filename = fhg::util::scoped_dlhandle
+                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
+                                ( mod_res4.data,accumulator.data,function_name,needed_library,base_filename,"3");
+                                out.data = out_filename;
+                                out.nb_prime = mod_res4.nb_prime + accumulator.nb_prime;
+                                out.hashlead = mod_res4.hashlead;
+                        }
+                        else
+                        {
+                            if(mod_res4.nb_prime >= accumulator.nb_prime)
+                            {		
+                                std::cout << "in transition lift3";
+                                out.data = mod_res4.data;
+                                out.nb_prime = mod_res4.nb_prime;
+                                out.hashlead = mod_res4.hashlead;
+                            }
+                            else
+                            {
+                                out.data = accumulator.data;
+                                out.nb_prime = accumulator.nb_prime;
+                                out.hashlead = accumulator.hashlead;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(mod_res4.nb_prime >= accumulator.nb_prime)
+                        {
+                            std::cout << "in transition lift3";
+                            out.data = mod_res4.data;
+                            out.nb_prime = mod_res4.nb_prime;
+                            out.hashlead = mod_res4.hashlead;
+                        }
+                        else
+                        {
+                            out.data = accumulator.data;
+                            out.nb_prime = accumulator.nb_prime;
+                            out.hashlead = accumulator.hashlead;
+                        }
+                    }
+                ]]>
+                </code>
+                </module>
+            </defun>
+            <connect-in port="mod_res4" place="place_mod_res4"/>
+            <connect-in port="accumulator" place="place_accumulator"/>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-read port="function_name" place="place_function_name_lift"/>                <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-out port="out" place="place_lifted_res"/>
+            <connect-inout port="up" place="place_up"/>
+            <connect-inout port="counter" place="place_ct2"/>
+        </transition>
+
+        <transition name="reconstest" inline="true">
+            <include-function href="reconstest.xpnet"/>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-read port="function_name" place="place_function_name_reconstest"/>
+            <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-in port="one" place="place_test"/>
+            <connect-in port="lifted_res" place="place_lifted_res"/>
+            <connect-out port="out" place="place_rand_res"/>
+        </transition>
+
+
+        <transition name="Continue">
+            <defun>
+                <in name="rand_res" type="result_bool_type"/>
+                <out name="accumulator" type="modular_data"/>
+                <expression>
+                    ${accumulator.data} := ${rand_res.chr_lift};
+                    ${accumulator.nb_prime} := ${rand_res.nb_prime};
+                    ${accumulator.hashlead} := ${rand_res.hashlead};
+                </expression>
+                <condition>
+                    ${rand_res.test}:eq:false
+                </condition>
+            </defun>
+            <connect-in port="rand_res" place="place_rand_res"/>
+            <connect-out port="accumulator" place="place_accumulator"/>
+        </transition>
+
+
+    </net>
 </defun>

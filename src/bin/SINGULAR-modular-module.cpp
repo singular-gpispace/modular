@@ -95,6 +95,8 @@ namespace
       std::string functionNameCompute() const;
 			std::string functionNameLift() const;
 			std::string functionNameReconstest() const;
+			int bal1() const;
+			int bal2() const;
 
       singular_modular::installation singPI() const;
       lists argList() const;
@@ -116,6 +118,8 @@ namespace
       std::string functionnamecompute;
 			std::string functionnamelift;
 			std::string functionnamereconstest;
+			int bal1_value;
+			int bal2_value;
       int out_token;
       std::string base_filename;
 
@@ -130,6 +134,15 @@ namespace
   int ArgumentState::procsPerNode() const {
     return procspernode;
   }
+
+	int ArgumentState::bal1() const {
+	  return bal1_value;
+	}
+
+	int ArgumentState::bal2() const {
+	  return bal2_value;
+	}
+
 
   std::size_t ArgumentState::numTasks() const {
     return num_tasks;
@@ -239,6 +252,15 @@ namespace
                                            STRING_CMD,
                                            "string",
                                            "function name reconstest"))
+	, bal1_value (require_argument<11, long> (args,
+                                         INT_CMD,
+                                         "int",
+                                         "number of tokens on bal1"))
+	, bal2_value (require_argument<12, long> (args,
+                                         INT_CMD,
+                                         "int",
+                                         "number of tokens on bal2"))
+
 
   , out_token (fetch_token_value_from_sing_scope ("token"))
   , base_filename (tmpdir + "/")
@@ -409,6 +431,8 @@ try
 		values_on_ports.emplace("function_name_reconstest", as.functionNameReconstest());
 		values_on_ports.emplace("needed_library",as.neededLibrary());
 		values_on_ports.emplace("base_filename", as.baseFileName());
+		values_on_ports.emplace("input_bal1", as.bal1());
+		values_on_ports.emplace("input_bal2",as.bal2());
   std::multimap<std::string, pnet::type::value::value_type> result
     ( gspc::client (drts).put_and_run
       ( gspc::workflow (workflow)

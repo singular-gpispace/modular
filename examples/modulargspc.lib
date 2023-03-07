@@ -1,0 +1,118 @@
+///////////////////////////////////////
+version="version modulargspc.lib 0.1 Jun_2022 ";
+category="Algebraic geometry";
+info="
+LIBRARY: modulargspc.lib  modular algorithm with GPI-Space
+
+OVERVIEW:
+This library contains SINGULAR procedures for the modular patterns of the Singular/GPI-Space framework.
+
+TYPES:
+configToken          general configuration token type
+gspcConfigToken      configuration token for GPI-Space
+modularConfigToken  configuration token for the transition procedure
+
+PROCEDURES:
+configure_gspc()                               generates standard config token for GPI-Space
+configure_modular()                           generates standard config token for the transition procedure
+generateIOTokenTypes()              register the user-defined types for input and output
+gspc_modular(list,list,configToken,configToken)    call the wait_all pattern
+";
+
+proc mod_init()
+{
+  LIB "libSINGULAR-modular-module.so";
+  newstruct("configToken", "string tokentype, def options");
+  newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
+  newstruct("modularConfigToken", " string library, string procCompute, string procLift, string procReconstest, int bal1, int bal2");
+}
+
+proc configure_gspc()
+"USAGE: configure_gspc()
+RETURN: a configToken containing a gspcConfigToken with the standard configuration for GPI-Space
+"
+{
+  gspcConfigToken gc;
+  gc.rifstrategy = "ssh";
+  configToken ct;
+  ct.tokentype = "gspcConfigToken";
+  ct.options = gc;
+  return(ct);
+}
+
+proc configure_modular()
+"USAGE: configure_modular()
+RETURN: a configToken containing a modularConfigToken with the standard
+           configuration for the modular pattern.
+"
+{
+  modularConfigToken pc;
+  configToken ct;
+  ct.tokentype = "modularConfigToken";
+  ct.options = pc;
+  return(ct);
+}
+
+ proc gspc_modular(list l,list p, configToken gc, configToken pc)
+{
+  if ((typeof(gc.options) != "gspcConfigToken") || (typeof(pc.options) != "modularConfigToken"))
+  {
+    ERROR("wrong config token types");
+  }
+  if (gc.options.logport != 0) // logging requested
+  {
+    if (gc.options.loghost == "") // no hostname given, so read from file
+    {
+      if (gc.options.loghostfile == "")
+      {
+        ERROR("logging requested, no loghost and no loghostfile given");
+      }
+      string loghost = read(gc.options.loghostfile);
+      if ((loghost == "") || (loghost == newline))
+      {
+        ERROR("no hostname in loghostfile");
+      }
+      if (loghost[size(loghost)] == newline) // delete trailing LF
+      {
+        loghost = loghost[1..(size(loghost)-1)];
+      }
+      gc.options.loghost = loghost;
+    }
+    list logopt = list("--log-host", gc.options.loghost, "--log-port", string(gc.options.logport));
+    gc.options.addargs = gc.options.addargs + logopt;
+  }
+  if (system("getenv", "LD_LIBRARY_PATH") != "")
+  {
+    list ldpathopt = list("--worker-env-copy-variable", "LD_LIBRARY_PATH");
+    gc.options.addargs = gc.options.addargs + ldpathopt;
+  }
+  string tmpdir;
+  if (gc.options.tmpdir[1] == "/")
+  {
+    tmpdir = gc.options.tmpdir;
+  }
+  else
+  {
+    tmpdir = system("getenv", "PWD") + "/" + gc.options.tmpdir;
+  }
+  string loadlib;
+  if (pc.options.library[1] == "/")
+  {
+    loadlib = pc.options.library;
+  }
+  else
+  {
+    loadlib = system("getenv", "PWD") + "/" + pc.options.library;
+  }
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib, pc.options.procCompute, pc.options.procLift, pc.options.procReconstest, pc.options.bal1, pc.options.bal2);
+    return(sm_result);
+}
+
+proc generateIOTokenTypes()
+"USAGE: generateIOTokenTypes(pc); pc configToken
+RETURN: no output
+NOTE: The configToken must contain a modularConfigToken.
+"
+{
+  newstruct("token", "list fieldnames, list data");
+}

@@ -1,56 +1,141 @@
-///////////////////////////////////////
-version="version modulargp.lib 0.1 May_2022 ";
-category="Algebraic geometry";
-info="
-LIBRARY: modulargp.lib  demo procedures for modular pattern
+      ///////////////////////////////////////
+       version="version modulargp.lib 0.1 May_2022 ";
+       category="Algebraic geometry";
+       info="
+       LIBRARY: modulargp.lib  demo procedures for modular pattern
 
-OVERVIEW:
-This library contains SINGULAR procedures to demonstrate the modular pattern of the Singular/GPI-Space framework.
-           The newstruct types modular_data and outputToken must be defined.
+       OVERVIEW:
+           This library contains SINGULAR procedures to demonstrate the
+           modular pattern of the Singular/GPI-Space framework.
+           The newstruct types token  must be defined.
 
-PROCEDURES:
-stdmodp(token)     computes a standard basis modulo p
+       PROCEDURES:
+       stdmodp(token,token)               computes a standard basis
+                                           modulo p
+       liftt(token, token)                lift the two modular result
+       reconstest(token, token)           farey lift and stability test
 ";
 
-proc stdmodp (token input)
-"USAGE: stdmodp(input); input token
-RETURN: an token output containing a standard basis output.generators of the ideal input.generators in a ring with prescribed characteristic input.modulus
-NOTE: The types token are defined . This procedure is intended to be called
-as a transition procedure inside the worker process (that is, the "inner" instances of SINGULAR).
-"
-{
-  ideal I = std(input.data[1]);
-  int p = input.data[2];
-  ring br = basering;
-  list rl = ringlist(br);
-  rl[1]= 0;
-  ring S = ring(rl);
-  ideal I = fetch(br,I);
-  token output;
-  output.fieldnames = list("generators","modulus","numberofprimes");
-  output.data[1] = I;
-  output.data[2] = bigint(p);
-  output.data[3] = int(1);
-  return(output);
-}
 
-proc generate (token input, token in_prime)
-"USAGE: generate(input,in_prime); input, in_prime token
-RETURN: a token  output 
-NOTE: The types modular_data are defined . This procedure is intended to be called
-as a transition procedure inside the worker process (that is, the "inner" instances of SINGULAR).
+       proc hashlead(ideal I)
+       {
+           int i;
+           int j;
+           string hash="";
+           intvec v;
+           ideal J = lead(I);
+           for(i=1; i<=size(J); i++)
+           {
+             v = leadexp(J[i]);
+             for(j=1; j<=size(v); j++)
+             {
+               hash = hash +  string(v[j]);
+             }
+           }
+           return(hash);
+
+        }
+
+       proc stdmodp (token input, token in_prime)
+       "USAGE: stdmodp(input, in_prime); input token
+           RETURN: an token output containing a standard basis 
+           output.generators of the ideal input.generators in a ring
+           with prescribed characteristic input.modulus
+           NOTE: The types token are defined . This procedure is 
+           intended to be called as a transition procedure inside the
+           worker process (that is, the "inner" instances of SINGULAR).
 "
-{
-  def br = basering;
-  def I = input.data[1];
-  def lbr = ringlist(br);
-  lbr[1] = in_prime.data[1];
-  def rp = ring(lbr);
-  setring(rp);
-  token output;
-  output.fieldnames = list("generators","modulus");
-  output.data[1] = imap(br,I);
-  output.data[2] = in_prime.data[1];
-  return(output);
-}
+       {
+       def br = basering;
+       int p = in_prime.data[1];
+       def I = input.data[1];
+       def lbr = ringlist(br);
+       lbr[1] = p;
+       def rp = ring(lbr);
+       setring rp;
+       def I = imap(br,I);
+       option(redSB);
+       def J = std(I);
+       setring br;  
+       ideal J = fetch(rp,J);
+       token output;
+       output.fieldnames = list("generators","modulus",
+                                    "numberofprimes","leadmon");
+       output.data[1] = J;
+       output.data[2] = bigint(p);
+       output.data[3] = int(1);
+       output.data[4] = hashlead(J);
+       return(output);
+       }
+
+       proc liftt (token left, token right)
+       "USAGE: liftt(left, right); input token
+       RETURN: an token output containing a lift of the two tokens left and
+           right.
+       NOTE: The types token are defined . This procedure is intended to
+           be called as a transition procedure inside the worker process
+           (that is, the "inner" instances of SINGULAR).
+"          
+       {
+           def J = right.data[1];
+           bigint p = right.data[2];
+           int n = right.data[3];
+           def I = left.data[1];
+           bigint q = left.data[2];
+           int m =  left.data[3];
+           def IJ = chinrem(list(I,J),list(q,p));
+           token output;
+           output.fieldnames =
+           list("generators","modulus","numberofprimes");
+           output.data[1] = IJ;
+           output.data[2] = p*q;
+           output.data[3] = n+m;
+           return(output);
+       }
+
+       proc reconstest(token lifted_res, token mod_res2)
+       "USAGE: reconst(lifted_res, mod_res2); lifted_res token
+           RETURN: an list  containing a token of the Farey lift and a 
+           boolean of the stability test
+           NOTE: The types token are defined . This procedure is 
+           intended to be called as a transition procedure inside
+           the worker process (that is, the "inner" instances of
+           SINGULAR).
+"          
+       {     
+       // def S = mod_res_2.r_data;
+       //   setring S;
+       ideal I = mod_res2.data[1];
+       bigint p = mod_res2.data[2];
+       //def R = lifted_res.r_data;
+       //setring R;
+       ideal J = lifted_res.data[1];
+       bigint q = lifted_res.data[2];
+       //setring S;
+       //ideal J = fetch(R,J);
+       ideal K = chinrem(list(I,J),list(p,q));
+       ideal Jf = farey(J,q);
+      ideal Kf = farey(K,p*q);
+      //attrib(Jf,"isSB",1);
+      //attrib(Kf,"isSB",1);
+       token t;
+       int i;
+       int testt = 0;
+       t.fieldnames = list("generators","test");
+           t.data[1] = Jf;
+       if  ( size(Jf) == size(Kf) )
+      {
+         testt=1;
+      for(i=1;i<=size(Jf);i++)
+      {
+       if ((Jf[i]-Kf[i]) !=0)
+      {
+         testt = 0;
+        break;
+       }
+       }
+           }
+       t.data[2] = testt;
+       return(t);
+       }
 

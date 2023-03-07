@@ -5,7 +5,7 @@
 #include <string>
 
 NO_NAME_MANGLING
-std::string singular_modular_compute ( std::string const&
+std::pair<std::string,std::string> singular_modular_compute ( std::string const&
                                    , std::string const&
                                    , std::string const&
 																	 , std::string const&

@@ -16,7 +16,7 @@ include (add_macros)
 include (beautify_find_boost)
 include (beautify_find_GPISpace)
 
-find_package (GPISpace 21.12 EXACT REQUIRED)
+find_package (GPISpace 22.09 EXACT REQUIRED)
 find_boost (1.61 REQUIRED QUIET FROM_GPISPACE_INSTALLATION COMPONENTS
   date_time
   filesystem
