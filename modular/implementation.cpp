@@ -10,6 +10,13 @@
 #include "singular_functions.hpp"
 NO_NAME_MANGLING
 
+
+std::string filename_gen(std::string const& base_filename)
+{
+  init_singular (config::library().string());
+  return base_filename+filename_generator()+worker();
+}
+
 std::pair<std::string,std::string>  singular_modular_compute( std::string const& input_filename 
 																			,	std::string const& mod_input
 																			, std::string const& function_name
@@ -25,7 +32,7 @@ std::pair<std::string,std::string>  singular_modular_compute( std::string const&
 	std::string ids;
 	std::string out_filename;
 	ids = worker();
-	std::cout << ids << " in singular_..._compute" << std::endl;
+	//std::cout << ids << " in singular_..._compute" << std::endl;
 	p = deserialize(mod_input,ids);
 	input = deserialize(input_filename,ids);
 	ScopedLeftv args( input.first, lCopy(input.second));
@@ -71,7 +78,6 @@ std::string  singular_modular_lift( std::string const& left
                                       , std::string const& function_name
                                       , std::string const& needed_library
                                       , std::string const& base_filename
-                                      , std::string const& number
                                       )
 {
   init_singular (config::library().string());
@@ -82,7 +88,6 @@ std::string  singular_modular_lift( std::string const& left
   std::string ids;
   std::string out_filename;
   ids = worker();
-  std::cout << ids << " in singular_..._lift"+number << std::endl;
   l = deserialize(left,ids);
   r = deserialize(right,ids);
   ScopedLeftv args( l.first, lCopy(l.second));

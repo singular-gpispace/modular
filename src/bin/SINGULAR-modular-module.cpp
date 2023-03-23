@@ -454,14 +454,17 @@ try {
     res->rtyp = NONE;
     return FALSE;
   }
-//  std::multimap<std::string, pnet::type::value::value_type>::const_iterator
-  //  sm_result_it (result.value().find ("lifted_res"));
-// if (sm_result_it == result.value().end())
- // {
-  //  throw std::runtime_error ("Petri net has not finished correctly");
- // }
-	res->rtyp =  INT_CMD;
-	res->data = (char*)(long)(0);
+  std::multimap<std::string, pnet::type::value::value_type>::const_iterator
+   sm_result_it (result.value().find ("output"));
+  if (sm_result_it == result.value().end())
+  {
+    throw std::runtime_error ("Petri net has not finished correctly");
+  }
+  std::string out = boost::get<std::string> (sm_result_it->second);
+  std::pair<int, lists> entry (deserialize(out,"Extraction of result"));
+
+	res->rtyp = entry.first;
+	res->data = entry.second;
   return FALSE;
 }
 catch (...)
