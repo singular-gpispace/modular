@@ -1,6 +1,0 @@
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/lib/libSINGULAR-modular-installation.so
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/libSINGULAR-modular-module.so
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/libexec/workflow/libmodular_implementation.so
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/modulargspc.lib
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/libexec/workflow/modular.pnet
-/home/hbn/Documents/AIMS/projet/master/github/framework_independent_sub_install5/libexec/workflow/libsingular_modular.so
