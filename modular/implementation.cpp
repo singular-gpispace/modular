@@ -14,7 +14,11 @@ NO_NAME_MANGLING
 std::string filename_gen(std::string const& base_filename)
 {
   init_singular (config::library().string());
+<<<<<<< HEAD
+  return base_filename+filename_generator();
+=======
   return base_filename+filename_generator()+worker();
+>>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
 }
 
 std::pair<std::string,std::string>  singular_modular_compute( std::string const& input_filename 
@@ -42,7 +46,7 @@ std::pair<std::string,std::string>  singular_modular_compute( std::string const&
 	u->Init(2);
 	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
 	std::string hash = (char*)u->m[3].Data();
-	out_filename = serialize(out.second,base_filename,ids);
+	out_filename = serialize(out.second,base_filename);
 
 	return {out_filename,hash};
 }
@@ -69,7 +73,7 @@ std::string  singular_modular_lift1( std::string const& left
   ScopedLeftv args( l.first, lCopy(l.second));
   ScopedLeftv arg(args,r.first,lCopy(r.second));
   out = call_user_proc(function_name, needed_library, args);
-  out_filename = serialize(out.second, base_filename, ids);
+  out_filename = serialize(out.second, base_filename);
   return out_filename;
 }
 
@@ -93,7 +97,7 @@ std::string  singular_modular_lift( std::string const& left
   ScopedLeftv args( l.first, lCopy(l.second));
   ScopedLeftv arg(args,r.first,lCopy(r.second));
   out = call_user_proc(function_name, needed_library, args);
-  out_filename = serialize(out.second, base_filename, ids);
+  out_filename = serialize(out.second, base_filename);
   return out_filename;
 }
 
@@ -124,7 +128,7 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	u->Init(2);
 	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
 	testt = (int)(long)u->m[1].Data();
-	out_filename = serialize(out.second,base_filename,ids);
+	out_filename = serialize(out.second,base_filename);
 	return {out_filename,testt};
 
 }

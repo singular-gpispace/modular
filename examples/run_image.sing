@@ -1,6 +1,7 @@
 LIB "modulargspc.lib";
 LIB "random.lib";
 LIB "modstd.lib";
+LIB "modimage.lib";
 
 configToken gc = configure_gspc();
 
@@ -12,29 +13,28 @@ gc.options.logport = 9876;
 
 configToken pc = configure_modular();
 
-pc.options.library = "modulargp.lib";
-pc.options.procCompute = "stdmodp";
+pc.options.library = "modularImage.lib";
+pc.options.procCompute = "ImageRationalMap";
 pc.options.procLift = "liftt";
 pc.options.procReconstest = "reconstest";
-pc.options.bal1 = 10;
-pc.options.bal2 = 4;
+pc.options.bal1 = 4;
+pc.options.bal2 = 8;
 
 generateIOTokenTypes();
 
-ring R = 0,(x,y,z),dp;
+ring R = 0,(t0,t1,t2),dp;
 //ideal I =  11x7y+3x+1,z4+7;
-ideal I = randomid(maxideal(10),10);
+ideal I = t1^5+10*t1^4*t2+20*t1^3*t2^2+130*t1^2*t2^3-20*t1*t2^4+20*t2^5-2*t1^4*t0-40*t1^3*t2*t0-150*t1^2*t2^2*t0-90*t1*t2^3*t0-40*t2^4*t0+t1^3*t0^2+30*t1^2*t2*t0^2+110*t1*t2^2*t0^2+20*t2^3*t0^2;
 I;
+ideal phi = randomid(maxideal(2),8);
+phi;
 
 token input;
-input.fieldnames = list("generators");
-input.data = list(I);
+input.fieldnames = list("map","variety");
+input.data[1] = phi;
+input.data[2] = I;
 list l = list(input);
-<<<<<<< HEAD
-int num_primes = 3000;
-=======
 int num_primes = 2000;
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
 
 intvec primeiv = primeList(I, num_primes);
 int i;

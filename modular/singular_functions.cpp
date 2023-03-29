@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <unistd.h>
+#include <chrono>
 
 
 const std::string STRUCT_NAME = "token";
@@ -28,7 +29,7 @@ void call_singular_and_discard (std::string const& command)
   omFree (result_ptr);
 }
 
-std::string filename_generator()
+/*std::string filename_generator()
 {
 	std::string filename_command = "bigint a=random(1,10^9); bigint b = random(1,10^9); string filename = string(bigint(random(1,9))*10^9+a)+string(bigint(random(1,9))*10^9+b); return();";
 	call_singular_and_discard (filename_command);
@@ -36,6 +37,19 @@ std::string filename_generator()
 	std::string filename_string = IDSTRING(filename_handle);
 	call_singular_and_discard("kill filename; kill a; kill b; return();");
 	return filename_string;
+}*/
+
+std::string filename_generator()
+{
+  char hst[65];
+  uint64_t current_time;
+  gethostname(hst,64);
+  hst[64] = '\0';
+  std::string filename (hst);
+  filename = filename + '_' +  std::to_string(getpid());
+  current_time = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+  filename = filename + '_' + std::to_string(current_time);
+  return  filename;
 }
 
 si_link ssi_open_for_write (std::string const& ssi_filename)
@@ -90,10 +104,10 @@ void ssi_write_newstruct (si_link l, int type, lists lst)
   newstruct_serialize (b, lst, l);
 }
 
-std::string serialize (lists lst , std::string const& base_filename, std::string const& ids)
+std::string serialize (lists lst , std::string const& base_filename)
 {
 	std::string out_filename = filename_generator ();
-	out_filename = base_filename +  out_filename + ids;
+	out_filename = base_filename +  out_filename;
 	si_link l  = ssi_open_for_write (out_filename);
 	ssi_write_newstruct (l, STRUCT_NAME, lst);
 	ssi_close_and_remove (l);

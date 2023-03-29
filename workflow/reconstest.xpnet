@@ -33,7 +33,9 @@
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
+                    <cinclude href="unistd.h"/>
                     <code><![CDATA[
+                        //usleep(200000);
                         std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
@@ -43,7 +45,7 @@
                         out.hashlead = lifted_res.hashlead;
                         out.nb_prime = lifted_res.nb_prime;
                         out.test = pair_result.second;
-                        std::cout << out.test << out.nb_prime;
+                        std::cout << out.nb_prime;
                         ]]>
                     </code>
                 </module>

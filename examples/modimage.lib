@@ -1,0 +1,73 @@
+//////////////////////////////////////////////////////////////////////////////
+version="version modimage.lib 4.1.2.0 May_2020 "; // $Id$
+category="Commutative Algebra";
+info=""
+
+LIB "elim.lib";
+LIB "tasks.lib";
+
+
+/* image of morphsim */
+/* Direct computation */
+proc Graph(ideal phi,ideal I, int n, int m)
+{
+    int k;
+    ideal mi = maxideal(1);
+    ideal xv = mi[1..n];
+    ideal yv  = mi[n+1..n+m];
+    matrix HM[2][m] = concat(transpose(yv),transpose(phi));
+    ideal J = sat(I+minor(HM,2),phi)[1];
+    ideal graph = sat(J,xv)[1];
+    for(k = 1; k <= n; k++)
+    {
+        graph = subst(graph,xv[k],0);
+    }
+    graph = compress(graph);
+    return(graph);
+}
+proc ImageMap(ideal phi,ideal I)
+{
+          // number of variables of input polynomial ring
+
+    int n = nvars(R);
+    // number of variables of target polynomial ring, that is 7
+    int m = size(phi);
+    /*phi: P^(n-1) --> P^(m-1)*/
+    // make a polynomial ring for the graph with variables
+    // x(1)..x(n) and  y(1)..y(m)
+    def R = basering;
+    list rl = ringlist(R);
+    int k;
+    //for(k = 1; k <= n; k++)
+    //{
+      //  rl[2][k] = "x("+string(k)+")";
+    //}
+    //for(k = 1; k <= m; k++)
+    //{
+     //   rl[2][k+n] = "y("+string(k)+")";
+    //}
+    //rl[3]= list(list("dp",1:n),list("dp",1:m),list("C",0));
+    //def Rbig0 = ring(rl);
+    //setring Rbig0;
+    // fetch I and phi to that new ring
+    //ideal phi = fetch(R,phi);
+    //ideal I = fetch(R,I);
+    // ideal of the graph;
+    //ideal graph = Graph(phi,I,n,m);
+    /* Target ring */
+    //setring(R);
+    //list rl2 = rl[2];
+    //rl[2] = list(rl2[n+1..n+m]);
+    //rl[3]= list(list("dp",1:m),list("C",0));
+    //def Rtarget = ring(rl);
+    //setring Rtarget;
+    //ideal image = imap(Rbig0,graph);
+    //export(image);
+    //int pp = printlevel - voice + 3;
+    //dbprint(pp,"// 'ImageMap' created a ring together with one ideal image which defines the image of the rational map.");
+    //dbprint(pp,"// Supposing you typed, say,  def RT = ImageMap(phi,I);");
+    //dbprint(pp,"// you may access the ideal by typing");
+    //dbprint(pp,"// setring RT; image;");
+    return(1);
+} 
+

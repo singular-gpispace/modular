@@ -43,7 +43,7 @@ si_link ssi_open_for_write (std::string const&);
 void ssi_close_and_remove (si_link);
 void ssi_write_newstruct (si_link, std::string const&, lists);
 void ssi_write_newstruct (si_link, int, lists);
-std::string serialize (lists, std::string const&, std::string const&);
+std::string serialize (lists, std::string const&);
 si_link ssi_open_for_read (std::string const& );
 lists ssi_read_newstruct (si_link , std::string const& );
 std::pair<int, lists> deserialize (std::string const&, std::string const&);
