@@ -116,10 +116,6 @@
                     <cinclude href="iostream"/>
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
-<<<<<<< HEAD
-                    <cinclude href="unistd.h"/>
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                     <!--<code><![CDATA[
                         //std::string v = fhg::util::scoped_dlhandle
                         //(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
@@ -139,10 +135,6 @@
 
                     <code><![CDATA[
                         std::cout << " in singular_..._compute " << std::endl;
-<<<<<<< HEAD
-                        //usleep(200000);
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -351,10 +343,6 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <cinclude href="fstream"/>
-<<<<<<< HEAD
-                    <cinclude href="unistd.h"/>
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                     <!--<code><![CDATA[
                         std::cout << " in singular_..._lift2 " << std::endl;
                         if(lhs.hashlead.size() == rhs.hashlead.size())
@@ -405,10 +393,6 @@
                         {
                             if(lhs.hashlead == rhs.hashlead)
                             {
-<<<<<<< HEAD
-                                //usleep(200000);
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                                 _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                     ( [=]  // copy parameters
                                     {

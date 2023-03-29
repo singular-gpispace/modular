@@ -30,11 +30,7 @@ token input;
 input.fieldnames = list("generators");
 input.data = list(I);
 list l = list(input);
-<<<<<<< HEAD
-int num_primes = 3000;
-=======
 int num_primes = 2000;
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
 
 intvec primeiv = primeList(I, num_primes);
 int i;

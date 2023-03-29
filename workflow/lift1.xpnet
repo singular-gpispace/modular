@@ -164,10 +164,6 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <cinclude href="fstream"/>
-<<<<<<< HEAD
-                    <cinclude href="unistd.h"/>
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                     <!--<code><![CDATA[
                         if(lhs.hashlead.size() == rhs.hashlead.size())
                         {
@@ -233,10 +229,6 @@
                         {
                             if(lhs.hashlead == rhs.hashlead)
                             {
-<<<<<<< HEAD
-                                //usleep(200000);
-=======
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
                                 _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                     ( [=]  // copy parameters
                                     {

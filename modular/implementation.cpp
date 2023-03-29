@@ -14,11 +14,7 @@ NO_NAME_MANGLING
 std::string filename_gen(std::string const& base_filename)
 {
   init_singular (config::library().string());
-<<<<<<< HEAD
-  return base_filename+filename_generator();
-=======
   return base_filename+filename_generator()+worker();
->>>>>>> 4ea5a279f3b732b4db810384d243d8f1be78ac3e
 }
 
 std::pair<std::string,std::string>  singular_modular_compute( std::string const& input_filename 

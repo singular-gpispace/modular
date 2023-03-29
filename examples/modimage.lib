@@ -29,7 +29,7 @@ proc ImageMap(ideal phi,ideal I)
 {
           // number of variables of input polynomial ring
 
-    int n = nvars(R);
+    //int n = nvars(R);
     // number of variables of target polynomial ring, that is 7
     int m = size(phi);
     /*phi: P^(n-1) --> P^(m-1)*/
