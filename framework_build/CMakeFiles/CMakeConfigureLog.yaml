@@ -1,0 +1,1239 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Linux - 5.15.0-67-generic - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/3.26.1/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/3.26.1/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4c56a/fast && /usr/bin/make  -f CMakeFiles/cmTC_4c56a.dir/build.make CMakeFiles/cmTC_4c56a.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud'
+        Building C object CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -o CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccarWwZZ.s
+        GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-linux-gnu/9/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: c0c95c0b4209efec1c1892d5ff24030b
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+         as -v --64 -o CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o /tmp/ccarWwZZ.s
+        GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64'
+        Linking C executable cmTC_4c56a
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c56a.dir/link.txt --verbose=1
+        /usr/bin/cc  -v CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -o cmTC_4c56a 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4c56a' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cc6XHdWp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_4c56a /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4c56a' '-mtune=generic' '-march=x86-64'
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/9/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-linux-gnu/9/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud]
+        ignore line: []
+        ignore line: [Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4c56a/fast && /usr/bin/make  -f CMakeFiles/cmTC_4c56a.dir/build.make CMakeFiles/cmTC_4c56a.dir/build]
+        ignore line: [make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8AoIud']
+        ignore line: [Building C object CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -c /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1 -quiet -v -imultiarch x86_64-linux-gnu /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccarWwZZ.s]
+        ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C17 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: c0c95c0b4209efec1c1892d5ff24030b]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o /tmp/ccarWwZZ.s]
+        ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64']
+        ignore line: [Linking C executable cmTC_4c56a]
+        ignore line: [/snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c56a.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -o cmTC_4c56a ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_4c56a' '-mtune=generic' '-march=x86-64']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/cc6XHdWp.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_4c56a /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/cc6XHdWp.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_4c56a] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
+          arg [CMakeFiles/cmTC_4c56a.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2e3a5/fast && /usr/bin/make  -f CMakeFiles/cmTC_2e3a5.dir/build.make CMakeFiles/cmTC_2e3a5.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse'
+        Building CXX object CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -v -o CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -c /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccJHsbS7.s
+        GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/9"
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/include/c++/9
+         /usr/include/x86_64-linux-gnu/c++/9
+         /usr/include/c++/9/backward
+         /usr/lib/gcc/x86_64-linux-gnu/9/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 9.4.0, GMP version 6.2.0, MPFR version 4.0.2, MPC version 1.1.0, isl version isl-0.22.1-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 65fe925b83d3956b533de4aaba7dace0
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         as -v --64 -o CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccJHsbS7.s
+        GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+        Linking CXX executable cmTC_2e3a5
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2e3a5.dir/link.txt --verbose=1
+        /usr/bin/c++  -v CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_2e3a5 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr,hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+        Thread model: posix
+        gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2e3a5' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+         /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAu6fJB.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_2e3a5 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2e3a5' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/include/c++/9]
+          add: [/usr/include/x86_64-linux-gnu/c++/9]
+          add: [/usr/include/c++/9/backward]
+          add: [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/include/c++/9] ==> [/usr/include/c++/9]
+        collapse include dir [/usr/include/x86_64-linux-gnu/c++/9] ==> [/usr/include/x86_64-linux-gnu/c++/9]
+        collapse include dir [/usr/include/c++/9/backward] ==> [/usr/include/c++/9/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/9/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/9/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/9;/usr/include/x86_64-linux-gnu/c++/9;/usr/include/c++/9/backward;/usr/lib/gcc/x86_64-linux-gnu/9/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:152 (message)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse]
+        ignore line: []
+        ignore line: [Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_2e3a5/fast && /usr/bin/make  -f CMakeFiles/cmTC_2e3a5.dir/build.make CMakeFiles/cmTC_2e3a5.dir/build]
+        ignore line: [make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1MGHse']
+        ignore line: [Building CXX object CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -v -o CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -c /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /snap/cmake/1276/share/cmake-3.26/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=generic -march=x86-64 -auxbase-strip CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccJHsbS7.s]
+        ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/9"]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/include/c++/9]
+        ignore line: [ /usr/include/x86_64-linux-gnu/c++/9]
+        ignore line: [ /usr/include/c++/9/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/9/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C++14 (Ubuntu 9.4.0-1ubuntu1~20.04.1) version 9.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 9.4.0  GMP version 6.2.0  MPFR version 4.0.2  MPC version 1.1.0  isl version isl-0.22.1-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: 65fe925b83d3956b533de4aaba7dace0]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccJHsbS7.s]
+        ignore line: [GNU assembler version 2.34 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.34]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        ignore line: [Linking CXX executable cmTC_2e3a5]
+        ignore line: [/snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2e3a5.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++  -v CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_2e3a5 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:hsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.4.0-1ubuntu1~20.04.1' --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ gm2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-9 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-9-Av3uEd/gcc-9-9.4.0/debian/tmp-nvptx/usr hsa --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+        ignore line: [Thread model: posix]
+        ignore line: [gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04.1) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2e3a5' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/9/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper -plugin-opt=-fresolution=/tmp/ccAu6fJB.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_2e3a5 /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/9 -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/9/../../.. CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccAu6fJB.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_2e3a5] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..]
+          arg [CMakeFiles/cmTC_2e3a5.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9] ==> [/usr/lib/gcc/x86_64-linux-gnu/9]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/9/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/9/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCSourceCompiles.cmake:76 (cmake_check_source_compiles)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindBoost.cmake:2128 (find_package)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/GPISpace/cmake/GPISpaceConfig.cmake:136 (find_dependency)"
+      - "CMakeLists.txt:19 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e9aa0/fast && /usr/bin/make  -f CMakeFiles/cmTC_e9aa0.dir/build.make CMakeFiles/cmTC_e9aa0.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud'
+        Building C object CMakeFiles/cmTC_e9aa0.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_e9aa0.dir/src.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud/src.c
+        Linking C executable cmTC_e9aa0
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e9aa0.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_e9aa0.dir/src.c.o -o cmTC_e9aa0 
+        /usr/bin/ld: CMakeFiles/cmTC_e9aa0.dir/src.c.o: in function `main':
+        src.c:(.text+0x46): undefined reference to `pthread_create'
+        /usr/bin/ld: src.c:(.text+0x52): undefined reference to `pthread_detach'
+        /usr/bin/ld: src.c:(.text+0x5e): undefined reference to `pthread_cancel'
+        /usr/bin/ld: src.c:(.text+0x6f): undefined reference to `pthread_join'
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_e9aa0.dir/build.make:99: cmTC_e9aa0] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FmI9ud'
+        make: *** [Makefile:127: cmTC_e9aa0/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckLibraryExists.cmake:71 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindBoost.cmake:2128 (find_package)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/GPISpace/cmake/GPISpaceConfig.cmake:136 (find_dependency)"
+      - "CMakeLists.txt:19 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_6436b/fast && /usr/bin/make  -f CMakeFiles/cmTC_6436b.dir/build.make CMakeFiles/cmTC_6436b.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a'
+        Building C object CMakeFiles/cmTC_6436b.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_6436b.dir/CheckFunctionExists.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a/CheckFunctionExists.c
+        Linking C executable cmTC_6436b
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6436b.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_6436b.dir/CheckFunctionExists.c.o -o cmTC_6436b  -lpthreads 
+        /usr/bin/ld: cannot find -lpthreads
+        collect2: error: ld returned 1 exit status
+        make[1]: *** [CMakeFiles/cmTC_6436b.dir/build.make:99: cmTC_6436b] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Per74a'
+        make: *** [Makefile:127: cmTC_6436b/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckLibraryExists.cmake:71 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/FindBoost.cmake:2128 (find_package)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/GPISpace/cmake/GPISpaceConfig.cmake:136 (find_dependency)"
+      - "CMakeLists.txt:19 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_ed506/fast && /usr/bin/make  -f CMakeFiles/cmTC_ed506.dir/build.make CMakeFiles/cmTC_ed506.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe'
+        Building C object CMakeFiles/cmTC_ed506.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create -o CMakeFiles/cmTC_ed506.dir/CheckFunctionExists.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe/CheckFunctionExists.c
+        Linking C executable cmTC_ed506
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ed506.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create CMakeFiles/cmTC_ed506.dir/CheckFunctionExists.c.o -o cmTC_ed506  -lpthread 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-p3byhe'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "src/util-generic/CMakeLists.txt:36 (check_function_exists)"
+    checks:
+      - "Looking for signalfd"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "FUNCTION_EXISTS_SIGNALFD"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_123c2/fast && /usr/bin/make  -f CMakeFiles/cmTC_123c2.dir/build.make CMakeFiles/cmTC_123c2.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld'
+        Building C object CMakeFiles/cmTC_123c2.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=signalfd -o CMakeFiles/cmTC_123c2.dir/CheckFunctionExists.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld/CheckFunctionExists.c
+        Linking C executable cmTC_123c2
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_123c2.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=signalfd CMakeFiles/cmTC_123c2.dir/CheckFunctionExists.c.o -o cmTC_123c2 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-dta6Ld'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "src/util-generic/CMakeLists.txt:37 (check_function_exists)"
+    checks:
+      - "Looking for pipe2"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "FUNCTION_EXISTS_PIPE2"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_73c30/fast && /usr/bin/make  -f CMakeFiles/cmTC_73c30.dir/build.make CMakeFiles/cmTC_73c30.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb'
+        Building C object CMakeFiles/cmTC_73c30.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pipe2 -o CMakeFiles/cmTC_73c30.dir/CheckFunctionExists.c.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb/CheckFunctionExists.c
+        Linking C executable cmTC_73c30
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_73c30.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pipe2 CMakeFiles/cmTC_73c30.dir/CheckFunctionExists.c.o -o cmTC_73c30 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-qfLuMb'
+        
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:46 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_HASH_FOR_ENUM"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_HASH_FOR_ENUM_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3352c/fast && /usr/bin/make  -f CMakeFiles/cmTC_3352c.dir/build.make CMakeFiles/cmTC_3352c.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc'
+        Building CXX object CMakeFiles/cmTC_3352c.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_HASH_FOR_ENUM  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_3352c.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc/src.cxx
+        Linking CXX executable cmTC_3352c
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3352c.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_3352c.dir/src.cxx.o -o cmTC_3352c 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-1mi6tc'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_HASH_FOR_ENUM_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:58 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_MAKE_UNIQUE"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_MAKE_UNIQUE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_55310/fast && /usr/bin/make  -f CMakeFiles/cmTC_55310.dir/build.make CMakeFiles/cmTC_55310.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc'
+        Building CXX object CMakeFiles/cmTC_55310.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_MAKE_UNIQUE  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_55310.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc/src.cxx
+        Linking CXX executable cmTC_55310
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55310.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_55310.dir/src.cxx.o -o cmTC_55310 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-y5GDzc'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_MAKE_UNIQUE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:69 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_INTEGER_SEQUENCE"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_INTEGER_SEQUENCE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_fe0b1/fast && /usr/bin/make  -f CMakeFiles/cmTC_fe0b1.dir/build.make CMakeFiles/cmTC_fe0b1.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd'
+        Building CXX object CMakeFiles/cmTC_fe0b1.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_INTEGER_SEQUENCE  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_fe0b1.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd/src.cxx
+        Linking CXX executable cmTC_fe0b1
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fe0b1.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_fe0b1.dir/src.cxx.o -o cmTC_fe0b1 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pIo2xd'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_INTEGER_SEQUENCE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:83 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_GET_BY_TYPE"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_GET_BY_TYPE_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e72bb/fast && /usr/bin/make  -f CMakeFiles/cmTC_e72bb.dir/build.make CMakeFiles/cmTC_e72bb.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La'
+        Building CXX object CMakeFiles/cmTC_e72bb.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_GET_BY_TYPE  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_e72bb.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La/src.cxx
+        Linking CXX executable cmTC_e72bb
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e72bb.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_e72bb.dir/src.cxx.o -o cmTC_e72bb 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-vTY2La'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_GET_BY_TYPE_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:95 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_LOGICAL_OPERATOR_TYPE_TRAITS"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_LOGICAL_OPERATOR_TYPE_TRAITS_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_70811/fast && /usr/bin/make  -f CMakeFiles/cmTC_70811.dir/build.make CMakeFiles/cmTC_70811.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge'
+        Building CXX object CMakeFiles/cmTC_70811.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_LOGICAL_OPERATOR_TYPE_TRAITS  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_70811.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge/src.cxx
+        Linking CXX executable cmTC_70811
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_70811.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_70811.dir/src.cxx.o -o cmTC_70811 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-w5LFge'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_LOGICAL_OPERATOR_TYPE_TRAITS_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:106 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_VOID_T"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_VOID_T_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b5506/fast && /usr/bin/make  -f CMakeFiles/cmTC_b5506.dir/build.make CMakeFiles/cmTC_b5506.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb'
+        Building CXX object CMakeFiles/cmTC_b5506.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_VOID_T  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_b5506.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb/src.cxx
+        /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb/src.cxx: In function ‘int main(int, char**)’:
+        /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb/src.cxx:5:1: error: ‘ote’ was not declared in this scope
+            5 | ote Clang interprets the standard differently than everyone
+              | ^~~
+        /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb/src.cxx:14:51: error: expected primary-expression before ‘?’ token
+           14 |     return std::is_same<std::void_t<int>, void>{} ? 0 : 1;
+              |                                                   ^
+        make[1]: *** [CMakeFiles/cmTC_b5506.dir/build.make:78: CMakeFiles/cmTC_b5506.dir/src.cxx.o] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-FqyZyb'
+        make: *** [Makefile:127: cmTC_b5506/fast] Error 2
+        
+      exitCode: 2
+    runResult:
+      variable: "HAS_STD_VOID_T_EXITCODE"
+      cached: true
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:127 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_STD_APPLY"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_STD_APPLY_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_a03ea/fast && /usr/bin/make  -f CMakeFiles/cmTC_a03ea.dir/build.make CMakeFiles/cmTC_a03ea.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd'
+        Building CXX object CMakeFiles/cmTC_a03ea.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_STD_APPLY  -Wall -Wextra -Werror  -std=gnu++17 -o CMakeFiles/cmTC_a03ea.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd/src.cxx
+        Linking CXX executable cmTC_a03ea
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a03ea.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_a03ea.dir/src.cxx.o -o cmTC_a03ea 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-VVOOLd'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_STD_APPLY_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "src/util-generic/CMakeLists.txt:139 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test COMPILER_FLAG_EXISTS_WERROR_OLD_STYLE_CAST"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "COMPILER_FLAG_EXISTS_WERROR_OLD_STYLE_CAST"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4cae9/fast && /usr/bin/make  -f CMakeFiles/cmTC_4cae9.dir/build.make CMakeFiles/cmTC_4cae9.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b'
+        Building CXX object CMakeFiles/cmTC_4cae9.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_FLAG_EXISTS_WERROR_OLD_STYLE_CAST  -Wall -Wextra -Werror  -std=gnu++17   -Werror=old-style-cast -o CMakeFiles/cmTC_4cae9.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b/src.cxx
+        Linking CXX executable cmTC_4cae9
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4cae9.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  CMakeFiles/cmTC_4cae9.dir/src.cxx.o -o cmTC_4cae9 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-iJaj3b'
+        
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:146 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_WEXITSTATUS_WITHOUT_OLD_STYLE_CAST"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_WEXITSTATUS_WITHOUT_OLD_STYLE_CAST_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8c644/fast && /usr/bin/make  -f CMakeFiles/cmTC_8c644.dir/build.make CMakeFiles/cmTC_8c644.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb'
+        Building CXX object CMakeFiles/cmTC_8c644.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_WEXITSTATUS_WITHOUT_OLD_STYLE_CAST  -Wall -Wextra -Werror  -Werror=old-style-cast -std=gnu++17 -o CMakeFiles/cmTC_8c644.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb/src.cxx
+        Linking CXX executable cmTC_8c644
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c644.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  -Werror=old-style-cast CMakeFiles/cmTC_8c644.dir/src.cxx.o -o cmTC_8c644 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-rOvydb'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_WEXITSTATUS_WITHOUT_OLD_STYLE_CAST_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:156 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_SIG_ERR_WITHOUT_OLD_STYLE_CAST"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_SIG_ERR_WITHOUT_OLD_STYLE_CAST_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b144e/fast && /usr/bin/make  -f CMakeFiles/cmTC_b144e.dir/build.make CMakeFiles/cmTC_b144e.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd'
+        Building CXX object CMakeFiles/cmTC_b144e.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_SIG_ERR_WITHOUT_OLD_STYLE_CAST  -Wall -Wextra -Werror  -Werror=old-style-cast -std=gnu++17 -o CMakeFiles/cmTC_b144e.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd/src.cxx
+        Linking CXX executable cmTC_b144e
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b144e.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  -Werror=old-style-cast CMakeFiles/cmTC_b144e.dir/src.cxx.o -o cmTC_b144e 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-pOwdfd'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_SIG_ERR_WITHOUT_OLD_STYLE_CAST_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_run-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceRuns.cmake:93 (try_run)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXSourceRuns.cmake:76 (cmake_check_source_runs)"
+      - "src/util-generic/CMakeLists.txt:166 (check_cxx_source_runs)"
+    checks:
+      - "Performing Test HAS_MAP_FAILED_WITHOUT_OLD_STYLE_CAST"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "HAS_MAP_FAILED_WITHOUT_OLD_STYLE_CAST_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_fbe39/fast && /usr/bin/make  -f CMakeFiles/cmTC_fbe39.dir/build.make CMakeFiles/cmTC_fbe39.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb'
+        Building CXX object CMakeFiles/cmTC_fbe39.dir/src.cxx.o
+        /usr/bin/c++ -DHAS_MAP_FAILED_WITHOUT_OLD_STYLE_CAST  -Wall -Wextra -Werror  -Werror=old-style-cast -std=gnu++17 -o CMakeFiles/cmTC_fbe39.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb/src.cxx
+        Linking CXX executable cmTC_fbe39
+        /snap/cmake/1276/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fbe39.dir/link.txt --verbose=1
+        /usr/bin/c++  -Wall -Wextra -Werror  -Werror=old-style-cast CMakeFiles/cmTC_fbe39.dir/src.cxx.o -o cmTC_fbe39 
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-8rSrMb'
+        
+      exitCode: 0
+    runResult:
+      variable: "HAS_MAP_FAILED_WITHOUT_OLD_STYLE_CAST_EXITCODE"
+      cached: true
+      stdout: |
+      stderr: |
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "src/util-generic/CMakeLists.txt:183 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test COMPILER_FLAG_EXISTS_WUNDEFINED_FUNC_TEMPLATE"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "COMPILER_FLAG_EXISTS_WUNDEFINED_FUNC_TEMPLATE"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_edfd8/fast && /usr/bin/make  -f CMakeFiles/cmTC_edfd8.dir/build.make CMakeFiles/cmTC_edfd8.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe'
+        Building CXX object CMakeFiles/cmTC_edfd8.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_FLAG_EXISTS_WUNDEFINED_FUNC_TEMPLATE  -Wall -Wextra -Werror  -std=gnu++17   -Wundefined-func-template -o CMakeFiles/cmTC_edfd8.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe/src.cxx
+        c++: error: unrecognized command line option '-Wundefined-func-template'
+        make[1]: *** [CMakeFiles/cmTC_edfd8.dir/build.make:78: CMakeFiles/cmTC_edfd8.dir/src.cxx.o] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-Q0BLqe'
+        make: *** [Makefile:127: cmTC_edfd8/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:41 (check_cxx_compiler_flag)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:33 (is_cxx_compiler_flag_supported)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:63 (is_cxx_compiler_flag_supported)"
+      - "cmake/add_macros.cmake:311 (add_cxx_compiler_flag_if_supported_source_files)"
+      - "cmake/add_macros.cmake:384 (_moc)"
+      - "src/util-generic/CMakeLists.txt:187 (extended_add_library)"
+    checks:
+      - "Performing Test CXX_COMPILER_SUPPORTS__Wundefined_reinterpret_cast"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "CXX_COMPILER_SUPPORTS__Wundefined_reinterpret_cast"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_85433/fast && /usr/bin/make  -f CMakeFiles/cmTC_85433.dir/build.make CMakeFiles/cmTC_85433.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb'
+        Building CXX object CMakeFiles/cmTC_85433.dir/src.cxx.o
+        /usr/bin/c++ -DCXX_COMPILER_SUPPORTS__Wundefined_reinterpret_cast  -Wall -Wextra -Werror  -std=gnu++17   -Wundefined-reinterpret-cast -o CMakeFiles/cmTC_85433.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb/src.cxx
+        c++: error: unrecognized command line option '-Wundefined-reinterpret-cast'
+        make[1]: *** [CMakeFiles/cmTC_85433.dir/build.make:78: CMakeFiles/cmTC_85433.dir/src.cxx.o] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-WNNvSb'
+        make: *** [Makefile:127: cmTC_85433/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/snap/cmake/1276/share/cmake-3.26/Modules/CheckCXXCompilerFlag.cmake:40 (cmake_check_compiler_flag)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:41 (check_cxx_compiler_flag)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:33 (is_cxx_compiler_flag_supported)"
+      - "cmake/add_cxx_compiler_flag_if_supported.cmake:63 (is_cxx_compiler_flag_supported)"
+      - "cmake/add_macros.cmake:315 (add_cxx_compiler_flag_if_supported_source_files)"
+      - "cmake/add_macros.cmake:384 (_moc)"
+      - "src/util-generic/CMakeLists.txt:187 (extended_add_library)"
+    checks:
+      - "Performing Test CXX_COMPILER_SUPPORTS__Wextra_semi_stmt"
+    directories:
+      source: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc"
+      binary: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -Wall -Wextra -Werror"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake;/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/include;/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/gpi-space-22.09-c2fwsd6d7pug6g5qtsxnsrtj4krunlke/share/util-cmake/cmake/modules"
+    buildResult:
+      variable: "CXX_COMPILER_SUPPORTS__Wextra_semi_stmt"
+      cached: true
+      stdout: |
+        Change Dir: /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc
+        
+        Run Build Command(s):/snap/cmake/1276/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_77cdf/fast && /usr/bin/make  -f CMakeFiles/cmTC_77cdf.dir/build.make CMakeFiles/cmTC_77cdf.dir/build
+        make[1]: Entering directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc'
+        Building CXX object CMakeFiles/cmTC_77cdf.dir/src.cxx.o
+        /usr/bin/c++ -DCXX_COMPILER_SUPPORTS__Wextra_semi_stmt  -Wall -Wextra -Werror  -std=gnu++17   -Wextra-semi-stmt -o CMakeFiles/cmTC_77cdf.dir/src.cxx.o -c /home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc/src.cxx
+        c++: error: unrecognized command line option '-Wextra-semi-stmt'; did you mean '-Wextra-semi'?
+        make[1]: *** [CMakeFiles/cmTC_77cdf.dir/build.make:78: CMakeFiles/cmTC_77cdf.dir/src.cxx.o] Error 1
+        make[1]: Leaving directory '/home/hbn/Documents/AIMS/projet/master/github/modular_independent_sub5/framework_build/CMakeFiles/CMakeScratch/TryCompile-GA5FDc'
+        make: *** [Makefile:127: cmTC_77cdf/fast] Error 2
+        
+      exitCode: 2
+...

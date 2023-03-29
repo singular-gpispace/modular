@@ -1,0 +1,3 @@
+LDFLAGS_singular_modular += -ldrts-context
+LDFLAGS_singular_modular += -ldrts-context
+LDFLAGS_singular_modular += -ldrts-context

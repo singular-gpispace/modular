@@ -31,7 +31,7 @@ proc ImageMap(ideal phi,ideal I)
 
     //int n = nvars(R);
     // number of variables of target polynomial ring, that is 7
-    int m = size(phi);
+    //int m = size(phi);
     /*phi: P^(n-1) --> P^(m-1)*/
     // make a polynomial ring for the graph with variables
     // x(1)..x(n) and  y(1)..y(m)
