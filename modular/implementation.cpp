@@ -14,7 +14,7 @@ NO_NAME_MANGLING
 std::string filename_gen(std::string const& base_filename)
 {
   init_singular (config::library().string());
-  return base_filename+filename_generator()+worker();
+  return base_filename+filename_generator();
 }
 
 std::pair<std::string,std::string>  singular_modular_compute( std::string const& input_filename 
@@ -114,7 +114,7 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	std::string ids;
 	std::string out_filename;
 	ids = worker();
-	std::cout << ids << " in singular_..._reconstest" << std::endl;
+	std::cout << " in singular_..._reconstest" << std::endl;
 	lifted = deserialize(lifted_res,ids);
 	mod_res = deserialize(mod_res2,ids);
 	ScopedLeftv args(lifted.first, lCopy(lifted.second));
