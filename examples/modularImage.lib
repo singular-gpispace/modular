@@ -21,18 +21,22 @@ LIB "elim.lib";
 
        proc hashlead(ideal I)
        {
+           string hash="";
+           if(size(I)==0)
+           {
+                return(string(-1));
+           }
            int i;
            int j;
-           string hash="";
            intvec v;
            ideal J = lead(I);
            for(i=1; i<=size(J); i++)
            {
-             v = leadexp(J[i]);
-             for(j=1; j<=size(v); j++)
-             {
-               hash = hash +  string(v[j]);
-             }
+                v = leadexp(J[i]);
+                for(j=1; j<=size(v); j++)
+                {
+                    hash = hash +  string(v[j]);
+                }
            }
            return(hash);
 
@@ -113,8 +117,7 @@ LIB "elim.lib";
         ideal xv = mi[1..n];
         ideal yv  = mi[n+1..n+m];
         matrix HM[2][m] = concat(transpose(yv),transpose(phi));
-        ideal J = sat(I+minor(HM,2),phi)[1];
-        ideal graph = sat(J,xv)[1];
+        ideal graph = sat(I+minor(HM,2),phi)[1];
         //Extracting the image from the graph
         for(k = 1; k <= n; k++)
         {

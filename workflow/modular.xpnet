@@ -4,6 +4,7 @@
     <in name="primes" type="string" place="place_prime"/>
     <in name="implementation" type="string" place="place_implementation"/>
     <in name="input" type="string" place="place_input"/>
+    <in name="total_number_primes" type="unsigned long" place="place_total_number_primes"/>
     <in name="function_name_compute" type="string" place="place_function_name_compute"/>
     <in name="function_name_lift" type="string" place="place_function_name_lift"/>
 	<in name="function_name_reconstest" type="string" place="place_function_name_reconstest"/>
@@ -15,6 +16,7 @@
 
     <net>
         <place name="place_input" type="string"/>
+        <place name="place_total_number_primes" type="unsigned long"/>
 		<place name="place_prime" type="string"/>
 		<place name="place_input_bal1" type="int"/>
 		<place name="place_input_bal2" type="int"/>
@@ -233,7 +235,7 @@
             <connect-out port="extract_test" place="place_test"/>
         </transition>
 
-        <transition name="lift1" inline="true">
+       <transition name="lift1" inline="true">
             <include-function href="lift1.xpnet"/>
             <connect-in port="place_in" place="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
@@ -244,6 +246,19 @@
             <place-map virtual="place_bal" real="place_bal2"/>  
             <place-map virtual="place_eureka_group" real="place_eureka_group"/>
         </transition>
+
+        <!--<transition name="lift1" inline="true">
+            <include-function href="lift1new.xpnet"/>
+            <connect-in port="place_in" place="place_mod_res2"/>
+            <place-map virtual="place_out" real="place_mod_res3"/>
+            <place-map virtual="place_total_number_primes" real="place_total_number_primes"/>
+            <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_bal" real="place_bal2"/>  
+            <place-map virtual="place_eureka_group" real="place_eureka_group"/>
+        </transition>-->
 
         <transition name="count_in_mod_res4">
             <defun>
@@ -524,7 +539,7 @@
                 <cinclude href="iostream"/>
                 <cinclude href="unistd.h"/>
                 <code><![CDATA[
-                    std::cout << " in singular_..._lift3 " << std::endl;
+                    std::cout << " in singular_..._lift3 "  << std::endl;
                     up = we::type::literal::control{};
                     counter = counter - 1;
                     if(mod_res4.hashlead.size() == accumulator.hashlead.size())

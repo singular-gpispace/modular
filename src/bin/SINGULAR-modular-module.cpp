@@ -425,6 +425,7 @@ try
 			  values_on_ports.emplace ("primes", as.baseFileName()+"p" + std::to_string(j));
 		}
 		values_on_ports.emplace("input", as.baseFileName()+in_filename);
+    values_on_ports.emplace("total_number_primes",as.numTasks());
 		values_on_ports.emplace("implementation", implementation.string());
 		values_on_ports.emplace("function_name_compute", as.functionNameCompute());
 		values_on_ports.emplace("function_name_lift", as.functionNameLift());
