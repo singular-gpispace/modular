@@ -10,13 +10,13 @@ This library contains SINGULAR procedures for the modular patterns of the Singul
 TYPES:
 configToken          general configuration token type
 gspcConfigToken      configuration token for GPI-Space
-parellelConfigToken  configuration token for the transition procedure
+modularConfigToken  configuration token for the transition procedure
 
 PROCEDURES:
 configure_gspc()                               generates standard config token for GPI-Space
-configure_parallel()                           generates standard config token for the transition procedure
-generateIOTokenTypes(configToken)              register the user-defined types for input and output
-gspc_wait_all(list,configToken,configToken)    call the wait_all pattern
+configure_modular()                           generates standard config token for the transition procedure
+generateIOTokenTypes()              register the user-defined types for input and output
+gspc_modular(list,list,configToken,configToken)    call the wait_all pattern
 ";
 
 proc mod_init()
@@ -24,7 +24,7 @@ proc mod_init()
   LIB "libSINGULAR-modular-module.so";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string libGenerate, string procGenerate");
+  newstruct("modularConfigToken", " string library, string procCompute, string procLift, string procReconstest, int bal1, int bal2");
 }
 
 proc configure_gspc()
@@ -53,7 +53,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   return(ct);
 }
 
-static proc gspc_modular(list l,list p, configToken gc, configToken pc)
+ proc gspc_modular(list l,list p, configToken gc, configToken pc)
 {
   if ((typeof(gc.options) != "gspcConfigToken") || (typeof(pc.options) != "modularConfigToken"))
   {
@@ -96,22 +96,22 @@ static proc gspc_modular(list l,list p, configToken gc, configToken pc)
     tmpdir = system("getenv", "PWD") + "/" + gc.options.tmpdir;
   }
   string loadlib;
-  if (pc.options.libGenerate[1] == "/")
+  if (pc.options.library[1] == "/")
   {
-    loadlib = pc.options.libGenerate;
+    loadlib = pc.options.library;
   }
   else
   {
-    loadlib = system("getenv", "PWD") + "/" + pc.options.loadGenerate;
+    loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib, pc.options.procGenerate);
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib, pc.options.procCompute, pc.options.procLift, pc.options.procReconstest, pc.options.bal1, pc.options.bal2);
     return(sm_result);
 }
 
-proc generateIOTokenTypes(configToken pc)
+proc generateIOTokenTypes()
 "USAGE: generateIOTokenTypes(pc); pc configToken
 RETURN: no output
-NOTE: The configToken must contain a parallelConfigToken.
+NOTE: The configToken must contain a modularConfigToken.
 "
 {
   newstruct("token", "list fieldnames, list data");

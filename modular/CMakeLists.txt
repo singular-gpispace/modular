@@ -15,5 +15,5 @@ set_target_properties (modular_implementation
 )
 
 install (FILES LIB/modulargspc.lib
-  DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  DESTINATION "${CMAKE_INSTALL_PREFIX}" 
 )
