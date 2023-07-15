@@ -22,11 +22,13 @@ gspc_modular(list,list,configToken,configToken)    call the wait_all pattern
 proc mod_init()
 {
   LIB "libSINGULAR-modular-module.so";
+  LIB "modstd.lib";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string library, string procCompute, string procLift, string procReconstest, int bal1, int bal2");
+  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procReconstest, int bal1, int bal2, int nbPrimes");
+  newstruct("token", "list fieldnames, list data");
 }
-
+ 
 proc configure_gspc()
 "USAGE: configure_gspc()
 RETURN: a configToken containing a gspcConfigToken with the standard configuration for GPI-Space
@@ -40,7 +42,7 @@ RETURN: a configToken containing a gspcConfigToken with the standard configurati
   return(ct);
 }
 
-proc configure_modular()
+proc configure_modular(configToken gc)
 "USAGE: configure_modular()
 RETURN: a configToken containing a modularConfigToken with the standard
            configuration for the modular pattern.
@@ -50,6 +52,23 @@ RETURN: a configToken containing a modularConfigToken with the standard
   configToken ct;
   ct.tokentype = "modularConfigToken";
   ct.options = pc;
+
+  //Determine the number of nodes from the nodefile which is the number of line
+  string s = read(gc.options.nodefile);
+  int i;
+  int nb_lines = 0;
+  for (i = 1; i<=size(s); i++){
+    if (s[i] == newline){
+      nb_lines = nb_lines + 1;
+    }
+  }
+  ct.options.library = "modulargp.lib";
+  ct.options.procGenNextPrime="genNextPrime";
+  ct.options.procLift = "liftt";
+  ct.options.procReconstest = "reconstest";
+  ct.options.nbPrimes = nb_lines*gc.options.procspernode;
+  ct.options.bal1 = 2*nb_lines*gc.options.procspernode;
+  ct.options.bal2 = nb_lines*gc.options.procspernode;
   return(ct);
 }
 
@@ -104,15 +123,62 @@ RETURN: a configToken containing a modularConfigToken with the standard
   {
     loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib, pc.options.procCompute, pc.options.procLift, pc.options.procReconstest, pc.options.bal1, pc.options.bal2);
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procReconstest, pc.options.bal1, pc.options.bal2);
     return(sm_result);
 }
 
-proc generateIOTokenTypes()
-"USAGE: generateIOTokenTypes(pc); pc configToken
-RETURN: no output
-NOTE: The configToken must contain a modularConfigToken.
-"
+proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal1, bal2, nb_primes
 {
-  newstruct("token", "list fieldnames, list data");
+  
+  token input;
+  input.fieldnames = list("generators");
+  input.data = list(I);
+  list l = list(input);
+  configToken pc = configure_modular(gc);
+  pc.options.procCompute = "stdmodp";
+  //read optional arguments
+  if (size(#) > 0)
+  {
+    //read bal1 value
+    if (size(#) == 1 && typeof(#[1]) == "int" )
+    {
+      pc.options.bal1 = #[1];
+    }
+    else{ //read bal1 and bal2
+      if (size(#) == 2 && typeof(#[1]) == "int" && typeof(#[2])=="int"){
+        pc.options.bal1 = #[1];
+        pc.options.bal2 = #[2];
+      }
+      else { //read bal1, bal2 and nbPrimes
+        if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
+          pc.options.bal1 = #[1];
+          pc.options.bal2 = #[2];
+          pc.options.nbPrimes = #[3];
+        }
+        else{
+          ERROR("Wrong optional arguments");
+        }
+      }
+    }
+  }
+  intvec primeiv = primeList(I, pc.options.nbPrimes);
+  int i;
+  list primelists;
+  token t;
+  for (i = 1; i <= pc.options.nbPrimes; i++)
+  {
+    t.fieldnames = list("int");
+    t.data = list(primeiv[i]);
+	  primelists[i] = t;
+  }
+  def re = gspc_modular(l,primelists, gc, pc);
+  def originalRing = basering;
+  def ringResult = re.r_data;
+  setring ringResult; //ring where the result is defined
+  def result = re.data[1];
+  setring originalRing;
+  def result = imap(ringResult,result); //copy the result to the basering
+  return(result);
 }
+
+

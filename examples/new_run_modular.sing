@@ -1,0 +1,15 @@
+LIB "modulargspc.lib";
+
+configToken gc = configure_gspc();
+gc.options.tmpdir = "temp";
+gc.options.nodefile = "nodefile";
+gc.options.procspernode = 4;
+gc.options.loghostfile = "loghostfile";
+gc.options.logport = 9876;
+
+
+ring R = 0,(x(1..7)),dp;
+ideal I = cyclic(7);
+I;
+
+def re = gspc_modular_std(I,gc);

@@ -1,0 +1,34 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run_singular",
+            "type": "shell",
+            "command": "source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;gspc-monitor --port 9876 & SINGULARPATH=/home/hbn/test/framework_install Singular new_run_modular.sing",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/examples"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;cmake -D CMAKE_INSTALL_PREFIX='../framework_install' -D CMAKE_BUILD_TYPE=Release -D SINGULAR_HOME=/home/hbn/spack/opt/spack/linux-ubuntu20.04-icelake/gcc-9.4.0/singular-snapshot_22_03-qqvuclfdgojic7xdjgcgw422b6ao4p7y  -D Boost_NO_BOOST_CMAKE=on -B framework_build -S .; cmake --build framework_build --target install -j $(nproc)",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+
+}

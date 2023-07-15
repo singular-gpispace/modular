@@ -10,6 +10,29 @@
 #include "singular_functions.hpp"
 NO_NAME_MANGLING
 
+std::pair<std::string, int> singular_modular_genNextPrime(std::string const& ideal_filename ,
+                                                          int const& lastprime,
+                                                          std::string const& function_name,
+                                                          std::string const& needed_library,
+                                                          std::string const& base_filename)
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int,lists> I;
+  std::string ids = worker();
+  I = deserialize(ideal_filename,ids);
+  void* p =  (char*) (long) (lastprime);
+  ScopedLeftv args( I.first, lCopy(I.second));
+	ScopedLeftv arg(args,INT_CMD,p);
+  std::pair<int, lists>  out = call_user_proc(function_name, needed_library, args);
+  lists u = (lists)omAlloc0Bin(slists_bin); //extract the integer value in the token
+	u->Init(2);
+	u = (lists)out.second->m[3].Data();//ring.fieldnames-lists.fieldnames-ring.data-lists.data
+	int nextPrime = (int) (long)u->m[0].Data();
+  std::string out_filename = serialize(out.second,base_filename);
+  return {out_filename, nextPrime};
+
+}
 
 std::string filename_gen(std::string const& base_filename)
 {
@@ -124,6 +147,8 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	u->Init(2);
 	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
 	testt = (int)(long)u->m[1].Data();
+  //omFreeSize((ADDRESS)u->m,(u->nr+1)*sizeof(sleftv));
+  //omFreeBin((ADDRESS)u, slists_bin);
 	out_filename = serialize(out.second,base_filename);
 	return {out_filename,testt};
 

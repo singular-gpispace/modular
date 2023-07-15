@@ -48,10 +48,10 @@ si_link ssi_open_for_read (std::string const& );
 lists ssi_read_newstruct (si_link , std::string const& );
 std::pair<int, lists> deserialize (std::string const&, std::string const&);
 void load_singular_library (std::string const&);
-//std::pair<int, lists> call_user_proc (std::string const&,
- //                                     std::string const&,
-   //                                   int,
-     //                                 lists);
+std::pair<int, lists> call_user_proc (std::string const&,
+                                      std::string const&,
+                                      int,
+                                      lists);
 
 std::pair<int, lists> call_user_proc (std::string const&,
                                       std::string const&,

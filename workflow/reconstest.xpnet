@@ -35,7 +35,6 @@
                     <cinclude href="iostream"/>
                     <cinclude href="unistd.h"/>
                     <code><![CDATA[
-                        //usleep(200000);
                         std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")

@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "*.xpnet": "html",
+        "*.lib": "c",
+        "*.sing": "c",
+        "array": "c",
+        "bitset": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "vector": "cpp",
+        "optional": "cpp",
+        "variant": "cpp",
+        "ostream": "cpp"
+    }
+}

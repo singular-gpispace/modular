@@ -8,12 +8,20 @@ NO_NAME_MANGLING
 std::string filename_gen(std::string const&);
 
 NO_NAME_MANGLING
+std::pair<std::string,int> singular_modular_genNextPrime ( std::string const&
+                                                            , int const&
+                                                            , std::string const&
+															, std::string const&
+														    , std::string const&
+                                                            );
+
+NO_NAME_MANGLING
 std::pair<std::string,std::string> singular_modular_compute ( std::string const&
-                                   , std::string const&
-                                   , std::string const&
-																	 , std::string const&
-																	 , std::string const&
-                                   );
+                                                            , std::string const&
+                                                            , std::string const&
+															, std::string const&
+														    , std::string const&
+                                                            );
 
 NO_NAME_MANGLING
 std::string  singular_modular_lift( std::string const& 

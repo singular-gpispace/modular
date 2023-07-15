@@ -15,7 +15,20 @@
        liftt(token, token)                lift the two modular result
        reconstest(token, token)           farey lift and stability test
 ";
-
+        
+        proc genNextPrime(token input, int p)
+        {
+            LIB "modstd.lib";
+            token t;
+            p = prime(p-1);
+            while(!primeTest(input.data[1],p))
+            {
+                 p = prime(p-1);
+            }
+            t.fieldnames = list("int");
+            t.data = list(p);
+            return(t);
+        }
 
        proc hashlead(ideal I)
        {
@@ -57,7 +70,7 @@
        option(redSB);
        def J = std(I);
        setring br;  
-       ideal J = fetch(rp,J);
+       def J = fetch(rp,J);
        token output;
        output.fieldnames = list("generators","modulus",
                                     "numberofprimes","leadmon");
@@ -88,7 +101,7 @@
            output.fieldnames =
            list("generators","modulus","numberofprimes");
            output.data[1] = IJ;
-           output.data[2] = p*q;
+           output.data[2] = p*q;    
            output.data[3] = n+m;
            return(output);
        }
