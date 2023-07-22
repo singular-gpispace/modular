@@ -106,7 +106,7 @@
            return(output);
        }
 
-       proc reconstest(token lifted_res, token mod_res2)
+    proc reconstest(token lifted_res, token mod_res2)
        "USAGE: reconst(lifted_res, mod_res2); lifted_res token
            RETURN: an list  containing a token of the Farey lift and a 
            boolean of the stability test
@@ -115,40 +115,37 @@
            the worker process (that is, the "inner" instances of
            SINGULAR).
 "          
-       {     
-       // def S = mod_res_2.r_data;
-       //   setring S;
-       ideal I = mod_res2.data[1];
-       bigint p = mod_res2.data[2];
-       //def R = lifted_res.r_data;
-       //setring R;
-       ideal J = lifted_res.data[1];
-       bigint q = lifted_res.data[2];
-       //setring S;
-       //ideal J = fetch(R,J);
-       ideal K = chinrem(list(I,J),list(p,q));
-       ideal Jf = farey(J,q);
-      ideal Kf = farey(K,p*q);
-      //attrib(Jf,"isSB",1);
-      //attrib(Kf,"isSB",1);
-       token t;
-       int i;
-       int testt = 0;
-       t.fieldnames = list("generators","test");
-           t.data[1] = Jf;
-       if  ( size(Jf) == size(Kf) )
-      {
-         testt=1;
-      for(i=1;i<=size(Jf);i++)
-      {
-       if ((Jf[i]-Kf[i]) !=0)
-      {
-         testt = 0;
-        break;
-       }
-       }
-           }
-       t.data[2] = testt;
-       return(t);
-       }
+    {     
+        ideal I = mod_res2.data[1];
+        bigint p = mod_res2.data[2];
+        ideal J = lifted_res.data[1];
+        bigint q = lifted_res.data[2]; 
+        ideal K = chinrem(list(I,J),list(p,q));
+        kill I;
+        ideal Jf = farey(J,q);
+        ideal Kf = farey(K,p*q);
+        kill J;
+        kill K;
+        token t;
+        int i=0;
+        int testt = 0;
+        t.fieldnames = list("generators","test");
+        t.data[1] = Jf;
+        if  ( size(Jf) == size(Kf) )
+        {
+            testt=1;
+            for(i=1;i<=size(Jf);i++)
+            {
+                if ((Jf[i]-Kf[i]) !=0)
+                {
+                    testt = 0;
+                    break;
+                }
+            }
+        }
+        t.data[2] = testt;
+        kill Kf;
+        kill Jf;
+        return(t);
+    }
 

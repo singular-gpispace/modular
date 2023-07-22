@@ -104,7 +104,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                    <code><![CDATA[
-                        std::cout << " in singular_..._genPrime " << last_prime << std::endl;
+                        std::cout << " in singular_..._genPrime " << std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")

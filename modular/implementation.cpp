@@ -25,9 +25,9 @@ std::pair<std::string, int> singular_modular_genNextPrime(std::string const& ide
   ScopedLeftv args( I.first, lCopy(I.second));
 	ScopedLeftv arg(args,INT_CMD,p);
   std::pair<int, lists>  out = call_user_proc(function_name, needed_library, args);
-  lists u = (lists)omAlloc0Bin(slists_bin); //extract the integer value in the token
+  lists u = /*(lists)omAlloc0Bin(slists_bin); //extract the integer value in the token
 	u->Init(2);
-	u = (lists)out.second->m[3].Data();//ring.fieldnames-lists.fieldnames-ring.data-lists.data
+	u =*/ (lists)out.second->m[3].Data();//ring.fieldnames-lists.fieldnames-ring.data-lists.data
 	int nextPrime = (int) (long)u->m[0].Data();
   std::string out_filename = serialize(out.second,base_filename);
   return {out_filename, nextPrime};
@@ -61,9 +61,9 @@ std::pair<std::string,std::string>  singular_modular_compute( std::string const&
 	ScopedLeftv args( input.first, lCopy(input.second));
 	ScopedLeftv arg(args,p.first,lCopy(p.second));
 	out = call_user_proc(function_name, needed_library, args);
-	lists u = (lists)omAlloc0Bin(slists_bin);
+	lists u = /*(lists)omAlloc0Bin(slists_bin);
 	u->Init(2);
-	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
+	u = */(lists)out.second->m[3].Data();//ring-lists-ring-lists
 	std::string hash = (char*)u->m[3].Data();
 	out_filename = serialize(out.second,base_filename);
 
@@ -122,7 +122,7 @@ std::string  singular_modular_lift( std::string const& left
 
 
 std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lifted_res
-                                      , std::string const& mod_res2
+                                      , std::string const& one
                                       , std::string const& function_name
                                       , std::string const& needed_library
                                       , std::string const& base_filename
@@ -131,7 +131,7 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
   init_singular (config::library().string());
   load_singular_library(needed_library);
   std::pair<int, lists> lifted;
-  std::pair<int,lists> mod_res;
+  std::pair<int,lists> test_token;
   std::pair<int, lists> out;
 	bool testt;
 	std::string ids;
@@ -139,16 +139,13 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	ids = worker();
 	std::cout << " in singular_..._reconstest" << std::endl;
 	lifted = deserialize(lifted_res,ids);
-	mod_res = deserialize(mod_res2,ids);
+	test_token = deserialize(one,ids);
 	ScopedLeftv args(lifted.first, lCopy(lifted.second));
-	ScopedLeftv arg(args,mod_res.first,lCopy(mod_res.second));
+	ScopedLeftv arg(args,test_token.first,lCopy(test_token.second));
+  std::cout << "here" << std::endl;
 	out = call_user_proc(function_name, needed_library, args);
-	lists u = (lists)omAlloc0Bin(slists_bin);
-	u->Init(2);
-	u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
+	lists u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
 	testt = (int)(long)u->m[1].Data();
-  //omFreeSize((ADDRESS)u->m,(u->nr+1)*sizeof(sleftv));
-  //omFreeBin((ADDRESS)u, slists_bin);
 	out_filename = serialize(out.second,base_filename);
 	return {out_filename,testt};
 

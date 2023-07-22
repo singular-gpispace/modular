@@ -33,8 +33,15 @@
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
-                    <cinclude href="unistd.h"/>
+                    <cinclude href="fstream"/>
                     <code><![CDATA[
+                        std::ofstream myfile;
+                        myfile.open("errorfile.txt");
+                        myfile <<   lifted_res.data << std::endl;
+                        myfile << one.data <<std::endl;
+                        myfile << lifted_res.hashlead << std::endl;
+                        myfile << one.hashlead ;
+                        myfile.close();
                         std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
