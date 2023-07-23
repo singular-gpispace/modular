@@ -1,0 +1,5 @@
+intmat A[3][3] = -1,-1,-1,0,0,-1,0,-1,0;
+ring r=0,(x,y,z),M(A);
+poly f = x^16+y^15+z^12+x^6*y^3+x^3*y^3*z^3+x^2*y^4*(y^2+x)^2;
+ideal I = jacob(f);
+std(I);
