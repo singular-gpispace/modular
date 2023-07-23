@@ -42,15 +42,34 @@
                         myfile << lifted_res.hashlead << std::endl;
                         myfile << one.hashlead ;
                         myfile.close();
-                        std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
-                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                         .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
-                         ( lifted_res.data, one.data,function_name, needed_library,base_filename);
-                        out.farey_lift = pair_result.first;
-                        out.chr_lift = lifted_res.data;
-                        out.hashlead = lifted_res.hashlead;
-                        out.nb_prime = lifted_res.nb_prime;
-                        out.test = pair_result.second;
+                        if (lifted_res.hashlead.size() == one.hashlead.size()){
+                                if (lifted_res.hashlead == one.hashlead ){
+                                    std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
+                                        (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                        .sym<decltype (singular_modular_reconstest)> ("singular_modular_reconstest")
+                                        ( lifted_res.data, one.data,function_name, needed_library,base_filename);
+                                    out.farey_lift = pair_result.first;
+                                    out.chr_lift = lifted_res.data;
+                                    out.hashlead = lifted_res.hashlead;
+                                    out.nb_prime = lifted_res.nb_prime;
+                                    out.test = pair_result.second;
+                                }
+                                else{
+                                    out.farey_lift = "";
+                                    out.chr_lift = lifted_res.data;
+                                    out.hashlead = lifted_res.hashlead;
+                                    out.nb_prime = lifted_res.nb_prime;
+                                    out.test = 0;
+                                }
+                        }
+                        else
+                        {
+                            out.farey_lift = "";
+                            out.chr_lift = lifted_res.data;
+                            out.hashlead = lifted_res.hashlead;
+                            out.nb_prime = lifted_res.nb_prime;
+                            out.test = 0;
+                        }
                         std::cout << out.nb_prime;
                         ]]>
                     </code>
