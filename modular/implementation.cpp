@@ -142,7 +142,6 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	test_token = deserialize(one,ids);
 	ScopedLeftv args(lifted.first, lCopy(lifted.second));
 	ScopedLeftv arg(args,test_token.first,lCopy(test_token.second));
-  std::cout << "here" << std::endl;
 	out = call_user_proc(function_name, needed_library, args);
 	lists u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
 	testt = (int)(long)u->m[1].Data();

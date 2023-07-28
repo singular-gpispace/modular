@@ -23,7 +23,7 @@
             p = prime(p-1);
             while(!primeTest(input.data[1],p))
             {
-                 p = prime(p-1);
+                p = prime(p-1);
             }
             t.fieldnames = list("int");
             t.data = list(p);
@@ -32,31 +32,35 @@
 
        proc hashlead(ideal I)
        {
-           int i;
-           int j;
-           string hash="";
-           intvec v;
-           ideal J = lead(I);
-           for(i=1; i<=size(J); i++)
-           {
-             v = leadexp(J[i]);
-             for(j=1; j<=size(v); j++)
-             {
-               hash = hash +  string(v[j]);
-             }
-           }
-           return(hash);
+            if(size(I) == 0)
+            {
+                return(string(-1));
+            }
+            int i;
+            int j;
+            string hash="";
+            intvec v;
+            ideal J = lead(I);
+            for(i=1; i<=size(J); i++)
+            {
+                v = leadexp(J[i]);
+                for(j=1; j<=size(v); j++)
+                {
+                 hash = hash +  string(v[j]);
+                }
+            }
+            return(hash);
 
         }
 
-       proc stdmodp (token input, token in_prime)
-       "USAGE: stdmodp(input, in_prime); input token
-           RETURN: an token output containing a standard basis 
-           output.generators of the ideal input.generators in a ring
-           with prescribed characteristic input.modulus
-           NOTE: The types token are defined . This procedure is 
-           intended to be called as a transition procedure inside the
-           worker process (that is, the "inner" instances of SINGULAR).
+        proc stdmodp (token input, token in_prime)
+            "USAGE: stdmodp(input, in_prime); input token
+            RETURN: an token output containing a standard basis 
+                    output.generators of the ideal input.generators in a ring
+                    with prescribed characteristic input.modulus
+              NOTE: The types token are defined . This procedure is 
+                    intended to be called as a transition procedure inside the
+                    worker process (that is, the "inner" instances of SINGULAR).
 "
        {
        def br = basering;
@@ -106,6 +110,10 @@
            return(output);
        }
 
+
+
+
+
     proc reconstest(token lifted_res, token mod_res2)
        "USAGE: reconst(lifted_res, mod_res2); lifted_res token
            RETURN: an list  containing a token of the Farey lift and a 
@@ -121,11 +129,11 @@
         ideal J = lifted_res.data[1];
         bigint q = lifted_res.data[2]; 
         ideal K = chinrem(list(I,J),list(p,q));
-        kill I;
+        int n = system("--cpus");
+        system("--cpus",1);
         ideal Jf = farey(J,q);
         ideal Kf = farey(K,p*q);
-        kill J;
-        kill K;
+        system("--cpus",n);
         token t;
         int i=0;
         int testt = 0;
@@ -143,9 +151,8 @@
                 }
             }
         }
+        
         t.data[2] = testt;
-        kill Kf;
-        kill Jf;
         return(t);
     }
 

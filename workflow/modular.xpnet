@@ -553,45 +553,27 @@
                     {
                         if(mod_res4.hashlead == accumulator.hashlead)
                         {
-                            //usleep(200000);
                             std::string out_filename = fhg::util::scoped_dlhandle
                                 (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                 .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
                                 ( mod_res4.data,accumulator.data,function_name,needed_library,base_filename);
-                                out.data = out_filename;
-                                out.nb_prime = mod_res4.nb_prime + accumulator.nb_prime;
-                                out.hashlead = mod_res4.hashlead;
+                            out.data = out_filename;
+                            out.nb_prime = mod_res4.nb_prime + accumulator.nb_prime;
+                            out.hashlead = mod_res4.hashlead;
                         }
                         else
-                        {
-                            if(mod_res4.nb_prime >= accumulator.nb_prime)
-                            {		
-                                out.data = mod_res4.data;
-                                out.nb_prime = mod_res4.nb_prime;
-                                out.hashlead = mod_res4.hashlead;
-                            }
-                            else
-                            {
-                                out.data = accumulator.data;
-                                out.nb_prime = accumulator.nb_prime;
-                                out.hashlead = accumulator.hashlead;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(mod_res4.nb_prime >= accumulator.nb_prime)
                         {
                             out.data = mod_res4.data;
                             out.nb_prime = mod_res4.nb_prime;
                             out.hashlead = mod_res4.hashlead;
                         }
-                        else
-                        {
-                            out.data = accumulator.data;
-                            out.nb_prime = accumulator.nb_prime;
-                            out.hashlead = accumulator.hashlead;
-                        }
+                    }
+                    else
+                    {
+                        
+                        out.data = mod_res4.data;
+                        out.nb_prime = mod_res4.nb_prime;
+                        out.hashlead = mod_res4.hashlead;
                     }
                 ]]>
                 </code>

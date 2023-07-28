@@ -1,4 +1,0 @@
-ring R=0,(x,y,z),lp;
-ideal I = 3x5z3-x3z3+3xyz3-15yx3z3+12y2xz3+6y3-4y3z3, -3x4z3+5x2z3+9yx2z3+6y3x-5yz3, 3x4-6x2-12yx2-12y+4z2+3;
-std(I);
-

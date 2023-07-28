@@ -6,7 +6,7 @@
     <in name="base_filename" type="string" place="place_base_filename"/>
     <in name="function_name" type="string" place="place_function_name_reconstest"/>
     <in name="needed_library" type="string" place="place_needed_library"/>
-    <out name="out" type="result_bool_type" place="place_rand_res"/>
+    <out name="out" type="result_bool_type" place="place_out"/>
 
     <net>
         <place name="place_lifted_res" type="modular_data"/>
@@ -15,7 +15,7 @@
         <place name="place_implementation" type="string"/>
         <place name="place_needed_library" type="string"/>
         <place name="place_function_name_reconstest" type="string"/>
-        <place name="place_rand_res" type="result_bool_type"/>
+        <place name="place_out" type="result_bool_type"/>
 
         <transition name="reconstest">
             <defun>
@@ -32,16 +32,7 @@
                     function="reconstest(implementation,lifted_res,one,function_name,needed_library,base_filename,out)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <cinclude href="iostream"/>
-                    <cinclude href="fstream"/>
-                    <code><![CDATA[
-                        std::ofstream myfile;
-                        myfile.open("errorfile.txt");
-                        myfile <<   lifted_res.data << std::endl;
-                        myfile << one.data <<std::endl;
-                        myfile << lifted_res.hashlead << std::endl;
-                        myfile << one.hashlead ;
-                        myfile.close();
+                    <code><![CDATA[  
                         if (lifted_res.hashlead.size() == one.hashlead.size()){
                                 if (lifted_res.hashlead == one.hashlead ){
                                     std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle
@@ -69,9 +60,7 @@
                             out.hashlead = lifted_res.hashlead;
                             out.nb_prime = lifted_res.nb_prime;
                             out.test = 0;
-                        }
-                        std::cout << out.nb_prime;
-                        ]]>
+                        }                        ]]>
                     </code>
                 </module>
             </defun>
@@ -81,7 +70,7 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="function_name" place="place_function_name_reconstest"/>
             <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_rand_res"/>
+            <connect-out port="out" place="place_out"/>
         </transition>
     </net>
 </defun>
