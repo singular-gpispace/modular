@@ -141,7 +141,7 @@
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
                 <out name="out" type="modular_data"/>
-                <out name="bal2" type="control"/>
+                <out name="bal2" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
                     function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
@@ -225,7 +225,17 @@
                                     out = rhs;
                                 }
                             }
-                            bal2 = we::type::literal::control{};
+                           if(lhs.nb_prime == 1 and rhs.nb_prime == 1)
+                            {
+                                for (unsigned long i (0); i<2; ++i)
+                                {
+                                    bal2.emplace_back(we::type::literal::control{});
+                                }
+                            }
+                            else
+                            {
+                                bal2.emplace_back(we::type::literal::control{});
+                            }
                         }
                         ]]>
                     </code>
@@ -238,7 +248,7 @@
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out port="bal2" place="place_bal"/>
+            <connect-out-many port="bal2" place="place_bal"/>
             <connect-out port="out" place="place_mod_res"/>
         </transition>
 

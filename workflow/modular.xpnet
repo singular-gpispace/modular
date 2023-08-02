@@ -355,9 +355,9 @@
                     ${up} := [];
                     ${counter} := ${counter} - 2L;
                 </expression>
-                <condition>
+                <!--<condition>
                     ${in.nb_prime} :le: 40UL
-                </condition>
+                </condition>-->
             </defun>
             <connect-in port="in" place="place_mod_res4"/>
             <connect-in port="down" place="place_down"/>
