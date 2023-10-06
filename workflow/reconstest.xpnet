@@ -32,7 +32,9 @@
                     function="reconstest(implementation,lifted_res,one,function_name,needed_library,base_filename,out)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
+		    <cinclude href="iostream"/>
                     <code><![CDATA[  
+			std::cout <<  lifted_res.nb_prime << std::endl;
                         if (lifted_res.hashlead.size() == one.hashlead.size()){
                                 if (lifted_res.hashlead == one.hashlead ){
                                     std::pair<std::string,bool> pair_result = fhg::util::scoped_dlhandle

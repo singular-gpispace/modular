@@ -1,6 +1,6 @@
 <defun name="lift1">    
     <require key="worker" mandatory="true"/>
-    <in name="place_in" type="modular_data" place="place_in"/>
+    <tunnel name="place_in" type="modular_data" place="place_in"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel  name="place_needed_library" type="string" place="place_needed_library"/>
@@ -11,7 +11,7 @@
     <tunnel name="place_bal" type ="control" place="place_bal"/>
 
     <net>
-        <place name="place_in" type="modular_data"/>
+        <place name="place_in" type="modular_data" virtual="true"/>
         <place name="place_pre_count" type="control"/>
         <place name="place_bin" type="control"/>
         <place name="place_bin1" type="control"/>

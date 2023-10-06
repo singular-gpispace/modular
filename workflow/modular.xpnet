@@ -114,7 +114,7 @@
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
                                 {
-                                    std::ofstream of (filename);
+                                    std::ofstream of (filename,std::ios::binary);
                                     boost::archive::binary_oarchive oa (of);
                                     std::pair<std::string,int>  out
                                     (fhg::util::scoped_dlhandle
@@ -139,7 +139,7 @@
                             );
                         if (!cancelled)
                         {
-                            std::ifstream is (filename);
+                            std::ifstream is (filename,std::ios::binary);
                             boost::archive::binary_iarchive ia (is);
                             ia >> prime; // read saved result
                             ia >> last_prime;
@@ -205,7 +205,7 @@
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
                                 {
-                                    std::ofstream of (filename);
+                                    std::ofstream of (filename,std::ios::binary);
                                     boost::archive::binary_oarchive oa (of);
                                     std::pair<std::string,std::string>  out
                                     (fhg::util::scoped_dlhandle
@@ -230,7 +230,7 @@
                             );
                         if (!cancelled)
                         {
-                            std::ifstream is (filename);
+                            std::ifstream is (filename,std::ios::binary);
                             boost::archive::binary_iarchive ia (is);
                             ia >> mod_res1.data; // read saved result
                             ia >> mod_res1.hashlead;
@@ -296,7 +296,7 @@
 
        <transition name="lift1" inline="true">
             <include-function href="lift1.xpnet"/>
-            <connect-in port="place_in" place="place_mod_res2"/>
+            <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
             <place-map virtual="place_base_filename" real="place_base_filename"/>

@@ -5,6 +5,7 @@ function(add_petrinet in out module_name)
     OUTPUT "${CMAKE_BINARY_DIR}/${module_name}.pnet"
            "${CMAKE_BINARY_DIR}/gen_${out}/pnetc/op/libsingular_${module_name}.so"
     COMMAND "${GSPC_HOME}/bin/pnetc"
+            --Windependent-transition=0
             --gen-cxxflags=-O3
             --gen-cxxflags=-std=c++17
             --gen-cxxflags=-I"${CMAKE_BINARY_DIR}"
