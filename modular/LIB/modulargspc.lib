@@ -25,7 +25,7 @@ proc mod_init()
   LIB "modstd.lib";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procReconstest, int bal1, int bal2, int nbPrimes");
+  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procFarey, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes");
   newstruct("token", "list fieldnames, list data");
 }
  
@@ -65,10 +65,14 @@ RETURN: a configToken containing a modularConfigToken with the standard
   ct.options.library = "modulargp.lib";
   ct.options.procGenNextPrime="genNextPrime";
   ct.options.procLift = "liftt";
-  ct.options.procReconstest = "reconstest";
+  ct.options.procFarey = "fareyy";
+  ct.options.procCompatible = "compatible";
+  ct.options.procCompare= "compare";
   ct.options.nbPrimes = nb_lines*gc.options.procspernode;
   ct.options.bal1 = 2*nb_lines*gc.options.procspernode;
   ct.options.bal2 = nb_lines*gc.options.procspernode;
+  ct.options.M1 = 10;
+  ct.options.M2 = 40;
   return(ct);
 }
 
@@ -123,11 +127,11 @@ RETURN: a configToken containing a modularConfigToken with the standard
   {
     loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procReconstest, pc.options.bal1, pc.options.bal2);
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procFarey, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2);
     return(sm_result);
 }
 
-proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal1, bal2, nb_primes
+proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
 {
   
   token input;
@@ -149,14 +153,31 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
         pc.options.bal1 = #[1];
         pc.options.bal2 = #[2];
       }
-      else { //read bal1, bal2 and nbPrimes
+      else { //read bal1, bal2 and M1
         if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
           pc.options.bal1 = #[1];
           pc.options.bal2 = #[2];
-          pc.options.nbPrimes = #[3];
+          pc.options.M1 = #[3];
         }
-        else{
-          ERROR("Wrong optional arguments");
+        else{ //read bal1, bal2, M1 and M2
+          if (size(#) == 4 && typeof(#[1])=="int" && typeof(#[2])=="int" && typeof(#[3])=="int" && typeof(#[4])=="int"){
+            pc.options.bal1 = #[1];
+            pc.options.bal2 = #[2];
+            pc.options.M1 = #[3];
+            pc.options.M2 = #[4];
+          }
+          else{// read bal1, bal2, M1, M2, and nbPrimes
+            if ( size(#) == 5 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int" ){
+              pc.options.bal1 = #[1];
+              pc.options.bal2 = #[2];
+              pc.options.M1 = #[3];
+              pc.options.M2 = #[4];
+              pc.options.nbPrimes = #[5];
+            } 
+            else{
+              ERROR("Wrong optional arguments");
+            }
+          }
         }
       }
     }

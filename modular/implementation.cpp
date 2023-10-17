@@ -70,32 +70,6 @@ std::pair<std::string,std::string>  singular_modular_compute( std::string const&
 	return {out_filename,hash};
 }
 
-std::string  singular_modular_lift1( std::string const& left
-                                      , std::string const& right
-                                      , std::string const& function_name
-                                      , std::string const& needed_library
-                                      , std::string const& base_filename
-																			, std::string const& number
-                                      )
-{
-  init_singular (config::library().string());
-  load_singular_library(needed_library);
-  std::pair<int, lists> l;
-  std::pair<int,lists> r;
-  std::pair<int, lists> out;
-  std::string ids;
-  std::string out_filename;
-  ids = worker();
-  std::cout << ids << " in singular_..._lift"+number << std::endl;
-  l = deserialize(left,ids);
-  r = deserialize(right,ids);
-  ScopedLeftv args( l.first, lCopy(l.second));
-  ScopedLeftv arg(args,r.first,lCopy(r.second));
-  out = call_user_proc(function_name, needed_library, args);
-  out_filename = serialize(out.second, base_filename);
-  return out_filename;
-}
-
 std::string  singular_modular_lift( std::string const& left
                                       , std::string const& right
                                       , std::string const& function_name
@@ -121,7 +95,75 @@ std::string  singular_modular_lift( std::string const& left
 }
 
 
-std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lifted_res
+std::string singular_modular_farey (std::string const& lifted_res
+                                   , std::string const& function_name
+                                   , std::string const& needed_library
+                                   , std::string const& base_filename
+                                   )
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> liftedres;
+  std::pair<int, lists> out;
+  std::string ids;
+  std::string out_filename;
+  ids = worker();
+  liftedres = deserialize(lifted_res,ids);
+  ScopedLeftv args( liftedres.first, lCopy(liftedres.second));
+  out = call_user_proc(function_name, needed_library, args);
+  out_filename = serialize(out.second, base_filename);
+  return out_filename;
+}
+
+bool singular_modular_compatible (std::string const& result_farey
+                                   , std::string const& test_result
+                                   , std::string const& function_name
+                                   , std::string const& needed_library
+                                   )
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> resultfarey;
+  std::pair<int, lists> testresult;
+  std::pair<int, lists> out;
+  std::string ids;
+  bool testt;
+  ids = worker();
+  resultfarey = deserialize(result_farey,ids);
+  testresult = deserialize(test_result, ids);
+  ScopedLeftv args( resultfarey.first, lCopy(resultfarey.second));
+  ScopedLeftv arg(args,testresult.first,lCopy(testresult.second));
+  out = call_user_proc(function_name, needed_library, args);
+  lists u = (lists) out.second->m[3].Data();
+  testt = (int) (long) u->m[0].Data();
+  return testt;
+}
+
+bool singular_modular_compare (std::string const& result_farey
+                                   , std::string const& test_result
+                                   , std::string const& function_name
+                                   , std::string const& needed_library
+                                   )
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> resultfarey;
+  std::pair<int, lists> testresult;
+  std::pair<int, lists> out;
+  std::string ids;
+  bool testt;
+  ids = worker();
+  resultfarey = deserialize(result_farey,ids);
+  testresult = deserialize(test_result, ids);
+  ScopedLeftv args( resultfarey.first, lCopy(resultfarey.second));
+  ScopedLeftv arg(args,testresult.first,lCopy(testresult.second));
+  out = call_user_proc(function_name, needed_library, args);
+  lists u = (lists) out.second->m[3].Data();
+  testt = (int) (long) u->m[0].Data();
+  return testt;
+}
+
+/*std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lifted_res
                                       , std::string const& one
                                       , std::string const& function_name
                                       , std::string const& needed_library
@@ -148,4 +190,5 @@ std::pair<std::string,bool>  singular_modular_reconstest( std::string const& lif
 	out_filename = serialize(out.second,base_filename);
 	return {out_filename,testt};
 
-}
+}*/
+

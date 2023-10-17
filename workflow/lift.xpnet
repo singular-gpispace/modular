@@ -1,13 +1,13 @@
-<defun name="lift1">    
+<defun name="lift">    
     <require key="worker" mandatory="true"/>
     <tunnel name="place_in" type="modular_data" place="place_in"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel  name="place_needed_library" type="string" place="place_needed_library"/>
     <tunnel name="place_function_name_lift" type="string" place="place_function_name_lift"/>
+    <tunnel name="place_input_M1" type="unsigned long" place="place_input_M1"/>
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_out" type="modular_data" place="place_out"/>
-
     <tunnel name="place_bal" type ="control" place="place_bal"/>
 
     <net>
@@ -23,6 +23,7 @@
         <place name="place_needed_library" type="string" virtual="true"/>
         <place name="place_function_name_lift" type="string" virtual="true"/>
         <place name="place_eureka_group" type="string" virtual="true"/>
+        <place name="place_input_M1" type="unsigned long" virtual="true"/>
         <place name="place_mod_res" type="modular_data"/>
         <place name="place_counter" type="long">
             <token><value>0L</value></token>
@@ -67,6 +68,7 @@
             <defun>
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="pre_out" type="modular_data"/>
                 <out name="out" type="control"/>
                 <expression>
@@ -74,11 +76,12 @@
                     ${out} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :ge: 10UL :and: ${counter} :ge: 1L
+                    ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-read port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_minus"/>
         </transition>
@@ -89,6 +92,7 @@
             <defun>
                 <in name="mod_res" type="modular_data"/>
                 <in name="down" type="control"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="up" type="control"/>
                 <out name="left" type="modular_data"/>
                 <expression>
@@ -96,11 +100,12 @@
                     ${up} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :lt: 10UL
+                    ${mod_res.nb_prime} :lt: ${M1}
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-in port="down" place="place_down"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="up" place="place_up"/>
             <connect-out port="left" place="place_left"/>
         </transition>
@@ -110,6 +115,7 @@
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
                 <in name="up" type="control"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="out" type="control"/>
                 <out name="down" type="control"/>
                 <out name="right" type="modular_data"/>
@@ -119,11 +125,12 @@
                     ${down} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :lt: 10UL  :and: ${counter} :ge:1L
+                    ${mod_res.nb_prime} :lt: ${M1}  :and: ${counter} :ge:1L
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-read port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-in port="up" place="place_up"/>
             <connect-out port="down" place="place_down"/>
             <connect-out port="out" place="place_minus"/>

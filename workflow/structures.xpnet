@@ -18,4 +18,13 @@
 		<field name="hashlead" type="string"/>
 	</struct>
 
+	<struct name="result_bool_testToken_type">
+		<field name="farey_lift" type="string"/>
+		<field name="chr_lift" type="string"/>
+		<field name="test" type="bool"/>
+		<field name="nb_prime" type="unsigned long"/>
+		<field name="hashlead" type="string"/>
+		<field name="testToken" type="string"/>
+	</struct>
+
 </structs>

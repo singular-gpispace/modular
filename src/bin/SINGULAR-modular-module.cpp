@@ -94,10 +94,14 @@ namespace
       std::string neededLibrary() const;
       std::string functionNameCompute() const;
 			std::string functionNameLift() const;
-			std::string functionNameReconstest() const;
+			std::string functionNameFarey() const;
+      std::string functionNameCompatible() const;
+      std::string functionNameCompare() const;
       std::string functionNameGenNextPrime() const;
 			int bal1() const;
 			int bal2() const;
+      unsigned long M1() const;
+      unsigned long M2() const;
 
       singular_modular::installation singPI() const;
       lists argList() const;
@@ -118,10 +122,14 @@ namespace
       std::string functionnamegennextprime;
       std::string functionnamecompute;
 			std::string functionnamelift;
-			std::string functionnamereconstest;
+			std::string functionnamefarey;
+      std::string functionnamecompatible;
+      std::string functionnamecompare;
       
 			int bal1_value;
 			int bal2_value;
+      unsigned long M1_value;
+      unsigned long M2_value;
       int out_token;
       std::string base_filename;
 
@@ -144,6 +152,14 @@ namespace
 	int ArgumentState::bal2() const {
 	  return bal2_value;
 	}
+
+  unsigned long ArgumentState::M1() const {
+    return M1_value;
+  }
+
+  unsigned long ArgumentState::M2() const {
+    return M2_value;
+  } 
 
 
   std::size_t ArgumentState::numTasks() const {
@@ -184,9 +200,17 @@ namespace
 		return functionnamelift;
 	}
 
-	std::string ArgumentState::functionNameReconstest() const {
-		return functionnamereconstest;
+	std::string ArgumentState::functionNameFarey() const {
+		return functionnamefarey;
 	}
+
+  std::string ArgumentState::functionNameCompatible() const {
+    return functionnamecompatible;
+  }
+
+  std::string ArgumentState::functionNameCompare() const {
+    return functionnamecompare;
+  }
 
   singular_modular::installation ArgumentState::singPI() const {
     return singular_modular_installation;
@@ -252,24 +276,38 @@ namespace
                                                STRING_CMD,
                                                "string",
                                                "function name compute"))
-
   , functionnamelift (require_argument<10, char*> (args,
                                              STRING_CMD,
                                              "string",
                                              "function name lift"))
-	, functionnamereconstest (require_argument<11, char*> (args,
+	, functionnamefarey (require_argument<11, char*> (args,
                                            STRING_CMD,
                                            "string",
-                                           "function name reconstest"))
-	, bal1_value (require_argument<12, long> (args,
+                                           "function name farey"))
+  , functionnamecompatible (require_argument<12, char*> (args,
+                                            STRING_CMD,
+                                            "string",
+                                            "function name compatible"))
+  , functionnamecompare (require_argument<13, char*> (args,
+                                            STRING_CMD,
+                                            "string",
+                                            "function name compare"))
+	, bal1_value (require_argument<14, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal1"))
-	, bal2_value (require_argument<13, long> (args,
+	, bal2_value (require_argument<15, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal2"))
-
+  , M1_value (require_argument<16, unsigned long> (args,
+                                           INT_CMD,
+                                           "int",
+                                           "value of M1"))
+  , M2_value (require_argument<17, unsigned long>(args,
+                                          INT_CMD,
+                                          "int",
+                                          "value of M2"))
 
   , out_token (fetch_token_value_from_sing_scope ("token"))
   , base_filename (tmpdir + "/")
@@ -445,11 +483,15 @@ try
     values_on_ports.emplace("function_name_genNextPrime",as.functionNameGenNextPrime());
 		values_on_ports.emplace("function_name_compute", as.functionNameCompute());
 		values_on_ports.emplace("function_name_lift", as.functionNameLift());
-		values_on_ports.emplace("function_name_reconstest", as.functionNameReconstest());
+		values_on_ports.emplace("function_name_farey", as.functionNameFarey());
+    values_on_ports.emplace("function_name_compatible", as.functionNameCompatible());
+    values_on_ports.emplace("function_name_compare", as.functionNameCompare());
 		values_on_ports.emplace("needed_library",as.neededLibrary());
 		values_on_ports.emplace("base_filename", as.baseFileName());
 		values_on_ports.emplace("input_bal1", as.bal1());
 		values_on_ports.emplace("input_bal2",as.bal2());
+    values_on_ports.emplace("input_M1",as.M1());
+    values_on_ports.emplace("input_M2", as.M2());
   std::multimap<std::string, pnet::type::value::value_type> result
     ( gspc::client (drts).put_and_run
       ( gspc::workflow (workflow)

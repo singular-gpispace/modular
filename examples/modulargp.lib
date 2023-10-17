@@ -13,7 +13,9 @@
        stdmodp(token,token)               computes a standard basis
                                            modulo p
        liftt(token, token)                lift the two modular result
-       reconstest(token, token)           farey lift and stability test
+       farey(token)                       
+       compatible(token, token)           
+       compare(token, token)
 ";
         
         proc genNextPrime(token input, int p)
@@ -58,40 +60,39 @@
             RETURN: an token output containing a standard basis 
                     output.generators of the ideal input.generators in a ring
                     with prescribed characteristic input.modulus
-              NOTE: The types token are defined . This procedure is 
+            NOTE: The types token are defined . This procedure is 
                     intended to be called as a transition procedure inside the
                     worker process (that is, the "inner" instances of SINGULAR).
 "
-       {
-       def br = basering;
-       int p = in_prime.data[1];
-       def I = input.data[1];
-       def lbr = ringlist(br);
-       lbr[1] = p;
-       def rp = ring(lbr);
-       setring rp;
-       def I = imap(br,I);
-       option(redSB);
-       def J = std(I);
-       setring br;  
-       def J = fetch(rp,J);
-       token output;
-       output.fieldnames = list("generators","modulus",
+        {
+            def br = basering;
+            int p = in_prime.data[1];
+            def I = input.data[1];
+            def lbr = ringlist(br);
+            lbr[1] = p;
+            def rp = ring(lbr);
+            setring rp;
+            def I = imap(br,I);
+            option(redSB);
+            def J = std(I);
+            setring br;  
+            def J = fetch(rp,J);
+            token output;
+            output.fieldnames = list("generators","modulus",
                                     "numberofprimes","leadmon");
-       output.data[1] = J;
-       output.data[2] = bigint(p);
-       output.data[3] = int(1);
-       output.data[4] = hashlead(J);
-       return(output);
+            output.data[1] = J;
+            output.data[2] = bigint(p);
+            output.data[3] = int(1);
+            output.data[4] = hashlead(J);
+            return(output);
        }
 
        proc liftt (token left, token right)
        "USAGE: liftt(left, right); input token
-       RETURN: an token output containing a lift of the two tokens left and
-           right.
-       NOTE: The types token are defined . This procedure is intended to
-           be called as a transition procedure inside the worker process
-           (that is, the "inner" instances of SINGULAR).
+       RETURN: an token output containing a lift of the two tokens left and right.
+       NOTE  : The types token are defined . This procedure is intended to
+               be called as a transition procedure inside the worker process
+               (that is, the "inner" instances of SINGULAR).
 "          
        {
            def J = right.data[1];
@@ -110,22 +111,94 @@
            return(output);
        }
 
+        proc fareyy (token liftedres)
+       "USAGE: fareyy(liftedres); 
+       RETURN: a token  containing a farey lift of the data in the token liftedres.
+"          
+        {
+            def I = liftedres.data[1];
+            bigint N = liftedres.data[2];
+            int n = system("--cpus");
+            system("--cpus",1);
+            def J = farey(I,N);
+            system("--cpus",n);
+            token t;
+            t.fieldnames = list("farey_lift");
+            t.data[1] = J;
+            return(t);
+        }
+
+
+         proc compatible (token fareylift, token testToken)
+       "USAGE: compatible(token, token); 
+       RETURN: Test if any coefficient occuring in the data of fareylift is divisible by the characteristic p of the data in the testToken."
+
+        {
+            LIB "modstd.lib";
+            bigint p = testToken.data[2];
+            def I = fareylift.data[1];
+            int testt = primeTest(fareylift.data[1],p);
+            token t;
+            t.fieldnames = list("test_result");
+            t.data[1] = testt;
+            return(t);
+        }
+
+         proc compare (token fareylift, token testToken)
+       "USAGE: compare(token, token); 
+       RETURN: Reduce the data of the farey lift modulo the characteristic of the testToken and check if they are equal."
+
+       {
+            def J = fareylift.data[1];
+            def I = testToken.data[1];
+            bigint p = testToken.data[2];
+            def br = basering;
+            def lbr = ringlist(br);
+            lbr[1] = int(p);
+            def rp = ring(lbr);
+            setring rp;
+            def I = fetch(br,I);
+            def J = fetch(br,J);
+            attrib(J, "isSB", 1);
+            attrib(I, "isSB", 1);
+            token t;
+            t.fieldnames=list("test result");
+            t.data[1] = int(0);
+            /* test if I is in J */
+            int i;
+            for (i = ncols(I); i > 0; i--)
+            {
+                if (reduce(I[i], J, 1) != 0)
+                {
+                    setring(br);
+                    return(t);
+                }
+            }
+            /* test if J is in I */
+            for (i = ncols(J); i > 0; i--)
+            {
+                if (reduce(J[i], I, 1) != 0) { setring(br); return(t); }
+            }
+            setring br;
+            t.data[1] = int(1);
+            return(t);
+       }
 
 
 
 
-    proc reconstest(token lifted_res, token mod_res2)
+    /*proc reconstest(token lifted_res, token test_token)
        "USAGE: reconst(lifted_res, mod_res2); lifted_res token
-           RETURN: an list  containing a token of the Farey lift and a 
+        RETURN: an list  containing a token of the Farey lift and a 
            boolean of the stability test
-           NOTE: The types token are defined . This procedure is 
-           intended to be called as a transition procedure inside
-           the worker process (that is, the "inner" instances of
-           SINGULAR).
+        NOTE: The types token are defined . This procedure is 
+              intended to be called as a transition procedure inside
+              the worker process (that is, the "inner" instances of
+              SINGULAR).
 "          
     {     
-        ideal I = mod_res2.data[1];
-        bigint p = mod_res2.data[2];
+        ideal I = test_token.data[1];
+        bigint p = test_token.data[2];
         ideal J = lifted_res.data[1];
         bigint q = lifted_res.data[2]; 
         ideal K = chinrem(list(I,J),list(p,q));
@@ -154,5 +227,5 @@
         
         t.data[2] = testt;
         return(t);
-    }
+    }*/
 
