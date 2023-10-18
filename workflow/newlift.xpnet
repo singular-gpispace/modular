@@ -1,0 +1,245 @@
+<defun name="newlift">    
+    <require key="worker" mandatory="true"/>
+    <tunnel name="place_in" type="modular_data" place="place_in"/>
+    <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
+    <tunnel name="place_implementation" type="string" place="place_implementation"/>
+    <tunnel  name="place_needed_library" type="string" place="place_needed_library"/>
+    <tunnel name="place_function_name_lift" type="string" place="place_function_name_lift"/>
+    <tunnel name="place_input_M1" type="unsigned long" place="place_input_M1"/>
+    <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
+    <tunnel name="place_out" type="modular_data" place="place_out"/>
+    <tunnel name="place_bal" type ="control" place="place_bal"/>
+
+    <net>
+        <place name="place_in" type="modular_data" virtual="true"/>
+        <place name="place_out" type="modular_data" virtual="true"/>
+        <place name="place_bal" type="control" virtual="true"/>
+        <place name="place_base_filename" type="string" virtual="true"/>
+        <place name="place_implementation" type="string" virtual="true"/>
+        <place name="place_needed_library" type="string" virtual="true"/>
+        <place name="place_function_name_lift" type="string" virtual="true"/>
+        <place name="place_eureka_group" type="string" virtual="true"/>
+        <place name="place_input_M1" type="unsigned long" virtual="true"/>
+        <place name="place_mod_res" type="modular_data"/>
+        <place name="place_mod_res1" type="modular_data"/>
+        <place name="place_counter" type="unsigned long">
+            <token><value>0UL</value></token>
+        </place>
+        <place name="place_up" type="control">
+            <token><value>[]</value></token>
+        </place>
+        <place name="place_down" type="control"/>
+        <place name="place_right" type="modular_data"/>
+        <place name="place_left" type="modular_data"/>
+
+        <transition name="counting">
+            <defun>
+                <in name="in" type="modular_data"/>
+                <inout name="counter" type="unsigned long"/>
+                <out name="mod_res" type="modular_data"/>
+                <expression>
+                    ${counter} := ${counter} + 1UL;
+                    ${mod_res} := ${in};
+                </expression>
+            </defun>
+            <connect-in port="in" place="place_in"/>
+            <connect-inout port="counter" place="place_counter"/>
+            <connect-out port="mod_res" place="place_mod_res"/>
+        </transition>
+
+        <transition name="rhs">
+            <defun>
+                <in name="mod_res" type="modular_data"/>
+                <in name="counter" type="unsigned long"/>
+                <in name="up" type="control"/>
+                <out name="down" type="control"/>
+                <out name="right" type="modular_data"/>
+                <expression>
+                    ${right} := ${mod_res};
+                    ${down} := [];
+                </expression>
+                <condition>
+                    ${counter} :ge: 2UL
+                </condition>
+            </defun>
+            <connect-in port="mod_res" place="place_mod_res"/>
+            <connect-read port="counter" place="place_counter"/>
+            <connect-in port="up" place="place_up"/>
+            <connect-out port="down" place="place_down"/>
+            <connect-out port="right" place="place_right"/>
+        </transition>
+
+        <transition name="lhs">
+            <defun>
+                <in name="mod_res" type="modular_data"/>
+                <in name="down" type="control"/>
+                <inout name="counter" type="unsigned long"/>
+                <out name="up" type="control"/>
+                <out name="left" type="modular_data"/>
+                <expression>
+                    ${left} := ${mod_res};
+                    ${up} := [];
+                    ${counter} := ${counter} - 2UL;
+                </expression>
+            </defun>
+            <connect-in port="mod_res" place="place_mod_res"/>
+            <connect-inout port="counter" place="place_counter"/>
+            <connect-in port="down" place="place_down"/>
+            <connect-out port="up" place="place_up"/>
+            <connect-out port="left" place="place_left"/>
+        </transition>
+
+
+        <transition name="lift">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <in name="lhs" type="modular_data"/>
+                <in name="rhs" type="modular_data"/>
+                <in name="function_name" type="string"/>
+                <in name="needed_library" type="string"/>
+                <in name="implementation" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="eureka_group" type="string"/>
+                <out name="out" type="modular_data"/>
+                <out name="bal2" type="control"/>
+                <module name="singular_modular"
+                    require_function_unloads_without_rest="false"
+                    function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
+                    <eureka-group>${eureka_group}</eureka-group>
+                    <cinclude href="share/include/modular_interface.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="iostream"/>
+                    <cinclude href="boost/archive/binary_iarchive.hpp"/>
+                    <cinclude href="boost/archive/binary_oarchive.hpp"/>
+                    <cinclude href="fstream"/>
+                    <code><![CDATA[
+                        std::cout << " in singular_..._lift1 " << std::endl;
+                        std::string const filename (fhg::util::scoped_dlhandle
+                                                        (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                                        .sym<decltype (filename_gen)> ("filename_gen")
+                                                         (base_filename));
+                        bool cancelled (false) ;
+                        if(lhs.hashlead.size() == rhs.hashlead.size())
+                        {
+                            if(lhs.hashlead == rhs.hashlead)
+                            {
+                                _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
+                                    ( [=]  // copy parameters
+                                    {
+                                        std::ofstream of (filename);
+                                        boost::archive::binary_oarchive oa (of);
+                                        std::string  out_name
+                                        (fhg::util::scoped_dlhandle
+                                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                            .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
+                                            ( lhs.data,rhs.data,function_name,needed_library,base_filename));
+                                        oa << out_name; // save result
+                                    }
+                                    , [&]
+                                    {
+                                        cancelled = true;
+                                    }
+                                    , &drts::worker::on_signal_unexpected
+                                    , [] (int exit_code)
+                                    {
+                                        if (exit_code != 0)
+                                        {
+                                            drts::worker::on_exit_unexpected (exit_code);
+                                        }     
+                                    }
+                                );
+                            }
+                        }
+                        if (!cancelled)
+                        {
+                            if(lhs.hashlead.size() == rhs.hashlead.size())
+                            {
+                                if(lhs.hashlead == rhs.hashlead)
+                                {
+                                    std::ifstream is (filename);
+                                    boost::archive::binary_iarchive ia (is);
+                                    ia >> out.data;
+                                    out.nb_prime = lhs.nb_prime + rhs.nb_prime;
+                                    out.hashlead = lhs.hashlead;
+                                }
+                                else
+                                {
+                                    if(lhs.nb_prime >= rhs.nb_prime)
+                                    { 
+                                        out = lhs;
+                                    }
+                                    else
+                                    {
+                                        out = rhs;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if(lhs.nb_prime >= rhs.nb_prime)
+                                { 
+                                    out = lhs;
+                                }
+                                else
+                                {
+                                    out = rhs;
+                                }
+                            }
+                            bal2 = we::type::literal::control{};
+                        }
+                        ]]>
+                    </code>
+                </module>
+            </defun>
+            <connect-in port="lhs" place="place_left"/>
+            <connect-in port="rhs" place="place_right"/>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="function_name" place="place_function_name_lift"/>
+            <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-read port="eureka_group" place="place_eureka_group"/>
+            <connect-out port="bal2" place="place_bal"/>
+            <connect-out port="out" place="place_mod_res1"/>
+        </transition>
+
+        <transition name="extraction">
+            <defun>
+                <in name="mod_res1" type="modular_data"/>
+                <in name="M1" type="unsigned long"/>
+                <out name="bal" type="control"/>
+                <out name="out" type="modular_data"/>
+                <condition>
+                    ${mod_res1.nb_prime} :ge: ${M1} 
+                </condition>
+                <expression>
+                    ${out} := ${mod_res1};
+                    ${bal} := [];
+                </expression>
+            </defun>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-read port="M1" place="place_input_M1"/>
+            <connect-out port="bal" place="place_bal"/>
+            <connect-out port="out" place="place_out"/>
+        </transition>
+
+        <transition name="back">
+            <defun>
+                <in name="mod_res1" type="modular_data"/>
+                <inout name="counter" type="unsigned long"/>
+                <in name="M1" type="unsigned long"/>
+                <out name="mod_res" type="modular_data"/>
+                <condition>
+                    ${mod_res1.nb_prime} :lt: ${M1}
+                </condition>
+                <expression>
+                    ${mod_res} := ${mod_res1};
+                    ${counter} := ${counter} + 1UL;
+                </expression>
+            </defun>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-inout port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
+            <connect-out port="mod_res" place="place_mod_res"/>
+        </transition>
+    </net>
+</defun>
