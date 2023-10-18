@@ -4,22 +4,29 @@
     <in name="primes" type="string" place="place_prime"/>
     <in name="implementation" type="string" place="place_implementation"/>
     <in name="input" type="string" place="place_input"/>
-    <in name="total_number_primes" type="unsigned long" place="place_total_number_primes"/>
+    <in name="last_prime" type="int" place="place_last_prime"/>
     <in name="function_name_compute" type="string" place="place_function_name_compute"/>
     <in name="function_name_lift" type="string" place="place_function_name_lift"/>
-	<in name="function_name_reconstest" type="string" place="place_function_name_reconstest"/>
+	<in name="function_name_farey" type="string" place="place_function_name_farey"/>
+    <in name="function_name_compatible" type="string" place="place_function_name_compatible"/>
+    <in name="function_name_compare" type="string" place="place_function_name_compare"/>
+    <in name="function_name_genNextPrime" type="string" place="place_function_name_genNextPrime"/>
 	<in name="needed_library" type="string" place="place_needed_library"/>
 	<in name="base_filename" type="string" place="place_base_filename"/>
 	<in name="input_bal1" type="int" place="place_input_bal1"/>
 	<in name="input_bal2" type="int" place="place_input_bal2"/>
+    <in name="input_M1" type="unsigned long" place="place_input_M1"/>
+    <in name="input_M2" type="unsigned long" place="place_input_M2"/>
 	<out name="output" type="string" place="place_output"/>
 
     <net>
         <place name="place_input" type="string"/>
-        <place name="place_total_number_primes" type="unsigned long"/>
+        <place name="place_last_prime" type="int"/>
 		<place name="place_prime" type="string"/>
 		<place name="place_input_bal1" type="int"/>
 		<place name="place_input_bal2" type="int"/>
+        <place name="place_input_M1" type="unsigned long"/>
+        <place name="place_input_M2" type="unsigned long"/>
         <place name="place_eureka_group" type="string">
             <token>
                 <value>"DONE"</value>
@@ -31,21 +38,17 @@
 		<place name="place_mod_input" type="mod_input_data"/>
 		<place name="place_function_name_compute" type="string"/>
 		<place name="place_function_name_lift" type="string"/>
-		<place name="place_function_name_reconstest" type="string"/>
+		<place name="place_function_name_farey" type="string"/>
+        <place name="place_function_name_compatible" type="string"/>
+        <place name="place_function_name_compare" type="string"/>
+        <place name="place_function_name_genNextPrime" type="string"/>
 		<place name="place_needed_library" type="string"/>
 		<place name="place_base_filename" type="string"/>
         <place name="place_output" type="string"/>
 		<place name="place_mod_res1" type="modular_data"/>
 		<place name="place_mod_res2" type="modular_data"/>
         <place name="place_mod_res3" type="modular_data"/>
-        <place name="place_mod_res4" type="modular_data"/>
-        <place name="place_mod_res5" type="modular_data"/>
         <place name="place_ct1" type="long"><token><value>0L</value></token></place>
-        <place name="place_ct2" type="long"><token><value>0L</value></token></place>
-        <place name="place_right" type="modular_data"/>
-        <place name="place_left" type="modular_data"/>
-        <place name="place_up" type="control"><token><value>[]</value></token></place>
-        <place name="place_down" type="control"/>
 		<place name="place_test" type="modular_data"/>
 		<place name="place_accumulator" type="modular_data"/>
 		<place name="place_init_accumulator" type="string"><token><value>""</value></token></place>
@@ -80,11 +83,86 @@
         <connect-out-many port="bal2" place="place_bal2"/>
         </transition>
 
+        <transition name="genNextPrime">
+            <defun>
+                <require key="worker" mandatory="true"/>
+                <inout name="last_prime" type="int"/>
+                <in name="input" type="string"/>
+                <in name="implementation" type="string"/>
+                <in name="function_name" type="string"/>
+                <in name="needed_library" type="string"/>
+                <in name="base_filename" type="string"/>
+                <in name="bal" type="control"/>
+                <in name="eureka_group" type="string"/>
+                <out name="prime" type="string"/>
+                <module name="singular_modular" require_function_unloads_without_rest="false" 
+                function="genNextPrime(input,last_prime,implementation,function_name,needed_library,base_filename,prime)" pass_context="true">
+                <eureka-group>${eureka_group}</eureka-group>
+                <cinclude href="share/include/modular_interface.hpp" />
+                    <cinclude href="fstream"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="iostream"/>
+                    <cinclude href="boost/archive/binary_iarchive.hpp"/>
+                    <cinclude href="boost/archive/binary_oarchive.hpp"/>
+                   <code><![CDATA[
+                        std::cout << " in singular_..._genPrime " << std::endl;
+                        std::string const filename (fhg::util::scoped_dlhandle
+                                                        (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                                        .sym<decltype (filename_gen)> ("filename_gen")
+                                                         (base_filename));
+                        bool cancelled (false) ;
+                    
+                            _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
+                                ( [=]  // copy parameters
+                                {
+                                    std::ofstream of (filename,std::ios::binary);
+                                    boost::archive::binary_oarchive oa (of);
+                                    std::pair<std::string,int>  out
+                                    (fhg::util::scoped_dlhandle
+                                        (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                        .sym<decltype (singular_modular_genNextPrime)> ("singular_modular_genNextPrime")
+                                        ( input, last_prime, function_name, needed_library, base_filename));
+                                    oa << out.first;
+                                    oa << out.second; // save result
+                                }
+                                , [&]
+                                {
+                                    cancelled = true;
+                                }
+                                , &drts::worker::on_signal_unexpected
+                                , [] (int exit_code)
+                                {
+                                    if (exit_code != 0)
+                                    {
+                                        drts::worker::on_exit_unexpected (exit_code);
+                                    }     
+                                }
+                            );
+                        if (!cancelled)
+                        {
+                            std::ifstream is (filename,std::ios::binary);
+                            boost::archive::binary_iarchive ia (is);
+                            ia >> prime; // read saved result
+                            ia >> last_prime;
+                        }
+                        ]]></code>
+                </module>
+            </defun>
+            <connect-read port="input" place="place_input"/>
+            <connect-read port="implementation" place="place_implementation"/>
+            <connect-read port="function_name" place="place_function_name_genNextPrime"/>
+            <connect-read port="needed_library" place="place_needed_library"/>
+            <connect-inout port="last_prime" place="place_last_prime"/>
+            <connect-read port="base_filename" place="place_base_filename"/>
+            <connect-read port="eureka_group" place="place_eureka_group"/>
+            <connect-in port="bal" place="place_bal1"/>
+            <connect-out port="prime" place="place_prime"/>
+        </transition>
+
         <transition name="generate">
             <defun>
                 <in name="input" type="string"/>
                 <in name="primes" type="string"/>
-                <in name="bal1" type="control"/>
                 <out name="mod_input" type="mod_input_data"/>
                 <expression>
                     ${mod_input.input} := ${input};
@@ -93,7 +171,6 @@
             </defun>
             <connect-read port="input" place="place_input"/>
             <connect-in port="primes" place="place_prime"/>
-            <connect-in port="bal1" place="place_bal1"/>
             <connect-out port="mod_input" place="place_mod_input"/>
         </transition>
 
@@ -118,25 +195,8 @@
                     <cinclude href="iostream"/>
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
-                    <!--<code><![CDATA[
-                        //std::string v = fhg::util::scoped_dlhandle
-                        //(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                        //.sym<decltype (filename_gen)> ("filename_gen")
-                        //();
-                        std::pair<std::string,std::string>  
-                            out = fhg::util::scoped_dlhandle
-                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                            .sym<decltype (singular_modular_compute)> ("singular_modular_compute")
-                            ( mod_input.input, mod_input.prime, function_name, needed_library, base_filename);
-                        mod_res1.data =   out.first ;
-                        mod_res1.hashlead = out.second;
-                        mod_res1.nb_prime = 1UL;
-                        bal1 = we::type::literal::control{};
-                        
-                    ]]></code>-->
-
                     <code><![CDATA[
-                        std::cout << " in singular_..._compute " << std::endl;
+                        std::cout << " in singular_..._compute " <<  std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -146,7 +206,7 @@
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
                                 {
-                                    std::ofstream of (filename);
+                                    std::ofstream of (filename,std::ios::binary);
                                     boost::archive::binary_oarchive oa (of);
                                     std::pair<std::string,std::string>  out
                                     (fhg::util::scoped_dlhandle
@@ -171,7 +231,7 @@
                             );
                         if (!cancelled)
                         {
-                            std::ifstream is (filename);
+                            std::ifstream is (filename,std::ios::binary);
                             boost::archive::binary_iarchive ia (is);
                             ia >> mod_res1.data; // read saved result
                             ia >> mod_res1.hashlead;
@@ -235,93 +295,18 @@
             <connect-out port="extract_test" place="place_test"/>
         </transition>
 
-       <transition name="lift1" inline="true">
-            <include-function href="lift1.xpnet"/>
-            <connect-in port="place_in" place="place_mod_res2"/>
+       <transition name="lift" inline="true">
+            <include-function href="lift.xpnet"/>
+            <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
             <place-map virtual="place_base_filename" real="place_base_filename"/>
             <place-map virtual="place_needed_library" real="place_needed_library"/>
             <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_input_M1" real="place_input_M1"/>
             <place-map virtual="place_bal" real="place_bal2"/>  
             <place-map virtual="place_eureka_group" real="place_eureka_group"/>
         </transition>
-
-        <!--<transition name="lift1" inline="true">
-            <include-function href="lift1new.xpnet"/>
-            <connect-in port="place_in" place="place_mod_res2"/>
-            <place-map virtual="place_out" real="place_mod_res3"/>
-            <place-map virtual="place_total_number_primes" real="place_total_number_primes"/>
-            <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
-            <place-map virtual="place_base_filename" real="place_base_filename"/>
-            <place-map virtual="place_needed_library" real="place_needed_library"/>
-            <place-map virtual="place_implementation" real="place_implementation"/>
-            <place-map virtual="place_bal" real="place_bal2"/>  
-            <place-map virtual="place_eureka_group" real="place_eureka_group"/>
-        </transition>-->
-
-        <transition name="count_in_mod_res4">
-            <defun>
-                <in name="mod_res3" type="modular_data"/>
-                <inout name="counter" type="long"/>
-                <out name="mod_res4" type="modular_data"/>
-                <expression>
-                    ${counter} := ${counter} + 1L;
-                    ${mod_res4} := ${mod_res3};
-                </expression>
-            </defun>
-            <connect-in port="mod_res3" place="place_mod_res3"/>
-            <connect-inout port="counter" place="place_ct2"/>
-            <connect-out port="mod_res4" place="place_mod_res4"/>
-        </transition>
-
-        <transition name="rhs">
-            <defun>
-                <in name="in" type="modular_data"/>
-                <in name="up" type="control"/>
-                <in name="counter" type="long"/>
-                <out name="down" type="control"/>
-                <out name="right" type="modular_data"/>
-                <expression>
-                    ${right} := ${in};
-                    ${down} := [];
-                </expression>
-                <condition>
-                    ${counter} :ge: 2L :and: ${in.nb_prime} :le: 40UL
-                </condition>
-            </defun>
-            <connect-in port="in" place="place_mod_res4"/>
-            <connect-read port="counter" place="place_ct2"/>
-            <connect-in port="up" place="place_up"/>
-            <connect-out port="down" place="place_down"/>
-            <connect-out port="right" place="place_right"/>
-        </transition>
-
-        <transition name="lhs">
-            <defun>
-                <in name="in" type="modular_data"/>
-                <in name="down" type="control"/>
-                <inout name="counter" type="long"/>
-                <out name="up" type="control"/>
-                <out name="left" type="modular_data"/>
-                <expression>
-                    ${left} := ${in};
-                    ${up} := [];
-                    ${counter} := ${counter} - 2L;
-                </expression>
-                <condition>
-                    ${in.nb_prime} :le: 40UL
-                </condition>
-            </defun>
-            <connect-in port="in" place="place_mod_res4"/>
-            <connect-in port="down" place="place_down"/>
-            <connect-inout port="counter" place="place_ct2"/>
-            <connect-out port="up" place="place_up"/>
-            <connect-out port="left" place="place_left"/>
-        </transition>
-        
-
-
 
         <transition name="init_accumulator">
             <defun>
@@ -337,279 +322,32 @@
             <connect-out port="accumulator" place="place_accumulator"/>
         </transition>
 
-        <transition name="lift2">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="lhs" type="modular_data"/>
-                <in name="rhs" type="modular_data"/>
-                <in name="function_name" type="string"/>
-                <in name="needed_library" type="string"/>
-                <in name="implementation" type="string"/>
-                <in name="base_filename" type="string"/>
-                <in name="eureka_group" type="string"/>
-                <out name="out" type="modular_data"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="lift2(implementation,lhs,rhs,function_name,needed_library,base_filename,out)" pass_context="true">
-                    <eureka-group>${eureka_group}</eureka-group>
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <cinclude href="iostream"/>
-                    <cinclude href="boost/archive/binary_iarchive.hpp"/>
-                    <cinclude href="boost/archive/binary_oarchive.hpp"/>
-                    <cinclude href="fstream"/>
-                    <!--<code><![CDATA[
-                        std::cout << " in singular_..._lift2 " << std::endl;
-                        if(lhs.hashlead.size() == rhs.hashlead.size())
-                        {
-                            if(lhs.hashlead == rhs.hashlead)
-                            {
-                                std::string out_filename = fhg::util::scoped_dlhandle
-                                    (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                    .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-                                ( lhs.data,rhs.data,function_name,needed_library,base_filename);
-                                out.data = out_filename;
-                                out.nb_prime = lhs.nb_prime + rhs.nb_prime;
-                                out.hashlead = lhs.hashlead;
-                            }
-                            else
-                            {
-                                if(lhs.nb_prime >= rhs.nb_prime)
-                                { 
-                                    out = lhs;
-                                }
-                                else
-                                {
-                                    out = rhs;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if(lhs.nb_prime >= rhs.nb_prime)
-                            { 
-                                out = lhs;
-                            }
-                            else
-                            {
-                                out = rhs;
-                            }
-                        }
-                        ]]>
-                    </code>-->
-                    <code><![CDATA[
-                        std::cout << " in singular_..._lift2 " << std::endl;
-                        std::string const filename (fhg::util::scoped_dlhandle
-                                                        (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                                        .sym<decltype (filename_gen)> ("filename_gen")
-                                                         (base_filename));
-                        bool cancelled (false) ;
-                        if(lhs.hashlead.size() == rhs.hashlead.size())
-                        {
-                            if(lhs.hashlead == rhs.hashlead)
-                            {
-                                _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
-                                    ( [=]  // copy parameters
-                                    {
-                                        std::ofstream of (filename);
-                                        boost::archive::binary_oarchive oa (of);
-                                        std::string  out_name
-                                        (fhg::util::scoped_dlhandle
-                                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                            .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-                                            ( lhs.data,rhs.data,function_name,needed_library,base_filename));
-                                        oa << out_name; // save result
-                                    }
-                                    , [&]
-                                    {
-                                        cancelled = true;
-                                    }
-                                    , &drts::worker::on_signal_unexpected
-                                    , [] (int exit_code)
-                                    {
-                                        if (exit_code != 0)
-                                        {
-                                            drts::worker::on_exit_unexpected (exit_code);
-                                        }     
-                                    }
-                                );
-                            }
-                        }
-                        if(!cancelled)
-                        {
-                            if(lhs.hashlead.size() == rhs.hashlead.size())
-                            {
-                                if(lhs.hashlead == rhs.hashlead)
-                                {
-                                    std::ifstream is (filename);
-                                    boost::archive::binary_iarchive ia (is);
-                                    ia >> out.data;
-                                    out.nb_prime = lhs.nb_prime + rhs.nb_prime;
-                                    out.hashlead = lhs.hashlead;
-                                }
-                                else
-                                {
-                                    if(lhs.nb_prime >= rhs.nb_prime)
-                                    { 
-                                        out = lhs;
-                                    }
-                                    else
-                                    {
-                                        out = rhs;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if(lhs.nb_prime >= rhs.nb_prime)
-                                { 
-                                    out = lhs;
-                                }
-                                else
-                                {
-                                    out = rhs;
-                                }
-                            }
-                        }
-                        ]]>
-                    </code>
-                </module>
-            </defun>
-            <connect-in port="lhs" place="place_left"/>
-            <connect-in port="rhs" place="place_right"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="function_name" place="place_function_name_lift"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out port="out" place="place_mod_res5"/>
+        <transition name="liftAdd" inline="true">
+            <include-function href="liftAdd.xpnet"/>
+            <place-map virtual="place_mod_res3" real="place_mod_res3"/>
+            <place-map virtual="place_input_M2" real="place_input_M2"/>
+            <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_eureka_group" real="place_eureka_group"/>
+            <place-map virtual="place_accumulator" real="place_accumulator"/>
+            <place-map virtual="place_lifted_res" real="place_lifted_res"/>
         </transition>
 
-        <transition name="back_increase">
-            <defun>
-                <in name="mod_res5" type="modular_data"/>
-                <inout name="counter" type="long"/>
-                <out name="mod_res4" type="modular_data"/>
-                <expression>
-                    ${counter} := ${counter} + 1L;
-                    ${mod_res4} := ${mod_res5};
-                </expression>
-                <condition>
-                    ${mod_res5.nb_prime} :le: 40UL
-                </condition>
-            </defun>
-            <connect-in port="mod_res5" place="place_mod_res5"/>
-            <connect-inout port="counter" place="place_ct2"/>
-            <connect-out port="mod_res4" place="place_mod_res4"/>
-        </transition>
-
-        <transition name="back_noincrease">
-            <defun>
-                <in name="mod_res5" type="modular_data"/>
-                <out name="mod_res4" type="modular_data"/>
-                <expression>
-                    ${mod_res4} := ${mod_res5};
-                </expression>
-                <condition>
-                    ${mod_res5.nb_prime} :gt: 40UL
-                </condition>
-            </defun>
-            <connect-in port="mod_res5" place="place_mod_res5"/>
-            <connect-out port="mod_res4" place="place_mod_res4"/>
-        </transition>
-
-
-       <transition name="lift3">
-        <defun>
-            <require key="worker" mandatory="true"/>
-            <in name="mod_res4" type="modular_data"/>
-            <in name="accumulator" type="modular_data"/>
-            <in name="implementation" type="string"/>
-            <in name="base_filename" type="string"/>
-            <in name="function_name" type="string"/>
-            <in name="needed_library" type="string"/>
-            <inout name="counter" type="long"/>
-            <inout name="up" type="control"/>
-            <out name="out" type="modular_data"/>
-            <module name="singular_modular"
-                require_function_unloads_without_rest="false"
-                function="lift3(implementation,mod_res4,accumulator,function_name,needed_library,base_filename,up,counter,out)">
-                <cinclude href="share/include/modular_interface.hpp"/>
-                <cinclude href="util-generic/dynamic_linking.hpp"/>
-                <cinclude href="iostream"/>
-                <cinclude href="unistd.h"/>
-                <code><![CDATA[
-                    std::cout << " in singular_..._lift3 "  << std::endl;
-                    up = we::type::literal::control{};
-                    counter = counter - 1;
-                    if(mod_res4.hashlead.size() == accumulator.hashlead.size())
-                    {
-                        if(mod_res4.hashlead == accumulator.hashlead)
-                        {
-                            //usleep(200000);
-                            std::string out_filename = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-                                ( mod_res4.data,accumulator.data,function_name,needed_library,base_filename);
-                                out.data = out_filename;
-                                out.nb_prime = mod_res4.nb_prime + accumulator.nb_prime;
-                                out.hashlead = mod_res4.hashlead;
-                        }
-                        else
-                        {
-                            if(mod_res4.nb_prime >= accumulator.nb_prime)
-                            {		
-                                out.data = mod_res4.data;
-                                out.nb_prime = mod_res4.nb_prime;
-                                out.hashlead = mod_res4.hashlead;
-                            }
-                            else
-                            {
-                                out.data = accumulator.data;
-                                out.nb_prime = accumulator.nb_prime;
-                                out.hashlead = accumulator.hashlead;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if(mod_res4.nb_prime >= accumulator.nb_prime)
-                        {
-                            out.data = mod_res4.data;
-                            out.nb_prime = mod_res4.nb_prime;
-                            out.hashlead = mod_res4.hashlead;
-                        }
-                        else
-                        {
-                            out.data = accumulator.data;
-                            out.nb_prime = accumulator.nb_prime;
-                            out.hashlead = accumulator.hashlead;
-                        }
-                    }
-                ]]>
-                </code>
-                </module>
-            </defun>
-            <connect-in port="mod_res4" place="place_mod_res4"/>
-            <connect-in port="accumulator" place="place_accumulator"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="function_name" place="place_function_name_lift"/>                
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_lifted_res"/>
-            <connect-inout port="up" place="place_up"/>
-            <connect-inout port="counter" place="place_ct2"/>
-        </transition>
-
+        
         <transition name="reconstest" inline="true">
             <include-function href="reconstest.xpnet"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="function_name" place="place_function_name_reconstest"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-in port="one" place="place_test"/>
-            <connect-in port="lifted_res" place="place_lifted_res"/>
-            <connect-out port="out" place="place_rand_res"/>
+            <place-map virtual="place_lifted_res" real="place_lifted_res"/>
+            <place-map virtual="place_one" real="place_test"/>
+            <place-map virtual="place_rand_res" real="place_rand_res"/>
+            <place-map virtual="place_function_name_farey" real="place_function_name_farey"/>
+            <place-map virtual="place_function_name_compatible" real="place_function_name_compatible"/>
+            <place-map virtual="place_function_name_compare" real="place_function_name_compare"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+
         </transition>
 
 

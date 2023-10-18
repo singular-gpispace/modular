@@ -318,7 +318,7 @@ std::pair<int, lists> call_user_proc (std::string const& function_name,
 
 std::pair<int, lists> call_user_proc (std::string const& function_name,
   std::string const& needed_library, ScopedLeftv& u_arg)
-{
+{    
   return proc<lists> (symbol (needed_library, function_name), u_arg);
 }
 std::string worker()

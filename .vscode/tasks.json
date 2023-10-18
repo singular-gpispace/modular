@@ -1,0 +1,34 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run_singular",
+            "type": "shell",
+            "command": "cp /home/hbn/test/install_ROOT/share/examples/modulargp.lib $software_ROOT;source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;gspc-monitor --port 9876 & SINGULARPATH=$install_ROOT:$install_ROOT/share/examples Singular $software_ROOT/run_example.sing",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "/home/hbn/test"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "compile",
+            "type": "shell",
+            "command": "source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;cmake -D CMAKE_INSTALL_PREFIX=$install_ROOT -D CMAKE_BUILD_TYPE=Release -D SINGULAR_HOME=$SINGULAR_INSTALL_DIR  -D Boost_NO_BOOST_CMAKE=on -D GPISpace_DIR=$GPISPACE_INSTALL_DIR  -B $build_ROOT -S $repo_ROOT; cmake --build $build_ROOT --target install -j $(nproc)",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+
+}

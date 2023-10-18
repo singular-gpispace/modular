@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.15)
+cmake_minimum_required (VERSION 3.16)
 project (singular-modular LANGUAGES C CXX)
 
 set (CMAKE_CXX_STANDARD 17)
@@ -10,12 +10,13 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 
 set (INSTALL_DO_NOT_BUNDLE ON CACHE BOOL "")
 
-find_package (GPISpace REQUIRED DO_NOT_CHECK_GIT_SUBMODULES)
+find_package (GPISpace REQUIRED)
 
 find_package (util-generic REQUIRED)
 find_package (util-cmake REQUIRED)
 
 include (util-cmake/add_macros)
+
 include (util-cmake/beautify_find_boost)
 include (util-cmake/beautify_find_GPISpace)
 

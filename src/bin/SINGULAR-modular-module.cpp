@@ -94,9 +94,14 @@ namespace
       std::string neededLibrary() const;
       std::string functionNameCompute() const;
 			std::string functionNameLift() const;
-			std::string functionNameReconstest() const;
+			std::string functionNameFarey() const;
+      std::string functionNameCompatible() const;
+      std::string functionNameCompare() const;
+      std::string functionNameGenNextPrime() const;
 			int bal1() const;
 			int bal2() const;
+      unsigned long M1() const;
+      unsigned long M2() const;
 
       singular_modular::installation singPI() const;
       lists argList() const;
@@ -104,22 +109,27 @@ namespace
 			lists pList() const;
     private:
       lists arg_list;
-      lists addargs_list;
-			lists p_list;
-
-      std::size_t num_tasks;
-      int procspernode;
+      lists p_list;
 
       std::string tmpdir;
       std::string nodefile;
+      int procspernode;
       std::string strategy;
-
+      lists addargs_list;
+			std::size_t num_tasks;
+      
       std::string neededlibrary;
+      std::string functionnamegennextprime;
       std::string functionnamecompute;
 			std::string functionnamelift;
-			std::string functionnamereconstest;
+			std::string functionnamefarey;
+      std::string functionnamecompatible;
+      std::string functionnamecompare;
+      
 			int bal1_value;
 			int bal2_value;
+      unsigned long M1_value;
+      unsigned long M2_value;
       int out_token;
       std::string base_filename;
 
@@ -142,6 +152,14 @@ namespace
 	int ArgumentState::bal2() const {
 	  return bal2_value;
 	}
+
+  unsigned long ArgumentState::M1() const {
+    return M1_value;
+  }
+
+  unsigned long ArgumentState::M2() const {
+    return M2_value;
+  } 
 
 
   std::size_t ArgumentState::numTasks() const {
@@ -169,6 +187,10 @@ namespace
   std::string ArgumentState::neededLibrary() const {
     return neededlibrary;
   }
+  
+  std::string ArgumentState::functionNameGenNextPrime() const{
+    return functionnamegennextprime;
+  }
 
   std::string ArgumentState::functionNameCompute() const {
     return functionnamecompute;
@@ -178,9 +200,17 @@ namespace
 		return functionnamelift;
 	}
 
-	std::string ArgumentState::functionNameReconstest() const {
-		return functionnamereconstest;
+	std::string ArgumentState::functionNameFarey() const {
+		return functionnamefarey;
 	}
+
+  std::string ArgumentState::functionNameCompatible() const {
+    return functionnamecompatible;
+  }
+
+  std::string ArgumentState::functionNameCompare() const {
+    return functionnamecompare;
+  }
 
   singular_modular::installation ArgumentState::singPI() const {
     return singular_modular_installation;
@@ -209,20 +239,10 @@ namespace
                                           LIST_CMD,
                                           "list",
                                           "list of input structs"))
-  , addargs_list (require_argument<6, lists> (args,
-                                              LIST_CMD,
-                                              "list",
-                                              "additional arguments"))
   , p_list (require_argument<1,lists> (args,
                                      LIST_CMD,
                                      "list",
                                      "prime list"))
-
-	, num_tasks (p_list->nr + 1)
-  , procspernode (require_argument<4, long> (args,
-                                            INT_CMD,
-                                            "int",
-                                            "processes per node"))
   , tmpdir (require_argument<2, char*> (args,
                                         STRING_CMD,
                                         "string",
@@ -231,36 +251,63 @@ namespace
                                           STRING_CMD,
                                           "string",
                                           "nodefile"))
+  , procspernode (require_argument<4, long> (args,
+                                            INT_CMD,
+                                            "int",
+                                            "processes per node"))
   , strategy (require_argument<5, char*> (args,
                                           STRING_CMD,
                                           "string",
                                           "rif strategy"))
+  , addargs_list (require_argument<6, lists> (args,
+                                              LIST_CMD,
+                                              "list",
+                                              "additional arguments"))
+	, num_tasks (p_list->nr + 1)
   , neededlibrary (require_argument<7, char*> (args,
                                                 STRING_CMD,
                                                 "string",
                                                 "needed library"))
-  , functionnamecompute (require_argument<8, char*> (args,
+  , functionnamegennextprime (require_argument<8, char*> (args,
+                                                           STRING_CMD,
+                                                           "string",
+                                                           "function name genNextPrime"))
+  , functionnamecompute (require_argument<9, char*> (args,
                                                STRING_CMD,
                                                "string",
                                                "function name compute"))
-
-  , functionnamelift (require_argument<9, char*> (args,
+  , functionnamelift (require_argument<10, char*> (args,
                                              STRING_CMD,
                                              "string",
                                              "function name lift"))
-	, functionnamereconstest (require_argument<10, char*> (args,
+	, functionnamefarey (require_argument<11, char*> (args,
                                            STRING_CMD,
                                            "string",
-                                           "function name reconstest"))
-	, bal1_value (require_argument<11, long> (args,
+                                           "function name farey"))
+  , functionnamecompatible (require_argument<12, char*> (args,
+                                            STRING_CMD,
+                                            "string",
+                                            "function name compatible"))
+  , functionnamecompare (require_argument<13, char*> (args,
+                                            STRING_CMD,
+                                            "string",
+                                            "function name compare"))
+	, bal1_value (require_argument<14, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal1"))
-	, bal2_value (require_argument<12, long> (args,
+	, bal2_value (require_argument<15, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal2"))
-
+  , M1_value (require_argument<16, unsigned long> (args,
+                                           INT_CMD,
+                                           "int",
+                                           "value of M1"))
+  , M2_value (require_argument<17, unsigned long>(args,
+                                          INT_CMD,
+                                          "int",
+                                          "value of M2"))
 
   , out_token (fetch_token_value_from_sing_scope ("token"))
   , base_filename (tmpdir + "/")
@@ -425,15 +472,26 @@ try
 			  values_on_ports.emplace ("primes", as.baseFileName()+"p" + std::to_string(j));
 		}
 		values_on_ports.emplace("input", as.baseFileName()+in_filename);
-    values_on_ports.emplace("total_number_primes",as.numTasks());
+    
+    lists lastToken = static_cast<lists> (as.pList()->m[as.numTasks()-1].data);
+    lists tokenvalue = (lists)omAlloc0Bin(slists_bin);
+    tokenvalue->Init(2);
+    tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
+    values_on_ports.emplace("last_prime",(int) (long) tokenvalue->m[0].Data());
+
 		values_on_ports.emplace("implementation", implementation.string());
+    values_on_ports.emplace("function_name_genNextPrime",as.functionNameGenNextPrime());
 		values_on_ports.emplace("function_name_compute", as.functionNameCompute());
 		values_on_ports.emplace("function_name_lift", as.functionNameLift());
-		values_on_ports.emplace("function_name_reconstest", as.functionNameReconstest());
+		values_on_ports.emplace("function_name_farey", as.functionNameFarey());
+    values_on_ports.emplace("function_name_compatible", as.functionNameCompatible());
+    values_on_ports.emplace("function_name_compare", as.functionNameCompare());
 		values_on_ports.emplace("needed_library",as.neededLibrary());
 		values_on_ports.emplace("base_filename", as.baseFileName());
 		values_on_ports.emplace("input_bal1", as.bal1());
 		values_on_ports.emplace("input_bal2",as.bal2());
+    values_on_ports.emplace("input_M1",as.M1());
+    values_on_ports.emplace("input_M2", as.M2());
   std::multimap<std::string, pnet::type::value::value_type> result
     ( gspc::client (drts).put_and_run
       ( gspc::workflow (workflow)

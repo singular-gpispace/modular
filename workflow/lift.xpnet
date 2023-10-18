@@ -1,20 +1,17 @@
-<defun name="lift1">
-    <include-structs href="structures.xpnet"/>
-    
+<defun name="lift">    
     <require key="worker" mandatory="true"/>
-    <!--<tunnel name="place_in" type="modular_data" place="place_in"/>-->
-    <in name="place_in" type="modular_data" place="place_in"/>
+    <tunnel name="place_in" type="modular_data" place="place_in"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel  name="place_needed_library" type="string" place="place_needed_library"/>
     <tunnel name="place_function_name_lift" type="string" place="place_function_name_lift"/>
+    <tunnel name="place_input_M1" type="unsigned long" place="place_input_M1"/>
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_out" type="modular_data" place="place_out"/>
-
     <tunnel name="place_bal" type ="control" place="place_bal"/>
 
     <net>
-        <place name="place_in" type="modular_data"/>
+        <place name="place_in" type="modular_data" virtual="true"/>
         <place name="place_pre_count" type="control"/>
         <place name="place_bin" type="control"/>
         <place name="place_bin1" type="control"/>
@@ -26,6 +23,7 @@
         <place name="place_needed_library" type="string" virtual="true"/>
         <place name="place_function_name_lift" type="string" virtual="true"/>
         <place name="place_eureka_group" type="string" virtual="true"/>
+        <place name="place_input_M1" type="unsigned long" virtual="true"/>
         <place name="place_mod_res" type="modular_data"/>
         <place name="place_counter" type="long">
             <token><value>0L</value></token>
@@ -61,15 +59,6 @@
                 <expression>
                     ${counter} := ${counter} + 1L;
                 </expression>
-                <!--<module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="counting1(pre_count,counter)">
-                    <cinclude href="iostream"/>
-                    <code><![CDATA[
-                        counter = counter + 1;
-                    ]]>
-                    </code>
-                </module>-->
             </defun>
             <connect-in port="pre_count" place="place_pre_count"/>
             <connect-inout port="counter" place="place_counter"/>
@@ -79,6 +68,7 @@
             <defun>
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="pre_out" type="modular_data"/>
                 <out name="out" type="control"/>
                 <expression>
@@ -86,11 +76,12 @@
                     ${out} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :ge: 10UL :and: ${counter} :ge: 1L
+                    ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-read port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_minus"/>
         </transition>
@@ -101,6 +92,7 @@
             <defun>
                 <in name="mod_res" type="modular_data"/>
                 <in name="down" type="control"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="up" type="control"/>
                 <out name="left" type="modular_data"/>
                 <expression>
@@ -108,11 +100,12 @@
                     ${up} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :lt: 10UL
+                    ${mod_res.nb_prime} :lt: ${M1}
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-in port="down" place="place_down"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="up" place="place_up"/>
             <connect-out port="left" place="place_left"/>
         </transition>
@@ -122,6 +115,7 @@
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
                 <in name="up" type="control"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="out" type="control"/>
                 <out name="down" type="control"/>
                 <out name="right" type="modular_data"/>
@@ -131,11 +125,12 @@
                     ${down} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :lt: 10UL  :and: ${counter} :ge:1L
+                    ${mod_res.nb_prime} :lt: ${M1}  :and: ${counter} :ge:1L
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-read port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-in port="up" place="place_up"/>
             <connect-out port="down" place="place_down"/>
             <connect-out port="out" place="place_minus"/>
@@ -153,7 +148,7 @@
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
                 <out name="out" type="modular_data"/>
-                <out name="bal2" type="list"/>
+                <out name="bal2" type="control"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
                     function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
@@ -164,60 +159,6 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <cinclude href="fstream"/>
-                    <!--<code><![CDATA[
-                        if(lhs.hashlead.size() == rhs.hashlead.size())
-                        {
-                            if(lhs.hashlead == rhs.hashlead)
-                            {
-                                std::string out_filename = fhg::util::scoped_dlhandle
-                                    (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                    .sym<decltype (singular_modular_lift)> ("singular_modular_lift")
-                                ( lhs.data,rhs.data,function_name,needed_library,base_filename,"1");
-                                out.data = out_filename;
-                                out.nb_prime = lhs.nb_prime + rhs.nb_prime;
-                                out.hashlead = lhs.hashlead;
-                            }
-                            else
-                            {
-                                std::cout << "in transition lift1";
-                                if(lhs.nb_prime >= rhs.nb_prime)
-                                { 
-                                    out = lhs;
-                                }
-                                else
-                                {
-                                    out = rhs;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            std::cout << "in transition lift1";
-                            if(lhs.nb_prime >= rhs.nb_prime)
-                            { 
-                                out = lhs;
-                            }
-                            else
-                            {
-                                out = rhs;
-                            }
-                        }
-                        if(lhs.nb_prime == 1 and rhs.nb_prime == 1)
-                        {
-                            for (unsigned long i (0); i<2; ++i)
-                            {
-                                bal2.emplace_back(we::type::literal::control{});
-                            }
-                        }
-                        else
-                        {
-                                //if(lhs.nb_prime == 1 or rhs.nb_prime ==1)
-                                //{
-                                    bal2.emplace_back(we::type::literal::control{});
-                                //}
-                        }
-                    ]]>
-                    </code>-->
                     <code><![CDATA[
                         std::cout << " in singular_..._lift1 " << std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
@@ -291,17 +232,7 @@
                                     out = rhs;
                                 }
                             }
-                            if(lhs.nb_prime == 1 and rhs.nb_prime == 1)
-                            {
-                                for (unsigned long i (0); i<2; ++i)
-                                {
-                                    bal2.emplace_back(we::type::literal::control{});
-                                }
-                            }
-                            else
-                            {
-                                bal2.emplace_back(we::type::literal::control{});
-                            }
+                            bal2 = we::type::literal::control{};
                         }
                         ]]>
                     </code>
@@ -314,7 +245,7 @@
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out-many port="bal2" place="place_bal"/>
+            <connect-out port="bal2" place="place_bal"/>
             <connect-out port="out" place="place_mod_res"/>
         </transition>
 
@@ -334,17 +265,6 @@
                     ${up} := [];
                     ${bal} := [];
                 </expression>
-                <!--<module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="extraction(pre_out,right,counter,up,down)">
-                    <cinclude href="iostream"/>
-                    <code><![CDATA[
-                        pre_out = right;
-                        up = we::type::literal::control{};
-                        //std::cout <<"extraction";
-                    ]]>
-                    </code>
-                    </module>-->
             </defun>
             <connect-read port="counter" place="place_counter"/>
             <connect-in port="down" place="place_down"/>
@@ -370,10 +290,6 @@
             <defun>
                 <inout name="counter" type="long"/>
                 <in name="minus" type="control"/>
-                <!--<expression>
-                    ${counter} := ${counter} + 1UL;
-                    ${mod_res} := ${pre_count};
-                </expression>-->
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
                     function="counting2(counter)">
@@ -424,16 +340,6 @@
                 <expression>
                     ${out} := ${pre_out};
                 </expression>
-                <!--<module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="extract(pre_out,out)">
-                    <cinclude href="iostream"/>
-                    <code><![CDATA[
-                        out = pre_out;
-                        std::cout << "Out : " << pre_out.nb_prime;
-                    ]]>
-                    </code>
-                </module>-->
             </defun>
             <connect-in port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_out"/>
