@@ -25,7 +25,7 @@ proc mod_init()
   LIB "modstd.lib";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procFarey, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes");
+  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procSplit, string procFarey, string procAppend, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes");
   newstruct("token", "list fieldnames, list data");
 }
  
@@ -65,7 +65,9 @@ RETURN: a configToken containing a modularConfigToken with the standard
   ct.options.library = "modulargp.lib";
   ct.options.procGenNextPrime="genNextPrime";
   ct.options.procLift = "liftt";
+  ct.options.procSplit = "splitt";
   ct.options.procFarey = "fareyy";
+  ct.options.procAppend = "appendGenerator";
   ct.options.procCompatible = "compatible";
   ct.options.procCompare= "compare";
   ct.options.nbPrimes = nb_lines*gc.options.procspernode;
@@ -127,7 +129,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   {
     loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procFarey, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2);
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procSplit, pc.options.procFarey,pc.options.procAppend, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2);
     return(sm_result);
 }
 

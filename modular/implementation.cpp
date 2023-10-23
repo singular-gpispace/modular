@@ -90,7 +90,7 @@ std::string  singular_modular_lift( std::string const& left
 }
 
 
-std::string singular_modular_farey (std::string const& lifted_res
+/*std::string singular_modular_farey (std::string const& lifted_res
                                    , std::string const& function_name
                                    , std::string const& needed_library
                                    , std::string const& base_filename
@@ -108,7 +108,77 @@ std::string singular_modular_farey (std::string const& lifted_res
   out = call_user_proc(function_name, needed_library, args);
   out_filename = serialize(out.second, base_filename);
   return out_filename;
+}*/
+
+std::pair<std::vector<std::string>, unsigned long> singular_modular_split(std::string const& in,
+                                                std::string const& function_name,
+                                                std::string const& needed_library,
+                                                std::string const& base_filename)
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> input;
+  std::pair<int, lists> out;
+  std::vector<std::string> vec;
+  std::string ids;
+  unsigned long total_generator;
+	ids = worker();
+  input = deserialize(in,ids);
+  ScopedLeftv args( input.first, lCopy(input.second));
+  out = call_user_proc(function_name, needed_library, args);
+  lists u = (lists)out.second->m[3].Data();//ring-lists-ring-lists
+  for(int i (0); i<lSize(u); i++)
+  {
+    vec.push_back(serialize((lists)u->m[i].Data(), base_filename));
+  } 
+  total_generator = (unsigned long) (int) (long) u->m[lSize(u)].Data();
+  return {vec, total_generator};
 }
+
+std::pair<std::string, unsigned long> singular_modular_farey(std::string const& in,
+                                                             std::string const& function_name,
+                                                             std::string const& needed_library,
+                                                             std::string const& base_filename)
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> input;
+  std::pair<int, lists> out;
+  std::string out_filename;
+  std::string ids;
+  unsigned long N;
+	ids = worker();
+  input = deserialize(in,ids);
+  out = call_user_proc(function_name, needed_library, input.first, input.second);
+  lists u = (lists) out.second->m[3].Data();
+  N =(unsigned long) (int) (long) u->m[1].Data();
+  out_filename = serialize(out.second, base_filename);
+  return {out_filename,N};
+}
+
+std::string  singular_modular_append(std::string const& left
+                                    , std::string const& right
+                                    , std::string const& function_name
+                                    , std::string const& needed_library
+                                    , std::string const& base_filename)
+{
+  init_singular (config::library().string());
+  load_singular_library(needed_library);
+  std::pair<int, lists> leftt;
+  std::pair<int,lists> rightt;
+  std::pair<int, lists> out;
+  std::string out_filename;
+	std::string ids;
+	ids = worker();
+	leftt = deserialize(left,ids);
+	rightt = deserialize(right,ids);
+	ScopedLeftv args(leftt.first, lCopy(leftt.second));
+	ScopedLeftv arg(args,rightt.first,lCopy(rightt.second));
+  out = call_user_proc(function_name, needed_library, args);
+  out_filename = serialize(out.second, base_filename);
+  return out_filename;
+}
+
 
 bool singular_modular_compatible (std::string const& result_farey
                                    , std::string const& test_result

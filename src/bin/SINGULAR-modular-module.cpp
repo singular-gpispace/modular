@@ -94,7 +94,9 @@ namespace
       std::string neededLibrary() const;
       std::string functionNameCompute() const;
 			std::string functionNameLift() const;
+      std::string functionNameSplit() const;
 			std::string functionNameFarey() const;
+      std::string functionNameAppend() const;
       std::string functionNameCompatible() const;
       std::string functionNameCompare() const;
       std::string functionNameGenNextPrime() const;
@@ -122,7 +124,9 @@ namespace
       std::string functionnamegennextprime;
       std::string functionnamecompute;
 			std::string functionnamelift;
+      std::string functionnamesplit;
 			std::string functionnamefarey;
+      std::string functionnameappend;
       std::string functionnamecompatible;
       std::string functionnamecompare;
       
@@ -200,8 +204,16 @@ namespace
 		return functionnamelift;
 	}
 
+  std::string ArgumentState::functionNameSplit() const {
+		return functionnamesplit;
+	}
+
 	std::string ArgumentState::functionNameFarey() const {
 		return functionnamefarey;
+	}
+
+  std::string ArgumentState::functionNameAppend() const {
+		return functionnameappend;
 	}
 
   std::string ArgumentState::functionNameCompatible() const {
@@ -280,31 +292,39 @@ namespace
                                              STRING_CMD,
                                              "string",
                                              "function name lift"))
-	, functionnamefarey (require_argument<11, char*> (args,
+  , functionnamesplit (require_argument<11, char*> (args,
+                                             STRING_CMD,
+                                             "string",
+                                             "function name split"))                                         
+	, functionnamefarey (require_argument<12, char*> (args,
                                            STRING_CMD,
                                            "string",
                                            "function name farey"))
-  , functionnamecompatible (require_argument<12, char*> (args,
+  , functionnameappend (require_argument<13, char*> (args,
+                                             STRING_CMD,
+                                             "string",
+                                             "function name append"))
+  , functionnamecompatible (require_argument<14, char*> (args,
                                             STRING_CMD,
                                             "string",
                                             "function name compatible"))
-  , functionnamecompare (require_argument<13, char*> (args,
+  , functionnamecompare (require_argument<15, char*> (args,
                                             STRING_CMD,
                                             "string",
                                             "function name compare"))
-	, bal1_value (require_argument<14, long> (args,
+	, bal1_value (require_argument<16, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal1"))
-	, bal2_value (require_argument<15, long> (args,
+	, bal2_value (require_argument<17, long> (args,
                                          INT_CMD,
                                          "int",
                                          "number of tokens on bal2"))
-  , M1_value (require_argument<16, unsigned long> (args,
+  , M1_value (require_argument<18, unsigned long> (args,
                                            INT_CMD,
                                            "int",
                                            "value of M1"))
-  , M2_value (require_argument<17, unsigned long>(args,
+  , M2_value (require_argument<19, unsigned long>(args,
                                           INT_CMD,
                                           "int",
                                           "value of M2"))
@@ -483,7 +503,9 @@ try
     values_on_ports.emplace("function_name_genNextPrime",as.functionNameGenNextPrime());
 		values_on_ports.emplace("function_name_compute", as.functionNameCompute());
 		values_on_ports.emplace("function_name_lift", as.functionNameLift());
+    values_on_ports.emplace("function_name_split", as.functionNameSplit());
 		values_on_ports.emplace("function_name_farey", as.functionNameFarey());
+    values_on_ports.emplace("function_name_append", as.functionNameAppend());
     values_on_ports.emplace("function_name_compatible", as.functionNameCompatible());
     values_on_ports.emplace("function_name_compare", as.functionNameCompare());
 		values_on_ports.emplace("needed_library",as.neededLibrary());

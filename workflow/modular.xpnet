@@ -7,7 +7,9 @@
     <in name="last_prime" type="int" place="place_last_prime"/>
     <in name="function_name_compute" type="string" place="place_function_name_compute"/>
     <in name="function_name_lift" type="string" place="place_function_name_lift"/>
+    <in name="function_name_split" type="string" place="place_function_name_split"/>
 	<in name="function_name_farey" type="string" place="place_function_name_farey"/>
+    <in name="function_name_append" type="string" place="place_function_name_append"/>
     <in name="function_name_compatible" type="string" place="place_function_name_compatible"/>
     <in name="function_name_compare" type="string" place="place_function_name_compare"/>
     <in name="function_name_genNextPrime" type="string" place="place_function_name_genNextPrime"/>
@@ -38,7 +40,9 @@
 		<place name="place_mod_input" type="mod_input_data"/>
 		<place name="place_function_name_compute" type="string"/>
 		<place name="place_function_name_lift" type="string"/>
+        <place name="place_function_name_split" type="string"/>
 		<place name="place_function_name_farey" type="string"/>
+        <place name="place_function_name_append" type="string"/>
         <place name="place_function_name_compatible" type="string"/>
         <place name="place_function_name_compare" type="string"/>
         <place name="place_function_name_genNextPrime" type="string"/>
@@ -341,7 +345,9 @@
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
             <place-map virtual="place_one" real="place_test"/>
             <place-map virtual="place_rand_res" real="place_rand_res"/>
+            <place-map virtual="place_function_name_split" real="place_function_name_split"/>
             <place-map virtual="place_function_name_farey" real="place_function_name_farey"/>
+            <place-map virtual="place_function_name_append" real="place_function_name_append"/>
             <place-map virtual="place_function_name_compatible" real="place_function_name_compatible"/>
             <place-map virtual="place_function_name_compare" real="place_function_name_compare"/>
             <place-map virtual="place_implementation" real="place_implementation"/>

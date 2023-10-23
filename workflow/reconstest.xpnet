@@ -5,7 +5,9 @@
     <tunnel name="place_rand_res" type="result_bool_type" place="place_rand_res"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
+    <tunnel name="place_function_name_split" type="string" place="place_function_name_split"/>
     <tunnel name="place_function_name_farey" type="string" place="place_function_name_farey"/>
+    <tunnel name="place_function_name_append" type="string" place="place_function_name_append"/>
     <tunnel name="place_function_name_compatible" type="string" place="place_function_name_compatible"/>
     <tunnel name="place_function_name_compare" type="string" place="place_function_name_compare"/>
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
@@ -17,13 +19,27 @@
         <place name="place_implementation" type="string" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_needed_library" type="string" virtual="true"/>
+        <place name="place_function_name_split" type="string" virtual="true"/>
         <place name="place_function_name_farey" type="string" virtual="true"/>
+        <place name="place_function_name_append" type="string" virtual="true"/>
         <place name="place_function_name_compatible" type="string" virtual="true"/>
         <place name="place_function_name_compare" type="string" virtual="true"/>
         <place name="place_result_farey" type="result_bool_type"/>
         <place name="place_result_farey_afterTest" type="result_bool_testToken_type"/>  
 
-        <transition name="farey">
+        <transition name="parallel_farey" inline="true">
+            <include-function href="parallel_farey.xpnet"/>
+            <place-map virtual="place_lifted_res" real="place_lifted_res"/>
+            <place-map virtual="place_result_farey" real="place_result_farey"/>
+            <place-map virtual="place_function_name_farey" real="place_function_name_farey"/>
+            <place-map virtual="place_function_name_split" real="place_function_name_split"/>
+            <place-map virtual="place_function_name_append" real="place_function_name_append"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+        </transition>
+        
+        <!--<transition name="farey">
             <defun>
                 <require key="worker" mandatory="true"/>
                 <in name="lifted_res" type="modular_data"/>
@@ -40,6 +56,7 @@
 		            <cinclude href="iostream"/>
                     <code><![CDATA[  
 			            std::cout <<  " in singular_..._farey "<< std::endl;
+                        std::cout << lifted_res.nb_prime << std::endl;
                         out.farey_lift = fhg::util::scoped_dlhandle
                                 (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                 .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
@@ -57,7 +74,7 @@
             <connect-read port="function_name" place="place_function_name_farey"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-out port="out" place="place_result_farey"/>
-        </transition>
+        </transition>-->
 
         <transition name="compatible">
             <defun>
