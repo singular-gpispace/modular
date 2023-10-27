@@ -1,4 +1,4 @@
-<defun name="lift">    
+<defun name="newlift">    
     <require key="worker" mandatory="true"/>
     <tunnel name="place_in" type="modular_data" place="place_in"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
@@ -12,11 +12,7 @@
 
     <net>
         <place name="place_in" type="modular_data" virtual="true"/>
-        <place name="place_pre_count" type="control"/>
-        <place name="place_bin" type="control"/>
-        <place name="place_bin1" type="control"/>
         <place name="place_out" type="modular_data" virtual="true"/>
-        <place name="place_pre_out" type="modular_data"/>
         <place name="place_bal" type="control" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_implementation" type="string" virtual="true"/>
@@ -25,120 +21,74 @@
         <place name="place_eureka_group" type="string" virtual="true"/>
         <place name="place_input_M1" type="unsigned long" virtual="true"/>
         <place name="place_mod_res" type="modular_data"/>
-        <place name="place_counter" type="long">
-            <token><value>0L</value></token>
+        <place name="place_mod_res1" type="modular_data"/>
+        <place name="place_counter" type="unsigned long">
+            <token><value>0UL</value></token>
         </place>
         <place name="place_up" type="control">
             <token><value>[]</value></token>
         </place>
         <place name="place_down" type="control"/>
-        <place name="place_minus" type="control"/>
-        <place name="place_minus1" type="control"/>
         <place name="place_right" type="modular_data"/>
         <place name="place_left" type="modular_data"/>
 
-        <transition name="pre_count">
+        <transition name="counting">
             <defun>
                 <in name="in" type="modular_data"/>
+                <inout name="counter" type="unsigned long"/>
                 <out name="mod_res" type="modular_data"/>
-                <out name="pre_count" type="control"/>
                 <expression>
-                    ${pre_count} := [];
+                    ${counter} := ${counter} + 1UL;
                     ${mod_res} := ${in};
                 </expression>
             </defun>
             <connect-in port="in" place="place_in"/>
-            <connect-out port="mod_res" place="place_mod_res"/>
-            <connect-out port="pre_count" place="place_pre_count"/>
-        </transition>
-
-        <transition name="counting">
-            <defun>
-                <in name="pre_count" type="control"/>
-                <inout name="counter" type="long"/>
-                <expression>
-                    ${counter} := ${counter} + 1L;
-                </expression>
-            </defun>
-            <connect-in port="pre_count" place="place_pre_count"/>
             <connect-inout port="counter" place="place_counter"/>
-        </transition>
-
-        <transition name="pre_out_transition">
-            <defun>
-                <in name="mod_res" type="modular_data"/>
-                <in name="counter" type="long"/>
-                <in name="M1" type="unsigned long"/>
-		<out name="bal2" type="control"/>
-                <out name="pre_out" type="modular_data"/>
-                <out name="out" type="control"/>
-                <expression>
-                    ${pre_out} := ${mod_res};
-                    ${out} := [];
-		    ${bal2} := [];
-                </expression>
-                <condition>
-                   ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
-                </condition>
-            </defun>
-            <connect-in port="mod_res" place="place_mod_res"/>
-            <connect-read port="counter" place="place_counter"/>
-            <connect-read port="M1" place="place_input_M1"/>
-            <connect-out port="pre_out" place="place_pre_out"/>
-            <connect-out port="out" place="place_minus"/>
-	    <connect-out port="bal2" place="place_bal"/>
-        </transition>
-
-        
-
-        <transition name="lhs">
-            <defun>
-                <in name="mod_res" type="modular_data"/>
-                <in name="down" type="control"/>
-                <in name="M1" type="unsigned long"/>
-                <out name="up" type="control"/>
-                <out name="left" type="modular_data"/>
-                <expression>
-                    ${left} := ${mod_res};
-                    ${up} := [];
-                </expression>
-                <condition>
-                    ${mod_res.nb_prime} :lt: ${M1}
-                </condition>
-            </defun>
-            <connect-in port="mod_res" place="place_mod_res"/>
-            <connect-in port="down" place="place_down"/>
-            <connect-read port="M1" place="place_input_M1"/>
-            <connect-out port="up" place="place_up"/>
-            <connect-out port="left" place="place_left"/>
+            <connect-out port="mod_res" place="place_mod_res"/>
         </transition>
 
         <transition name="rhs">
             <defun>
                 <in name="mod_res" type="modular_data"/>
-                <in name="counter" type="long"/>
+                <in name="counter" type="unsigned long"/>
                 <in name="up" type="control"/>
-                <in name="M1" type="unsigned long"/>
-                <out name="out" type="control"/>
                 <out name="down" type="control"/>
                 <out name="right" type="modular_data"/>
                 <expression>
                     ${right} := ${mod_res};
-                    ${out} := [];
                     ${down} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :lt: ${M1}  :and: ${counter} :ge:1L
+                    ${counter} :ge: 2UL
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
             <connect-read port="counter" place="place_counter"/>
-            <connect-read port="M1" place="place_input_M1"/>
             <connect-in port="up" place="place_up"/>
             <connect-out port="down" place="place_down"/>
-            <connect-out port="out" place="place_minus"/>
             <connect-out port="right" place="place_right"/>
         </transition>
+
+        <transition name="lhs">
+            <defun>
+                <in name="mod_res" type="modular_data"/>
+                <in name="down" type="control"/>
+                <inout name="counter" type="unsigned long"/>
+                <out name="up" type="control"/>
+                <out name="left" type="modular_data"/>
+                <expression>
+                    ${left} := ${mod_res};
+                    ${up} := [];
+                    ${counter} := ${counter} - 2UL;
+                </expression>
+            </defun>
+            <connect-in port="mod_res" place="place_mod_res"/>
+            <connect-inout port="counter" place="place_counter"/>
+            <connect-in port="down" place="place_down"/>
+            <connect-out port="up" place="place_up"/>
+            <connect-out port="left" place="place_left"/>
+        </transition>
+
 
         <transition name="lift">
             <defun>
@@ -157,9 +107,6 @@
                     function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
                     <eureka-group>${eureka_group}</eureka-group>
                     <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <cinclude href="iostream"/>
-                    <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
@@ -252,103 +199,47 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
             <connect-out port="bal2" place="place_bal"/>
-            <connect-out port="out" place="place_mod_res"/>
+            <connect-out port="out" place="place_mod_res1"/>
         </transition>
 
         <transition name="extraction">
             <defun>
-                <in name="counter" type="long"/>
-                <in name="right" type="modular_data"/>
-                <in name="down" type="control"/>
-                <out name="up" type="control"/>
+                <in name="mod_res1" type="modular_data"/>
+                <in name="M1" type="unsigned long"/>
                 <out name="bal" type="control"/>
-                <out name="pre_out" type="modular_data"/>
+                <out name="out" type="modular_data"/>
                 <condition>
-                    ${counter} :eq: 0L 
+                    ${mod_res1.nb_prime} :ge: ${M1} 
                 </condition>
                 <expression>
-                    ${pre_out} := ${right};
-                    ${up} := [];
+                    ${out} := ${mod_res1};
                     ${bal} := [];
                 </expression>
             </defun>
-            <connect-read port="counter" place="place_counter"/>
-            <connect-in port="down" place="place_down"/>
-            <connect-in port="right" place="place_right"/>
-            <connect-out port="up" place="place_up"/>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="bal" place="place_bal"/>
-            <connect-out port="pre_out" place="place_pre_out"/>
-        </transition>
-
-        <transition name="bridge">
-            <defun>
-                <out name="minus1" type="control"/>
-                <in name="minus" type="control"/>
-                <expression>
-                    ${minus1} :=[];
-                </expression>
-            </defun>
-            <connect-out port="minus1" place="place_minus1"/>
-            <connect-in port="minus" place="place_minus"/>
-        </transition>
-
-        <transition name="minus1">
-            <defun>
-                <inout name="counter" type="long"/>
-                <in name="minus" type="control"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="counting2(counter)">
-                    <cinclude href="iostream"/>
-                    <code><![CDATA[
-                        counter = counter - 1;
-                    ]]>
-                    </code>
-                </module>
-            </defun>
-            <connect-inout port="counter" place="place_counter"/>
-            <connect-in port="minus" place="place_minus1"/>
-        </transition>
-
-        <transition name="move_bin">
-            <defun>
-                <in name="minus" type="control"/>
-                <in name="pre_count" type="control"/>
-                <out name="bin" type="control"/>
-                <expression>
-                    ${bin} := [];
-                </expression>
-	   </defun>
-           <connect-out port="bin" place="place_bin"/>
-	   <connect-in port="minus" place="place_minus"/>
-	   <connect-in port="pre_count" place="place_pre_count"/>
-        </transition>
-
-        <transition name="move_bin1">
-            <defun>
-                <in name="minus" type="control"/>
-                <in name="pre_count" type="control"/>
-                <out name="bin" type="control"/>
-                <expression>
-                    ${bin} := [];
-                </expression>
-            </defun>
-            <connect-in port="minus" place="place_minus1"/>
-            <connect-in port="pre_count" place="place_pre_count"/>
-            <connect-out port="bin" place="place_bin1"/>
-        </transition>
-
-        <transition name="out_transition">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="pre_out" type="modular_data"/>
-                <out name="out" type="modular_data"/>
-                <expression>
-                    ${out} := ${pre_out};
-                </expression>
-            </defun>
-            <connect-in port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_out"/>
+        </transition>
+
+        <transition name="back">
+            <defun>
+                <in name="mod_res1" type="modular_data"/>
+                <inout name="counter" type="unsigned long"/>
+                <in name="M1" type="unsigned long"/>
+                <out name="mod_res" type="modular_data"/>
+                <condition>
+                    ${mod_res1.nb_prime} :lt: ${M1}
+                </condition>
+                <expression>
+                    ${mod_res} := ${mod_res1};
+                    ${counter} := ${counter} + 1UL;
+                </expression>
+            </defun>
+            <connect-in port="mod_res1" place="place_mod_res1"/>
+            <connect-inout port="counter" place="place_counter"/>
+            <connect-read port="M1" place="place_input_M1"/>
+            <connect-out port="mod_res" place="place_mod_res"/>
         </transition>
     </net>
 </defun>

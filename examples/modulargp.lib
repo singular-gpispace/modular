@@ -123,8 +123,9 @@
             def J = farey(I,N);
             system("--cpus",n);
             token t;
-            t.fieldnames = list("farey_lift");
+            t.fieldnames = list("farey_lift","Nb_generators");
             t.data[1] = J;
+            t.data[2] = size(J);
             return(t);
         }
 
@@ -183,6 +184,53 @@
             t.data[1] = int(1);
             return(t);
        }
+
+
+        proc splitt(token in)
+        {
+            ideal I = in.data[1];
+            bigint p = in.data[2];
+            token out;
+            token t;
+            int i;
+            int n = size(I);
+            int m = n div 20;
+            int final = n mod 20;
+            for(i=1; i<=m; i++)
+            {
+                t.fieldnames = list("generator","modulus");
+                t.data[1] = ideal(I[((i-1)*20+1) .. (i*20)]);
+                t.data[2] = p;
+                out.fieldnames[i] = "generator";
+                out.data[i] = t;
+            }
+            if (final != 0)
+            {
+                t.fieldnames = list("generator","modulus");
+                t.data[1] = ideal(I[(20*m+1) .. (20*m+final)]);
+                t.data[2] = p;
+                out.fieldnames[m+1] = "generator";
+                out.data[m+1] = t;
+            }
+            //t.fieldnames = list("total_number_generator");
+            //t.data[1] = n;
+            out.fieldnames[size(out.fieldnames)+1] = "total_number_generator";
+            out.data[size(out.data) + 1] = n;
+            return(out);
+        }
+
+        proc appendGenerator(token left, token right)
+        {
+            LIB "general.lib";
+            def I = right.data[1];
+            def J = left.data[1];
+            ideal K = I,J;
+            K = sort(K)[1];
+            token out;
+            out.fieldnames[1] = "generator";
+            out.data[1] = K;
+            return(out);
+        }
 
 
 

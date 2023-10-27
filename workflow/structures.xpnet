@@ -27,4 +27,15 @@
 		<field name="testToken" type="string"/>
 	</struct>
 
+	<struct name="chr_lift_info">
+		<field name="chr_lift" type="string"/>
+		<field name="nb_prime" type="unsigned long"/>
+		<field name="hashlead" type="string"/>
+    </struct>
+
+	<struct name="generator_data">
+        <field name="data" type="string"/>
+        <field name="nb_generator" type="unsigned long"/>
+    </struct>
+
 </structs>
