@@ -109,7 +109,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                    <code><![CDATA[
-                        std::cout << " in singular_..._genPrime " << std::endl;
+                        //std::cout << " in singular_..._genPrime " << std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -200,7 +200,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <code><![CDATA[
-                        std::cout << " in singular_..._compute " <<  std::endl;
+                      // std::cout << " in singular_..._compute " <<  std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -300,7 +300,7 @@
         </transition>
 
        <transition name="lift" inline="true">
-            <include-function href="newlift.xpnet"/>
+            <include-function href="lift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>

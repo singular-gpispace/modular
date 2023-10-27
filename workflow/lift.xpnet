@@ -69,14 +69,16 @@
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
                 <in name="M1" type="unsigned long"/>
+		<out name="bal2" type="control"/>
                 <out name="pre_out" type="modular_data"/>
                 <out name="out" type="control"/>
                 <expression>
                     ${pre_out} := ${mod_res};
                     ${out} := [];
+		    ${bal2} := [];
                 </expression>
                 <condition>
-                    ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
+                   ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
                 </condition>
             </defun>
             <connect-in port="mod_res" place="place_mod_res"/>
@@ -84,6 +86,7 @@
             <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_minus"/>
+	    <connect-out port="bal2" place="place_bal"/>
         </transition>
 
         
@@ -157,10 +160,13 @@
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
+                    <cinclude href="util-generic/dynamic_linking.hpp"/>
+                    <cinclude href="iostream"/>
+                    <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <cinclude href="fstream"/>
                     <code><![CDATA[
-                        std::cout << " in singular_..._lift1 " << std::endl;
+                        //std::cout << " in singular_..._lift1 " << std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -312,10 +318,10 @@
                 <expression>
                     ${bin} := [];
                 </expression>
-            </defun>
-            <connect-in port="minus" place="place_minus"/>
-            <connect-in port="pre_count" place="place_pre_count"/>
-            <connect-out port="bin" place="place_bin"/>
+	   </defun>
+           <connect-out port="bin" place="place_bin"/>
+	   <connect-in port="minus" place="place_minus"/>
+	   <connect-in port="pre_count" place="place_pre_count"/>
         </transition>
 
         <transition name="move_bin1">

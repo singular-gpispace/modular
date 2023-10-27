@@ -256,6 +256,8 @@
                 <cinclude href="unistd.h"/>
                 <code><![CDATA[
                     std::cout << " in singular_..._lift3 "  << std::endl;
+		    std::cout << "nb_prime_accumulator :" <<  accumulator.nb_prime << std::endl;
+		    std::cout << "nb_prme_in :" << mod_res4.nb_prime << std::endl;
                     up = we::type::literal::control{};
                     counter = counter - 1;
                     if(mod_res4.hashlead.size() == accumulator.hashlead.size())

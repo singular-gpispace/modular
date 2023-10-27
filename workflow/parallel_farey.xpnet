@@ -94,7 +94,7 @@
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
-                        std::cout << "in singular_.._farey" << std::endl;
+                       // std::cout << "in singular_.._farey" << std::endl;
                         std::pair<std::string, unsigned long> result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
@@ -175,7 +175,7 @@
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
-                        std::cout << "in singular_.._append" << std::endl;
+                       // std::cout << "in singular_.._append" << std::endl;
                         std::string result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_append)> ("singular_modular_append")
