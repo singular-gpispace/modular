@@ -169,17 +169,17 @@
             int i;
             for (i = ncols(I); i > 0; i--)
             {
-                if (reduce(I[i], J, 1) != 0)
+                if (reduce(I[i], J[i], 1) != 0)
                 {
                     setring(br);
                     return(t);
                 }
             }
-            /* test if J is in I */
+            /* test if J is in I 
             for (i = ncols(J); i > 0; i--)
             {
                 if (reduce(J[i], I, 1) != 0) { setring(br); return(t); }
-            }
+            }*/
             setring br;
             t.data[1] = int(1);
             return(t);
@@ -194,12 +194,12 @@
             token t;
             int i;
             int n = size(I);
-            int m = n div 20;
-            int final = n mod 20;
+            int m = n div 1;
+            int final = n mod 1;
             for(i=1; i<=m; i++)
             {
                 t.fieldnames = list("generator","modulus");
-                t.data[1] = ideal(I[((i-1)*20+1) .. (i*20)]);
+                t.data[1] = ideal(I[((i-1)*1+1) .. (i*1)]);
                 t.data[2] = p;
                 out.fieldnames[i] = "generator";
                 out.data[i] = t;
@@ -207,7 +207,7 @@
             if (final != 0)
             {
                 t.fieldnames = list("generator","modulus");
-                t.data[1] = ideal(I[(20*m+1) .. (20*m+final)]);
+                t.data[1] = ideal(I[(1*m+1) .. (1*m+final)]);
                 t.data[2] = p;
                 out.fieldnames[m+1] = "generator";
                 out.data[m+1] = t;
