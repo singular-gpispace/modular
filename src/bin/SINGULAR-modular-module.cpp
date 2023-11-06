@@ -494,9 +494,7 @@ try
 		values_on_ports.emplace("input", as.baseFileName()+in_filename);
     
     lists lastToken = static_cast<lists> (as.pList()->m[as.numTasks()-1].data);
-    lists tokenvalue = (lists)omAlloc0Bin(slists_bin);
-    tokenvalue->Init(2);
-    tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
+    lists tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
     values_on_ports.emplace("last_prime",(int) (long) tokenvalue->m[0].Data());
 
 		values_on_ports.emplace("implementation", implementation.string());

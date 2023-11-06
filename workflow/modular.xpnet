@@ -36,6 +36,7 @@
         </place>
 		<place name="place_bal1" type="control"/>
 		<place name="place_bal2" type="control"/>
+        <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
 		<place name="place_function_name_compute" type="string"/>
@@ -87,6 +88,23 @@
         <connect-out-many port="bal2" place="place_bal2"/>
         </transition>
 
+        <transition name="count_bal">
+            <defun>
+                <in name="bal1" type="control"/>
+                <inout name="counter" type="long"/>
+                <expression>
+                    ${counter} := ${counter} + 1L;
+                    ${counter} := ${counter} mod 4L;
+                </expression>
+                <condition>
+                    ${counter} :lt: 3L
+                </condition>
+            </defun>
+            <connect-in port="bal1" place="place_bal1"/>
+            <connect-inout port="counter" place="place_count_bal1"/>
+        </transition>
+
+
         <transition name="genNextPrime">
             <defun>
                 <require key="worker" mandatory="true"/>
@@ -98,37 +116,51 @@
                 <in name="base_filename" type="string"/>
                 <in name="bal" type="control"/>
                 <in name="eureka_group" type="string"/>
-                <out name="prime" type="string"/>
+                <inout name="count_bal1" type="long"/>
+                <out name="prime" type="list"/>
                 <module name="singular_modular" require_function_unloads_without_rest="false" 
-                function="genNextPrime(input,last_prime,implementation,function_name,needed_library,base_filename,prime)" pass_context="true">
+                function="genNextPrime(input,last_prime,count_bal1,implementation,function_name,needed_library,base_filename,prime)" pass_context="true">
                 <eureka-group>${eureka_group}</eureka-group>
                 <cinclude href="share/include/modular_interface.hpp" />
                     <cinclude href="fstream"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
+                    <cinclude href="vector"/>
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                    <code><![CDATA[
-                        //std::cout << " in singular_..._genPrime " << std::endl;
+                        std::cout << " in singular_..._genPrime " << count_bal1<< std::endl;
+                        std::cout << last_prime << std::endl;   
+                        count_bal1 = count_bal1 + 1;
+                        count_bal1 = count_bal1 % 4;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
                                                          (base_filename));
-                        bool cancelled (false) ;
+                        /*bool cancelled (false) ;
                     
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
-                                {
+                                {*/
                                     std::ofstream of (filename,std::ios::binary);
-                                    boost::archive::binary_oarchive oa (of);
-                                    std::pair<std::string,int>  out
+                                    //boost::archive::binary_oarchive oa (of);
+                                    std::pair<std::vector<std::string>, int>  out
                                     (fhg::util::scoped_dlhandle
                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                         .sym<decltype (singular_modular_genNextPrime)> ("singular_modular_genNextPrime")
                                         ( input, last_prime, function_name, needed_library, base_filename));
-                                    oa << out.first;
-                                    oa << out.second; // save result
-                                }
+                                    of << out.first.size() << " ";
+                                    std::cout << "size of vector :" << out.first.size() << std::endl;
+                                    for(int i (0); i<out.first.size(); ++i)
+                                    {
+                                        of << out.first[i] << " ";
+                                        std::cout << out.first[i] << std::endl;
+                                    }
+                                    of << out.second;
+                                    of.close(); 
+                                    std::cout << "eto 1 " <<  "This is last prime " << out.second << std::endl;
+
+                                /*}
                                 , [&]
                                 {
                                     cancelled = true;
@@ -143,14 +175,32 @@
                                 }
                             );
                         if (!cancelled)
-                        {
+                        {*/
+                            std::cout << "filename " << filename << std::endl;
                             std::ifstream is (filename,std::ios::binary);
-                            boost::archive::binary_iarchive ia (is);
-                            ia >> prime; // read saved result
-                            ia >> last_prime;
-                        }
+                            //boost::archive::binary_iarchive ia (is);
+                            int N;
+                            std::cout << "eto3 " << std::endl;
+                            //std::string content;
+                            //is >> content;
+                            //std::cout <<  "content : " << content << std::endl;
+                            is >> N;
+                            std::cout << "output  : " << N << std::endl;
+                            std::string tmp;
+                            for(int i (0); i<N; ++i)
+                            {
+                                is >> tmp;
+                                std::cout << "output" << tmp << std::endl;
+                                prime.emplace_back(tmp);
+                            }
+                            is >> last_prime;
+                            
+                       // }
                         ]]></code>
                 </module>
+                <condition>
+                    ${count_bal1} :eq: 3L
+                </condition>
             </defun>
             <connect-read port="input" place="place_input"/>
             <connect-read port="implementation" place="place_implementation"/>
@@ -160,7 +210,8 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
             <connect-in port="bal" place="place_bal1"/>
-            <connect-out port="prime" place="place_prime"/>
+            <connect-inout port="count_bal1" place="place_count_bal1"/>
+            <connect-out-many port="prime" place="place_prime"/>
         </transition>
 
         <transition name="generate">
@@ -200,7 +251,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <code><![CDATA[
-                      // std::cout << " in singular_..._compute " <<  std::endl;
+                        std::cout << " in singular_..._compute " <<  std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -300,7 +351,7 @@
         </transition>
 
        <transition name="lift" inline="true">
-            <include-function href="lift.xpnet"/>
+            <include-function href="newlift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
