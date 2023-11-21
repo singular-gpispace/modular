@@ -94,10 +94,10 @@
                 <inout name="counter" type="long"/>
                 <expression>
                     ${counter} := ${counter} + 1L;
-                    ${counter} := ${counter} mod 4L;
+                    ${counter} := ${counter} mod 48L;
                 </expression>
                 <condition>
-                    ${counter} :lt: 3L
+                    ${counter} :lt: 47L
                 </condition>
             </defun>
             <connect-in port="bal1" place="place_bal1"/>
@@ -129,10 +129,9 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                    <code><![CDATA[
-                        std::cout << " in singular_..._genPrime " << count_bal1<< std::endl;
-                        std::cout << last_prime << std::endl;   
+                        std::cout << " in singular_..._genPrime " <<  std::endl;
                         count_bal1 = count_bal1 + 1;
-                        count_bal1 = count_bal1 % 4;
+                        count_bal1 = count_bal1 % 48;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -150,15 +149,12 @@
                                         .sym<decltype (singular_modular_genNextPrime)> ("singular_modular_genNextPrime")
                                         ( input, last_prime, function_name, needed_library, base_filename));
                                     of << out.first.size() << " ";
-                                    std::cout << "size of vector :" << out.first.size() << std::endl;
                                     for(int i (0); i<out.first.size(); ++i)
                                     {
                                         of << out.first[i] << " ";
-                                        std::cout << out.first[i] << std::endl;
                                     }
                                     of << out.second;
                                     of.close(); 
-                                    std::cout << "eto 1 " <<  "This is last prime " << out.second << std::endl;
 
                                 /*}
                                 , [&]
@@ -176,21 +172,14 @@
                             );
                         if (!cancelled)
                         {*/
-                            std::cout << "filename " << filename << std::endl;
                             std::ifstream is (filename,std::ios::binary);
                             //boost::archive::binary_iarchive ia (is);
                             int N;
-                            std::cout << "eto3 " << std::endl;
-                            //std::string content;
-                            //is >> content;
-                            //std::cout <<  "content : " << content << std::endl;
                             is >> N;
-                            std::cout << "output  : " << N << std::endl;
                             std::string tmp;
                             for(int i (0); i<N; ++i)
                             {
                                 is >> tmp;
-                                std::cout << "output" << tmp << std::endl;
                                 prime.emplace_back(tmp);
                             }
                             is >> last_prime;
@@ -199,7 +188,7 @@
                         ]]></code>
                 </module>
                 <condition>
-                    ${count_bal1} :eq: 3L
+                    ${count_bal1} :eq:47L
                 </condition>
             </defun>
             <connect-read port="input" place="place_input"/>
@@ -251,7 +240,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <code><![CDATA[
-                        std::cout << " in singular_..._compute " <<  std::endl;
+                       // std::cout << " in singular_..._compute " <<  std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -350,8 +339,8 @@
             <connect-out port="extract_test" place="place_test"/>
         </transition>
 
-       <transition name="lift" inline="true">
-            <include-function href="newlift.xpnet"/>
+       <transition name="newlift" inline="true">
+            <include-function href="lift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>

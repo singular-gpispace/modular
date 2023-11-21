@@ -31,7 +31,6 @@ std::pair<std::vector<std::string>, int> singular_modular_genNextPrime(std::stri
   {
     vec.push_back(serialize((lists)u->m[i].Data(), base_filename));
   } 
-  std::cout << "size of vec in implementation : " << vec.size() << std::endl;
 	int nextPrime = (int) (long)u->m[lSize(u)].Data();
   return {vec, nextPrime};
 
