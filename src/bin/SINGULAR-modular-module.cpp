@@ -100,8 +100,8 @@ namespace
       std::string functionNameCompatible() const;
       std::string functionNameCompare() const;
       std::string functionNameGenNextPrime() const;
-			int bal1() const;
-			int bal2() const;
+			long bal1() const;
+			long bal2() const;
       unsigned long M1() const;
       unsigned long M2() const;
 
@@ -130,8 +130,8 @@ namespace
       std::string functionnamecompatible;
       std::string functionnamecompare;
       
-			int bal1_value;
-			int bal2_value;
+			long bal1_value;
+			long bal2_value;
       unsigned long M1_value;
       unsigned long M2_value;
       int out_token;
@@ -149,11 +149,11 @@ namespace
     return procspernode;
   }
 
-	int ArgumentState::bal1() const {
+	long ArgumentState::bal1() const {
 	  return bal1_value;
 	}
 
-	int ArgumentState::bal2() const {
+	long ArgumentState::bal2() const {
 	  return bal2_value;
 	}
 
@@ -314,11 +314,11 @@ namespace
                                             "function name compare"))
 	, bal1_value (require_argument<16, long> (args,
                                          INT_CMD,
-                                         "int",
+                                         "long",
                                          "number of tokens on bal1"))
 	, bal2_value (require_argument<17, long> (args,
                                          INT_CMD,
-                                         "int",
+                                         "long",
                                          "number of tokens on bal2"))
   , M1_value (require_argument<18, unsigned long> (args,
                                            INT_CMD,
@@ -494,9 +494,7 @@ try
 		values_on_ports.emplace("input", as.baseFileName()+in_filename);
     
     lists lastToken = static_cast<lists> (as.pList()->m[as.numTasks()-1].data);
-    lists tokenvalue = (lists)omAlloc0Bin(slists_bin);
-    tokenvalue->Init(2);
-    tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
+    lists tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
     values_on_ports.emplace("last_prime",(int) (long) tokenvalue->m[0].Data());
 
 		values_on_ports.emplace("implementation", implementation.string());
