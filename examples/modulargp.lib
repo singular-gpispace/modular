@@ -21,14 +21,31 @@
         proc genNextPrime(token input, int p)
         {
             LIB "modstd.lib";
+            def I = input.data[1];
             token t;
-            p = prime(p-1);
-            while(!primeTest(input.data[1],p))
+            token tok;
+            int temp = p;
+            int lastt;
+            while( size(t.data) < 11 )
             {
-                p = prime(p-1);
+               
+                if(temp == 2)
+                {
+                    if (size(t.data) == 0 ) {ERROR("no more primes");}
+                    else {break;} 
+                }
+                temp = prime(temp-1);
+                if (primeTest(I,temp))
+                {   
+                    t.fieldnames[size(t.fieldnames)+1] = "prime token";
+                    tok.fieldnames = list("integer");
+                    tok.data[1] = temp;
+                    t.data[size(t.data)+1] = tok;
+                }
             }
-            t.fieldnames = list("int");
-            t.data = list(p);
+            t.fieldnames[size(t.fieldnames)+1] = "last_prime";
+            lastt = tok.data[1];  
+            t.data[size(t.data) +1]  = lastt;
             return(t);
         }
 
@@ -167,19 +184,19 @@
             t.data[1] = int(0);
             /* test if I is in J */
             int i;
-            for (i = ncols(I); i > 0; i--)
+            /*for (i = ncols(I); i > 0; i--)
             {
                 if (reduce(I[i], J[i], 1) != 0)
                 {
                     setring(br);
                     return(t);
                 }
-            }
-            /* test if J is in I 
+            }*/
+            // test if J is in I 
             for (i = ncols(J); i > 0; i--)
             {
                 if (reduce(J[i], I, 1) != 0) { setring(br); return(t); }
-            }*/
+            }
             setring br;
             t.data[1] = int(1);
             return(t);

@@ -11,6 +11,7 @@
     <tunnel name="place_function_name_compatible" type="string" place="place_function_name_compatible"/>
     <tunnel name="place_function_name_compare" type="string" place="place_function_name_compare"/>
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
+    <tunnel name="place_bal3" type="control" place="place_bal3"/>
 
     <net>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
@@ -24,6 +25,7 @@
         <place name="place_function_name_append" type="string" virtual="true"/>
         <place name="place_function_name_compatible" type="string" virtual="true"/>
         <place name="place_function_name_compare" type="string" virtual="true"/>
+        <place name="place_bal3" type="control" virtual="true"/>
         <place name="place_result_farey" type="result_bool_type"/>
         <place name="place_result_farey_afterTest" type="result_bool_testToken_type"/>  
 
@@ -38,43 +40,6 @@
             <place-map virtual="place_base_filename" real="place_base_filename"/>
             <place-map virtual="place_needed_library" real="place_needed_library"/>
         </transition>
-        
-        <!--<transition name="farey">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="lifted_res" type="modular_data"/>
-                <in name="implementation" type="string"/>
-                <in name="base_filename" type="string"/>
-                <in name="function_name" type="string"/>
-                <in name="needed_library" type="string"/>
-                <out name="out" type="result_bool_type"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="farey(implementation,lifted_res,function_name,needed_library,base_filename,out)">
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-		            <cinclude href="iostream"/>
-                    <code><![CDATA[  
-			            std::cout <<  " in singular_..._farey "<< std::endl;
-                        std::cout << lifted_res.nb_prime << std::endl;
-                        out.farey_lift = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
-                                ( lifted_res.data,function_name, needed_library,base_filename);
-                        out.chr_lift = lifted_res.data;
-                        out.hashlead = lifted_res.hashlead;
-                        out.nb_prime = lifted_res.nb_prime;
-                        out.test = 0;
-                    ]]></code>
-                </module>
-            </defun>
-            <connect-in port="lifted_res" place="place_lifted_res"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="function_name" place="place_function_name_farey"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_result_farey"/>
-        </transition>-->
 
         <transition name="compatible">
             <defun>
@@ -93,10 +58,11 @@
 		            <cinclude href="iostream"/>
                     <code><![CDATA[  
 			            std::cout <<  " in singular_..._compatible "<< std::endl;
-                        out.test  = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
-                                ( result_farey.farey_lift, one.data,function_name, needed_library);
+                        //out.test  = fhg::util::scoped_dlhandle
+                                //(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                                //.sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
+                                //( result_farey.farey_lift, one.data,function_name, needed_library);
+                        out.test= 1;
                         out.farey_lift = result_farey.farey_lift;
                         out.chr_lift = result_farey.chr_lift;
                         out.hashlead = result_farey.hashlead;
@@ -137,9 +103,10 @@
                 <in name="function_name" type="string"/>
                 <in name="needed_library" type="string"/>
                 <out name="rand_res" type="result_bool_type"/>
+                <out name="bal3" type="control"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="compare(implementation,in,rand_res,function_name,needed_library)">
+                    function="compare(implementation,in,rand_res,bal3,function_name,needed_library)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
@@ -153,6 +120,8 @@
                         rand_res.chr_lift = in.chr_lift;
                         rand_res.hashlead = in.hashlead;
                         rand_res.nb_prime = in.nb_prime;
+                        bal3 = we::type::literal::control{};
+                        std::cout << "here" << rand_res.test;
                     ]]></code>
                 </module>
                 <condition>
@@ -164,6 +133,7 @@
             <connect-read port="function_name" place="place_function_name_compare"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-out port="rand_res" place="place_rand_res"/>
+            <connect-out port="bal3" place="place_bal3"/>
         </transition>
 
     </net>
