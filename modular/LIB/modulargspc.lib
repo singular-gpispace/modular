@@ -71,7 +71,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   ct.options.procCompatible = "compatible";
   ct.options.procCompare= "compare";
   ct.options.nbPrimes = nb_lines*gc.options.procspernode;
-  ct.options.bal1 = 2*nb_lines*gc.options.procspernode;
+  ct.options.bal1 = nb_lines*gc.options.procspernode;
   ct.options.bal2 = nb_lines*gc.options.procspernode;
   ct.options.M1 = 10;
   ct.options.M2 = 40;
