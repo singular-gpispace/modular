@@ -8,7 +8,6 @@
     <tunnel name="place_input_M1" type="unsigned long" place="place_input_M1"/>
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_out" type="modular_data" place="place_out"/>
-    <tunnel name="place_bal" type ="control" place="place_bal"/>
 
     <net>
         <place name="place_in" type="modular_data" virtual="true"/>
@@ -17,7 +16,6 @@
         <place name="place_bin1" type="control"/>
         <place name="place_out" type="modular_data" virtual="true"/>
         <place name="place_pre_out" type="modular_data"/>
-        <place name="place_bal" type="control" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_implementation" type="string" virtual="true"/>
         <place name="place_needed_library" type="string" virtual="true"/>
@@ -69,13 +67,11 @@
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
                 <in name="M1" type="unsigned long"/>
-		<out name="bal2" type="control"/>
                 <out name="pre_out" type="modular_data"/>
                 <out name="out" type="control"/>
                 <expression>
                     ${pre_out} := ${mod_res};
                     ${out} := [];
-		    ${bal2} := [];
                 </expression>
                 <condition>
                    ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
@@ -86,7 +82,6 @@
             <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_minus"/>
-	    <connect-out port="bal2" place="place_bal"/>
         </transition>
 
         
@@ -151,10 +146,9 @@
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
                 <out name="out" type="modular_data"/>
-                <out name="bal2" type="control"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
+                    function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out)" pass_context="true">
                     <eureka-group>${eureka_group}</eureka-group>
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
@@ -238,7 +232,6 @@
                                     out = rhs;
                                 }
                             }
-                            bal2 = we::type::literal::control{};
                         }
                         ]]>
                     </code>
@@ -251,7 +244,6 @@
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out port="bal2" place="place_bal"/>
             <connect-out port="out" place="place_mod_res"/>
         </transition>
 
@@ -261,7 +253,6 @@
                 <in name="right" type="modular_data"/>
                 <in name="down" type="control"/>
                 <out name="up" type="control"/>
-                <out name="bal" type="control"/>
                 <out name="pre_out" type="modular_data"/>
                 <condition>
                     ${counter} :eq: 0L 
@@ -269,14 +260,12 @@
                 <expression>
                     ${pre_out} := ${right};
                     ${up} := [];
-                    ${bal} := [];
                 </expression>
             </defun>
             <connect-read port="counter" place="place_counter"/>
             <connect-in port="down" place="place_down"/>
             <connect-in port="right" place="place_right"/>
             <connect-out port="up" place="place_up"/>
-            <connect-out port="bal" place="place_bal"/>
             <connect-out port="pre_out" place="place_pre_out"/>
         </transition>
 

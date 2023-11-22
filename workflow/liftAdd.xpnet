@@ -9,7 +9,7 @@
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_accumulator" type="modular_data" place="place_accumulator"/>
     <tunnel name="place_lifted_res" type="modular_data" place="place_lifted_res"/>
-    <tunnel name="place_bal3" type="long" place="place_bal3"/>
+    <tunnel name="place_bal2" type="control" place="place_bal2"/>
     
     <net>
         <place name="place_mod_res3" type="modular_data" virtual="true"/>
@@ -28,7 +28,7 @@
         <place name="place_mod_res5" type="modular_data"/>
         <place name="place_accumulator" type="modular_data" virtual="true"/>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
-        <place name="place_bal3" type="long" virtual="true"/>
+        <place name="place_bal2" type="control" virtual="true"/>
 
         <transition name="count_in_mod_res4">
             <defun>
@@ -242,28 +242,32 @@
             <require key="worker" mandatory="true"/>
             <in name="mod_res4" type="modular_data"/>
             <in name="accumulator" type="modular_data"/>
-            <inout name="bal3" type="long"/>
             <in name="implementation" type="string"/>
             <in name="base_filename" type="string"/>
             <in name="function_name" type="string"/>
             <in name="needed_library" type="string"/>
+            <out name="bal2" type="list"/>
             <inout name="counter" type="long"/>
             <inout name="up" type="control"/>
             <out name="out" type="modular_data"/>
             <module name="singular_modular"
                 require_function_unloads_without_rest="false"
-                function="lift3(implementation,mod_res4,accumulator,bal3,function_name,needed_library,base_filename,up,counter,out)">
+                function="lift3(implementation,mod_res4,accumulator,function_name,needed_library,base_filename,up,counter,out,bal2)">
                 <cinclude href="share/include/modular_interface.hpp"/>
                 <cinclude href="util-generic/dynamic_linking.hpp"/>
                 <cinclude href="iostream"/>
                 <cinclude href="unistd.h"/>
                 <code><![CDATA[
                     std::cout << " in singular_..._lift3 "  << std::endl;
-		    std::cout << "nb_prime_accumulator :" <<  accumulator.nb_prime << std::endl;
-		    std::cout << "nb_prme_in :" << mod_res4.nb_prime << std::endl;
+		            std::cout << "nb_prime_accumulator :" <<  accumulator.nb_prime << std::endl;
+		            std::cout << "nb_prme_in :" << mod_res4.nb_prime << std::endl;
                     up = we::type::literal::control{};
-                    bal3 = 1;
                     counter = counter - 1;
+                    // fill out bal2
+                    for (int i (0); i<mod_res4.nb_prime; ++i)
+                    {
+                        bal2.emplace_back(we::type::literal::control{});
+                    }
                     if(mod_res4.hashlead.size() == accumulator.hashlead.size())
                     {
                         if(mod_res4.hashlead == accumulator.hashlead)
@@ -290,7 +294,6 @@
                         out.nb_prime = mod_res4.nb_prime;
                         out.hashlead = mod_res4.hashlead;
                     }
-                    std::cout << bal3;
                 ]]>
                 </code>
                 </module>
@@ -301,8 +304,8 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="function_name" place="place_function_name_lift"/>                
             <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-inout port="bal3" place="place_bal3"/>
             <connect-out port="out" place="place_lifted_res"/>
+            <connect-out-many port="bal2" place="place_bal2"/>
             <connect-inout port="up" place="place_u"/>
             <connect-inout port="counter" place="place_ct2"/>
         </transition>
