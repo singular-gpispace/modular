@@ -303,12 +303,12 @@
                     ${counter} := ${counter} + 1L;
                     ${counter} := ${counter} mod 10L;
                 </expression>
-                <condition>
+               <condition>
                     ${counter} :lt: 9L 
                 </condition>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
-            <connect-inout port="counter" place="place_ct1"/>
+           <connect-inout port="counter" place="place_ct1"/>
             <connect-out port="mod_res2" place="place_mod_res2"/>
         </transition>
 

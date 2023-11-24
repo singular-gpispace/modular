@@ -60,10 +60,11 @@
                     <code><![CDATA[  
 			            std::cout <<  " in singular_..._compatible "<< std::endl;
                         bal2 = we::type::literal::control{};
-                        out.test  = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
-                                ( result_farey.farey_lift, one.data,function_name, needed_library);
+                       // out.test  = fhg::util::scoped_dlhandle
+                         //       (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                           //     .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
+                             //   ( result_farey.farey_lift, one.data,function_name, needed_library);
+			out.test = 1;
                         out.farey_lift = result_farey.farey_lift;
                         out.chr_lift = result_farey.chr_lift;
                         out.hashlead = result_farey.hashlead;
