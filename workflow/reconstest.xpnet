@@ -93,10 +93,11 @@
 		            <cinclude href="iostream"/>
                     <code><![CDATA[  
 			            std::cout <<  " in singular_..._compatible "<< std::endl;
-                        out.test  = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
-                                ( result_farey.farey_lift, one.data,function_name, needed_library);
+                        //out.test  = fhg::util::scoped_dlhandle
+                         //       (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                           //     .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
+                             //   ( result_farey.farey_lift, one.data,function_name, needed_library);
+			out.test = 1;
                         out.farey_lift = result_farey.farey_lift;
                         out.chr_lift = result_farey.chr_lift;
                         out.hashlead = result_farey.hashlead;
@@ -113,21 +114,23 @@
             <connect-out port="out" place="place_result_farey_afterTest"/>
         </transition>
 
-        <transition name="Incompatible">
+	<transition name="Incompatible">
             <defun>
                 <in name="in" type="result_bool_testToken_type"/>
-                <out name="lifted_res" type="modular_data"/>
+                <out name="fareyres" type="result_bool_type"/>
                 <expression>
-                    ${lifted_res.data} := ${in.chr_lift};
-                    ${lifted_res.nb_prime} := ${in.nb_prime};
-                    ${lifted_res.hashlead} := ${in.hashlead};
+                    ${fareyres.farey_lift} := ${in.farey_lift};
+                    ${fareyres.chr_lift} := ${in.chr_lift};
+                    ${fareyres.test} := false;
+                    ${fareyres.nb_prime} := ${in.nb_prime};
+                    ${fareyres.hashlead} := ${in.hashlead};
                 </expression>
                 <condition>
                     ${in.test}:eq:false
                 </condition>
             </defun>
             <connect-in port="in" place="place_result_farey_afterTest"/>
-            <connect-out port="lifted_res" place="place_lifted_res"/>
+            <connect-out port="fareyres" place="place_result_farey"/>
         </transition>
 
         <transition name="compare">

@@ -308,7 +308,7 @@
                     ${counter} := ${counter} mod 10L;
                 </expression>
                 <condition>
-                    ${counter} :gt: 0L 
+                    ${counter} :lt: 9L 
                 </condition>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -330,7 +330,7 @@
                     ${bal} := [];
                 </expression>
                 <condition>
-                    ${counter} :eq: 0L 
+                    ${counter} :eq: 9L 
                 </condition>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -339,7 +339,7 @@
             <connect-out port="extract_test" place="place_test"/>
         </transition>
 
-       <transition name="newlift" inline="true">
+       <transition name="lift" inline="true">
             <include-function href="lift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
