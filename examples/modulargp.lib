@@ -26,7 +26,8 @@
             token tok;
             int temp = p;
             int lastt;
-            while( size(t.data) < 11 )
+            while( size(t.data) < 12
+             )
             {
                
                 if(temp == 2)
