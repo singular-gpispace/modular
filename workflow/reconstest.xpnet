@@ -39,7 +39,19 @@
             <place-map virtual="place_needed_library" real="place_needed_library"/>
         </transition>
 
-        <transition name="compatible">
+
+        <transition name="parallel_compatible" inline="true">
+            <include-function href="parallel_compatible.xpnet"/>
+            <place-map virtual="place_result_farey" real="place_result_farey"/>
+            <place-map virtual="place_one" real="place_one"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_function_name_split" real="place_function_name_split"/>
+            <place-map virtual="place_function_name_compatible" real="place_function_name_compatible"/>
+            <place-map virtual="place_result_farey_afterTest" real="place_result_farey_afterTest"/>
+        </transition>
+        <!--<transition name="compatible">
             <defun>
                 <require key="worker" mandatory="true"/>
                 <in name="result_farey" type="result_bool_type"/>
@@ -75,7 +87,7 @@
             <connect-read port="function_name" place="place_function_name_compatible"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-out port="out" place="place_result_farey_afterTest"/>
-        </transition>
+        </transition>-->
 
         <transition name="Incompatible">
             <defun>
@@ -117,7 +129,6 @@
                         rand_res.chr_lift = in.chr_lift;
                         rand_res.hashlead = in.hashlead;
                         rand_res.nb_prime = in.nb_prime;
-                        std::cout << "here" << rand_res.test;
                     ]]></code>
                 </module>
                 <condition>

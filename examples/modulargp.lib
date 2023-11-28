@@ -246,6 +246,7 @@
             token out;
             out.fieldnames[1] = "generator";
             out.data[1] = K;
+            out.data[2]=size(K);
             return(out);
         }
 

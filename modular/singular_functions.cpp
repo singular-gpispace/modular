@@ -259,6 +259,7 @@ ScopedLeftv::ScopedLeftv (int c, void* data)
 }
   ScopedLeftv::ScopedLeftv (ScopedLeftv& parent, int c, void* data)
 : ScopedLeftv (c, data)
+
 {
   chained = true;
   if (parent._->next == NULL)
