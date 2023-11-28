@@ -18,7 +18,7 @@
        compare(token, token)
 ";
         
-        proc genNextPrime(token input, int p)
+        proc genNextPrime(token input, int p, int m)
         {
             LIB "modstd.lib";
             def I = input.data[1];
@@ -26,8 +26,7 @@
             token tok;
             int temp = p;
             int lastt;
-            while( size(t.data) < 12
-             )
+            while( size(t.data) < m)
             {
                
                 if(temp == 2)

@@ -142,7 +142,7 @@
                                     (fhg::util::scoped_dlhandle
                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                         .sym<decltype (singular_modular_genNextPrime)> ("singular_modular_genNextPrime")
-                                        ( input, last_prime, function_name, needed_library, base_filename));
+                                        ( input, last_prime, m, function_name, needed_library, base_filename));
                                     of << out.first.size() << " ";
                                     for(int i (0); i<out.first.size(); ++i)
                                     {

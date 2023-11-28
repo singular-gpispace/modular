@@ -12,6 +12,7 @@ NO_NAME_MANGLING
 
 std::pair<std::vector<std::string>, int> singular_modular_genNextPrime(std::string const& ideal_filename ,
                                                           int const& lastprime,
+                                                          long const& m,
                                                           std::string const& function_name,
                                                           std::string const& needed_library,
                                                           std::string const& base_filename)
@@ -23,8 +24,15 @@ std::pair<std::vector<std::string>, int> singular_modular_genNextPrime(std::stri
   std::vector<std::string> vec;
   I = deserialize(ideal_filename,ids);
   void* p =  (char*) (long) (lastprime);
+  void* M = (char*) (long) (m);
+  std::cout << m << std::endl;
   ScopedLeftv args( I.first, lCopy(I.second));
 	ScopedLeftv arg(args,INT_CMD,p);
+  ScopedLeftv argss(args,INT_CMD,M);
+  //leftv g = args.leftV();
+  //lists l = (lists)args.leftV()->CopyD();
+  //std::cout << lSize(l);
+  //std::cout << l ;
   std::pair<int, lists>  out = call_user_proc(function_name, needed_library, args);
   lists u = (lists)out.second->m[3].Data();//ring.fieldnames-lists.fieldnames-ring.data-lists.data
   for(int i (0); i<lSize(u); i++)

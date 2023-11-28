@@ -29,7 +29,7 @@ class ScopedLeftv
     ScopedLeftv& operator= (ScopedLeftv&&) = delete;
     leftv leftV() const;
   private:
-    leftv _;
+    leftv _;  
     bool chained = false;
 };
 
