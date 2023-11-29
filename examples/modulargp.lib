@@ -266,7 +266,7 @@
         ideal I = test_token.data[1];
         bigint p = test_token.data[2];
         ideal J = lifted_res.data[1];
-        bigint q = lifted_res.data[2]; 
+6        bigint q = lifted_res.data[2]; 
         ideal K = chinrem(list(I,J),list(p,q));
         int n = system("--cpus");
         system("--cpus",1);
