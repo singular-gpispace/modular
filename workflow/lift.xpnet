@@ -166,7 +166,7 @@
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <cinclude href="fstream"/>
                     <code><![CDATA[
-                        std::cout << " in singular_..._lift1 " << std::endl;
+                       // std::cout << " in singular_..._lift1 " << std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -260,11 +260,12 @@
                 <in name="counter" type="long"/>
                 <in name="right" type="modular_data"/>
                 <in name="down" type="control"/>
+	        <in name="M1" type="unsigned long"/>
                 <out name="up" type="control"/>
                 <out name="bal" type="control"/>
                 <out name="pre_out" type="modular_data"/>
                 <condition>
-                    ${counter} :eq: 0L 
+                    ${counter} :eq: 0L :and: ${right.nb_prime} :ge: ${M1} div 2UL
                 </condition>
                 <expression>
                     ${pre_out} := ${right};
@@ -272,6 +273,7 @@
                     ${bal} := [];
                 </expression>
             </defun>
+            <connect-read port="M1" place="place_input_M1"/>
             <connect-read port="counter" place="place_counter"/>
             <connect-in port="down" place="place_down"/>
             <connect-in port="right" place="place_right"/>

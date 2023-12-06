@@ -51,43 +51,6 @@
             <place-map virtual="place_function_name_compatible" real="place_function_name_compatible"/>
             <place-map virtual="place_result_farey_afterTest" real="place_result_farey_afterTest"/>
         </transition>
-        <!--<transition name="compatible">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="result_farey" type="result_bool_type"/>
-                <in name="one" type="modular_data"/>
-                <in name="implementation" type="string"/>
-                <in name="function_name" type="string"/>
-                <in name="needed_library" type="string"/>
-                <out name="out" type="result_bool_testToken_type"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="compatible(implementation,one,result_farey,function_name,needed_library,out)">
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-		            <cinclude href="iostream"/>
-                    <code><![CDATA[  
-			            std::cout <<  " in singular_..._compatible "<< std::endl;
-                        //out.test  = fhg::util::scoped_dlhandle
-                                //(implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                //.sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
-                                //( result_farey.farey_lift, one.data,function_name, needed_library);
-                        out.test= 1;
-                        out.farey_lift = result_farey.farey_lift;
-                        out.chr_lift = result_farey.chr_lift;
-                        out.hashlead = result_farey.hashlead;
-                        out.nb_prime = result_farey.nb_prime;
-                        out.testToken = one.data;
-                    ]]></code>
-                </module>
-            </defun>
-            <connect-in port="result_farey" place="place_result_farey"/>
-            <connect-in port="one" place="place_one"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="function_name" place="place_function_name_compatible"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_result_farey_afterTest"/>
-        </transition>-->
 
         <transition name="Incompatible">
             <defun>
