@@ -66,17 +66,23 @@
                 <require key="worker" mandatory="true"/>
                 <in name="input_bal2" type="long"/>
                 <out name="bal2" type="list"/>
+                <out name="bal3" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="init(input_bal2,bal2)">
+                    function="init(input_bal2,bal2,bal3)">
                     <code><![CDATA[
                 for (long i (0); i<input_bal2; ++i)
                 {
                     bal2.emplace_back(we::type::literal::control{});
                 }
+                for (long i (0); i<0; ++i)
+                {
+                    bal3.emplace_back(we::type::literal::control{});
+                }
                  ]]></code>
             </module>
         </defun>
+        <connect-out-many port="bal3" place="place_bal3"/>
         <connect-in port="input_bal2" place="place_input_bal2"/>
         <connect-out-many port="bal2" place="place_bal2"/>
         </transition>
