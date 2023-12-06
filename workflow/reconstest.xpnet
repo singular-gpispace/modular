@@ -11,8 +11,10 @@
     <tunnel name="place_function_name_compatible" type="string" place="place_function_name_compatible"/>
     <tunnel name="place_function_name_compare" type="string" place="place_function_name_compare"/>
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
+    <tunnel name="place_bal3" type="control" place="place_bal3"/>
 
     <net>
+        <place name="place_bal3" type="control" virtual="true"/>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
         <place name="place_one" type="modular_data" virtual="true"/>
         <place name="place_rand_res" type="result_bool_type" virtual="true"/>
@@ -76,9 +78,10 @@
                 <in name="function_name" type="string"/>
                 <in name="needed_library" type="string"/>
                 <out name="rand_res" type="result_bool_type"/>
+                <out name="bal3" type="control"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="compare(implementation,in,rand_res,function_name,needed_library)">
+                    function="compare(implementation,in,rand_res,function_name,needed_library,bal3)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="iostream"/>
@@ -92,6 +95,7 @@
                         rand_res.chr_lift = in.chr_lift;
                         rand_res.hashlead = in.hashlead;
                         rand_res.nb_prime = in.nb_prime;
+                        bal3 = we::type::literal::control{};
                     ]]></code>
                 </module>
                 <condition>
@@ -103,6 +107,7 @@
             <connect-read port="function_name" place="place_function_name_compare"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-out port="rand_res" place="place_rand_res"/>
+            <connect-out port="bal3" place="place_bal3"/>
         </transition>
 
     </net>

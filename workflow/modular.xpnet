@@ -36,6 +36,7 @@
         </place>
 		<place name="place_bal1" type="control"/>
 		<place name="place_bal2" type="control"/>
+        <place name="place_bal3" type="control"/>
         <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
@@ -104,6 +105,7 @@
                 <require key="worker" mandatory="true"/>
                 <inout name="last_prime" type="int"/>
                 <in name="input" type="string"/>
+                <in name="bal3" type="control"/>
                 <in name="implementation" type="string"/>
                 <in name="function_name" type="string"/>
                 <in name="needed_library" type="string"/>
@@ -194,6 +196,7 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
             <connect-in port="bal" place="place_bal1"/>
+            <connect-in port="bal3" place="place_bal3"/>
             <connect-read port="m" place="place_input_bal1"/>
             <connect-inout port="count_bal1" place="place_count_bal1"/>
             <connect-out-many port="prime" place="place_prime"/>
@@ -389,6 +392,7 @@
             <place-map virtual="place_implementation" real="place_implementation"/>
             <place-map virtual="place_base_filename" real="place_base_filename"/>
             <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_bal3" real="place_bal3"/>
 
         </transition>
 
