@@ -153,8 +153,8 @@
         {
             LIB "modstd.lib";
             bigint p = testToken.data[2];
-            def I = fareylift.data[1];
-            int testt = primeTest(ideal(fareylift.data[1][gen_number]),p);
+            ideal I = fareylift.data[1][gen_number];
+            int testt = primeTest(I,p);
             token t;
             t.fieldnames = list("test_result");
             t.data[1] = testt;
