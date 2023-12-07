@@ -11,7 +11,7 @@
     
     <net>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
-        <place name="place_split_generators" type="string"/>
+        <place name="place_split_generators" type="unsigned long"/>
         <place name="place_lift_info" type="chr_lift_info"/>
         <place name="place_total_generator" type="unsigned long"/>
         <place name="place_reconstruction" type="generator_data"/>
@@ -36,7 +36,6 @@
                 <require key="worker" mandatory="true"/>
                 <in name="in" type="modular_data"/>
                 <in name="implementation" type="string"/>
-                <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
                 <out name="lift_info" type="chr_lift_info"/>
@@ -44,24 +43,24 @@
                 <out name="generators" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="split(implementation,base_filename,needed_library,in, function_name,lift_info,total_generator,generators)">
+                    function="split(implementation,needed_library,in, function_name,lift_info,total_generator,generators)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
                         std::cout << "in singular _.._farey" << std::endl;
-                        std::pair<std::vector<std::string>, unsigned long> out = fhg::util::scoped_dlhandle
+                        unsigned long out = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_split)> ("singular_modular_split")
-                         ( in.data,function_name, needed_library,base_filename);
-                        total_generator = out.second;
+                         ( in.data,function_name, needed_library);
+                        total_generator = out;
                         lift_info.chr_lift = in.data;
                         lift_info.nb_prime = in.nb_prime;
                         lift_info.hashlead = in.hashlead;
-                        for(int i (0); i<out.first.size(); i++)
+                        for(unsigned long i (1); i<=out; i++)
                         {
-                            generators.emplace_back(out.first[i]);
+                            generators.emplace_back(i);
                         }
                         ]]>
                     </code>
@@ -69,7 +68,6 @@
             </defun>
             <connect-in port="in" place="place_lifted_res"/>
             <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="function_name" place="place_function_name_split"/>
             <connect-out port="lift_info" place="place_lift_info"/>
@@ -80,27 +78,28 @@
         <transition name="farey">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="generator" type="string"/>
+                <in name="generator" type="unsigned long"/>
                 <in name="implementation" type="string"/>
                 <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
+                <in name="lift_info" type="chr_lift_info"/>
                 <out name="out" type="generator_data"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="reconst(implementation,base_filename,needed_library,function_name,generator,out)">
+                    function="reconst(implementation,base_filename,needed_library,function_name,generator,lift_info,out)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
-                       // std::cout << "in singular_.._farey" << std::endl;
-                        std::pair<std::string, unsigned long> result = fhg::util::scoped_dlhandle
+                        //std::cout << "in singular_.._farey" << std::endl;
+                        std::string result = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
-                         ( generator,function_name, needed_library,base_filename);
-                        out.data = result.first;
-                        out.nb_generator=  result.second;
+                         ( lift_info.chr_lift, generator,function_name, needed_library,base_filename);
+                        out.data = result;
+                        out.nb_generator=  1;
                         ]]>
                     </code>
                 </module>
@@ -111,6 +110,7 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="function_name" place="place_function_name_farey"/>
+            <connect-read port="lift_info" place="place_lift_info"/>
         </transition>
 
         <transition name="right">

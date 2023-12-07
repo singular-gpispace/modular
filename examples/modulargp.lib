@@ -128,7 +128,7 @@
            return(output);
        }
 
-        proc fareyy (token liftedres)
+        proc fareyy (token liftedres, int gen_number)
        "USAGE: fareyy(liftedres); 
        RETURN: a token  containing a farey lift of the data in the token liftedres.
 "          
@@ -137,17 +137,16 @@
             bigint N = liftedres.data[2];
             int n = system("--cpus");
             system("--cpus",1);
-            def J = farey(I,N);
+            def J = farey(I[gen_number],N);
             system("--cpus",n);
             token t;
-            t.fieldnames = list("farey_lift","Nb_generators");
+            t.fieldnames = list("farey_lift_gen");
             t.data[1] = J;
-            t.data[2] = size(J);
             return(t);
         }
 
 
-         proc compatible (token fareylift, token testToken)
+         proc compatible (token fareylift, token testToken, int gen_number)
        "USAGE: compatible(token, token); 
        RETURN: Test if any coefficient occuring in the data of fareylift is divisible by the characteristic p of the data in the testToken."
 
@@ -155,7 +154,7 @@
             LIB "modstd.lib";
             bigint p = testToken.data[2];
             def I = fareylift.data[1];
-            int testt = primeTest(fareylift.data[1],p);
+            int testt = primeTest(ideal(fareylift.data[1][gen_number]),p);
             token t;
             t.fieldnames = list("test_result");
             t.data[1] = testt;
@@ -206,33 +205,11 @@
         proc splitt(token in)
         {
             ideal I = in.data[1];
-            bigint p = in.data[2];
             token out;
             token t;
-            int i;
             int n = size(I);
-            int m = n div 1;
-            int final = n mod 1;
-            for(i=1; i<=m; i++)
-            {
-                t.fieldnames = list("generator","modulus");
-                t.data[1] = ideal(I[((i-1)*1+1) .. (i*1)]);
-                t.data[2] = p;
-                out.fieldnames[i] = "generator";
-                out.data[i] = t;
-            }
-            if (final != 0)
-            {
-                t.fieldnames = list("generator","modulus");
-                t.data[1] = ideal(I[(1*m+1) .. (1*m+final)]);
-                t.data[2] = p;
-                out.fieldnames[m+1] = "generator";
-                out.data[m+1] = t;
-            }
-            //t.fieldnames = list("total_number_generator");
-            //t.data[1] = n;
-            out.fieldnames[size(out.fieldnames)+1] = "total_number_generator";
-            out.data[size(out.data) + 1] = n;
+            out.fieldnames[1] = "total_number_generator";
+            out.data[1] = n;
             return(out);
         }
 
@@ -251,47 +228,4 @@
         }
 
 
-
-
-    /*proc reconstest(token lifted_res, token test_token)
-       "USAGE: reconst(lifted_res, mod_res2); lifted_res token
-        RETURN: an list  containing a token of the Farey lift and a 
-           boolean of the stability test
-        NOTE: The types token are defined . This procedure is 
-              intended to be called as a transition procedure inside
-              the worker process (that is, the "inner" instances of
-              SINGULAR).
-"          
-    {     
-        ideal I = test_token.data[1];
-        bigint p = test_token.data[2];
-        ideal J = lifted_res.data[1];
-6        bigint q = lifted_res.data[2]; 
-        ideal K = chinrem(list(I,J),list(p,q));
-        int n = system("--cpus");
-        system("--cpus",1);
-        ideal Jf = farey(J,q);
-        ideal Kf = farey(K,p*q);
-        system("--cpus",n);
-        token t;
-        int i=0;
-        int testt = 0;
-        t.fieldnames = list("generators","test");
-        t.data[1] = Jf;
-        if  ( size(Jf) == size(Kf) )
-        {
-            testt=1;
-            for(i=1;i<=size(Jf);i++)
-            {
-                if ((Jf[i]-Kf[i]) !=0)
-                {
-                    testt = 0;
-                    break;
-                }
-            }
-        }
-        
-        t.data[2] = testt;
-        return(t);
-    }*/
 
