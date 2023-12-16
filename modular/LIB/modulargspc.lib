@@ -25,7 +25,7 @@ proc mod_init()
   LIB "modstd.lib";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procSplit, string procFarey, string procAppend, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes");
+  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procSplit, string procFarey, string procAppend, string procCompatible, string procCompare, int bal1, int bal2, int bal3, int M1, int M2, int nbPrimes");
   newstruct("token", "list fieldnames, list data");
 }
  
@@ -73,6 +73,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   ct.options.nbPrimes = nb_lines*gc.options.procspernode;
   ct.options.bal1 = nb_lines*gc.options.procspernode;
   ct.options.bal2 = nb_lines*gc.options.procspernode;
+  ct.options.bal3 = nb_lines*gc.options.procspernode;
   ct.options.M1 = 10;
   ct.options.M2 = 40;
   return(ct);
@@ -129,7 +130,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   {
     loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procSplit, pc.options.procFarey,pc.options.procAppend, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2);
+           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procSplit, pc.options.procFarey,pc.options.procAppend, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.bal3, pc.options.M1, pc.options.M2);
     return(sm_result);
 }
 
@@ -155,32 +156,44 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
         pc.options.bal1 = #[1];
         pc.options.bal2 = #[2];
       }
-      else { //read bal1, bal2 and M1
-        if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
+      else{
+        if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int")
+        {
           pc.options.bal1 = #[1];
           pc.options.bal2 = #[2];
-          pc.options.M1 = #[3];
+          pc.options.bal3 = #[3];
         }
-        else{ //read bal1, bal2, M1 and M2
-          if (size(#) == 4 && typeof(#[1])=="int" && typeof(#[2])=="int" && typeof(#[3])=="int" && typeof(#[4])=="int"){
+      
+      else { //read bal1, bal2, bal3 and M1
+        if (size(#) == 4  && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" && typeof(#[4]) == "int" ){
+          pc.options.bal1 = #[1];
+          pc.options.bal2 = #[2];
+          pc.options.bal3 = #[3];
+          pc.options.M1 = #[4];
+        }
+        else{ //read bal1, bal2, bal3,  M1 and M2
+          if (size(#) == 5 && typeof(#[1])=="int" && typeof(#[2])=="int" && typeof(#[3])=="int" && typeof(#[4])=="int" && typeof(#[5]) == "int" ){
             pc.options.bal1 = #[1];
             pc.options.bal2 = #[2];
-            pc.options.M1 = #[3];
-            pc.options.M2 = #[4];
+            pc.options.bal3 = #[3];
+            pc.options.M1 = #[4];
+            pc.options.M2 = #[5];
           }
-          else{// read bal1, bal2, M1, M2, and nbPrimes
-            if ( size(#) == 5 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int" ){
+          else{// read bal1, bal2, bal3, M1, M2, and nbPrimes
+            if ( size(#) == 6 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int" && typeof(#[6]) == "int"){
               pc.options.bal1 = #[1];
               pc.options.bal2 = #[2];
-              pc.options.M1 = #[3];
-              pc.options.M2 = #[4];
-              pc.options.nbPrimes = #[5];
+              pc.options.bal3 = #[3];
+              pc.options.M1 = #[4];
+              pc.options.M2 = #[5];
+              pc.options.nbPrimes = #[6];
             } 
             else{
               ERROR("Wrong optional arguments");
             }
           }
         }
+      }
       }
     }
   }

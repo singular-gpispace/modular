@@ -9,6 +9,7 @@
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_out" type="modular_data" place="place_out"/>
     <tunnel name="place_bal" type ="control" place="place_bal"/>
+    <tunnel name="place_bal3" type="control" place="place_bal3"/>
 
     <net>
         <place name="place_in" type="modular_data" virtual="true"/>
@@ -18,6 +19,7 @@
         <place name="place_out" type="modular_data" virtual="true"/>
         <place name="place_pre_out" type="modular_data"/>
         <place name="place_bal" type="control" virtual="true"/>
+        <place name="place_bal3" type="control" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_implementation" type="string" virtual="true"/>
         <place name="place_needed_library" type="string" virtual="true"/>
@@ -41,6 +43,7 @@
             <defun>
                 <in name="in" type="modular_data"/>
                 <out name="mod_res" type="modular_data"/>
+                <in name="bal3" type="control"/>
                 <out name="pre_count" type="control"/>
                 <expression>
                     ${pre_count} := [];
@@ -48,6 +51,7 @@
                 </expression>
             </defun>
             <connect-in port="in" place="place_in"/>
+            <connect-in port="bal3" place="place_bal3"/>
             <connect-out port="mod_res" place="place_mod_res"/>
             <connect-out port="pre_count" place="place_pre_count"/>
         </transition>
@@ -69,13 +73,13 @@
                 <in name="mod_res" type="modular_data"/>
                 <in name="counter" type="long"/>
                 <in name="M1" type="unsigned long"/>
-		<out name="bal2" type="control"/>
+		<!--<out name="bal2" type="control"/>-->
                 <out name="pre_out" type="modular_data"/>
                 <out name="out" type="control"/>
                 <expression>
                     ${pre_out} := ${mod_res};
                     ${out} := [];
-		    ${bal2} := [];
+		   <!-- ${bal2} := [];-->
                 </expression>
                 <condition>
                    ${mod_res.nb_prime} :ge: ${M1} :and: ${counter} :ge: 1L
@@ -86,7 +90,7 @@
             <connect-read port="M1" place="place_input_M1"/>
             <connect-out port="pre_out" place="place_pre_out"/>
             <connect-out port="out" place="place_minus"/>
-	    <connect-out port="bal2" place="place_bal"/>
+	    <!--<connect-out port="bal2" place="place_bal"/>-->
         </transition>
 
         
@@ -151,7 +155,7 @@
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
                 <out name="out" type="modular_data"/>
-                <out name="bal2" type="control"/>
+                <out name="bal2" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
                     function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
@@ -238,7 +242,15 @@
                                     out = rhs;
                                 }
                             }
-                            bal2 = we::type::literal::control{};
+                            if (lhs.nb_prime ==1 and  rhs.nb_prime ==1){
+                                bal2.emplace_back(we::type::literal::control{});
+                                bal2.emplace_back(we::type::literal::control{});
+                            }
+                            else{
+                                if(lhs.nb_prime == 1 or rhs.nb_prime == 1)
+                                bal2.emplace_back(we::type::literal::control{});
+                            }
+                            
                         }
                         ]]>
                     </code>
@@ -251,7 +263,7 @@
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out port="bal2" place="place_bal"/>
+            <connect-out-many port="bal2" place="place_bal"/>
             <connect-out port="out" place="place_mod_res"/>
         </transition>
 
@@ -262,7 +274,7 @@
                 <in name="down" type="control"/>
 	        <in name="M1" type="unsigned long"/>
                 <out name="up" type="control"/>
-                <out name="bal" type="control"/>
+                <!--<out name="bal" type="control"/>-->
                 <out name="pre_out" type="modular_data"/>
                 <condition>
                     ${counter} :eq: 0L :and: ${right.nb_prime} :ge: ${M1} div 2UL
@@ -270,7 +282,7 @@
                 <expression>
                     ${pre_out} := ${right};
                     ${up} := [];
-                    ${bal} := [];
+                   <!-- ${bal} := [];-->
                 </expression>
             </defun>
             <connect-read port="M1" place="place_input_M1"/>
@@ -278,7 +290,7 @@
             <connect-in port="down" place="place_down"/>
             <connect-in port="right" place="place_right"/>
             <connect-out port="up" place="place_up"/>
-            <connect-out port="bal" place="place_bal"/>
+           <!-- <connect-out port="bal" place="place_bal"/>-->
             <connect-out port="pre_out" place="place_pre_out"/>
         </transition>
 

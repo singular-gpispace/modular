@@ -102,6 +102,7 @@ namespace
       std::string functionNameGenNextPrime() const;
 			long bal1() const;
 			long bal2() const;
+      long bal3() const;
       unsigned long M1() const;
       unsigned long M2() const;
 
@@ -132,6 +133,7 @@ namespace
       
 			long bal1_value;
 			long bal2_value;
+      long bal3_value;
       unsigned long M1_value;
       unsigned long M2_value;
       int out_token;
@@ -156,6 +158,10 @@ namespace
 	long ArgumentState::bal2() const {
 	  return bal2_value;
 	}
+
+  long ArgumentState::bal3() const {
+    return bal3_value;
+  }
 
   unsigned long ArgumentState::M1() const {
     return M1_value;
@@ -320,11 +326,15 @@ namespace
                                          INT_CMD,
                                          "long",
                                          "number of tokens on bal2"))
-  , M1_value (require_argument<18, unsigned long> (args,
+  , bal3_value (require_argument<18, long> (args,
+                                         INT_CMD,
+                                         "long",
+                                         "number of tokens on bal3"))
+  , M1_value (require_argument<19, unsigned long> (args,
                                            INT_CMD,
                                            "int",
                                            "value of M1"))
-  , M2_value (require_argument<19, unsigned long>(args,
+  , M2_value (require_argument<20, unsigned long>(args,
                                           INT_CMD,
                                           "int",
                                           "value of M2"))
@@ -510,6 +520,7 @@ try
 		values_on_ports.emplace("base_filename", as.baseFileName());
 		values_on_ports.emplace("input_bal1", as.bal1());
 		values_on_ports.emplace("input_bal2",as.bal2());
+    values_on_ports.emplace("input_bal3",as.bal3());
     values_on_ports.emplace("input_M1",as.M1());
     values_on_ports.emplace("input_M2", as.M2());
   std::multimap<std::string, pnet::type::value::value_type> result
