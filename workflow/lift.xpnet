@@ -41,6 +41,7 @@
 
         <transition name="pre_count">
             <defun>
+                <in name="bal3" type="control"/>
                 <in name="in" type="modular_data"/>
                 <out name="mod_res" type="modular_data"/>
                 <out name="pre_count" type="control"/>
@@ -49,6 +50,7 @@
                     ${mod_res} := ${in};
                 </expression>
             </defun>
+            <connect-in port="bal3" place="place_bal3"/>
             <connect-in port="in" place="place_in"/>
             <connect-out port="mod_res" place="place_mod_res"/>
             <connect-out port="pre_count" place="place_pre_count"/>
@@ -145,7 +147,6 @@
         <transition name="lift">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="bal3" type="control"/>
                 <in name="lhs" type="modular_data"/>
                 <in name="rhs" type="modular_data"/>
                 <in name="function_name" type="string"/>
@@ -255,7 +256,6 @@
                     </code>
                 </module>
             </defun>
-            <connect-in port="bal3" place="place_bal3"/>
             <connect-in port="lhs" place="place_left"/>
             <connect-in port="rhs" place="place_right"/>
             <connect-read port="implementation" place="place_implementation"/>
