@@ -348,7 +348,7 @@
         </transition>
 
        <transition name="lift" inline="true">
-            <include-function href="lift.xpnet"/>
+            <include-function href="newlift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>

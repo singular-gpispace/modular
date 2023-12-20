@@ -9,11 +9,13 @@
     <tunnel name="place_eureka_group" type="string" place="place_eureka_group"/>
     <tunnel name="place_out" type="modular_data" place="place_out"/>
     <tunnel name="place_bal" type ="control" place="place_bal"/>
+    <tunnel name="place_bal3" type="control" place="place_bal3"/>
 
     <net>
         <place name="place_in" type="modular_data" virtual="true"/>
         <place name="place_out" type="modular_data" virtual="true"/>
         <place name="place_bal" type="control" virtual="true"/>
+        <place name="place_bal3" type="control" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_implementation" type="string" virtual="true"/>
         <place name="place_needed_library" type="string" virtual="true"/>
@@ -100,8 +102,9 @@
                 <in name="implementation" type="string"/>
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
+                <in name="bal3" type="control"/>
                 <out name="out" type="modular_data"/>
-                <out name="bal2" type="control"/>
+                <out name="bal2" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
                     function="lift(implementation,lhs,rhs,function_name,needed_library,base_filename,out,bal2)" pass_context="true">
@@ -185,7 +188,14 @@
                                     out = rhs;
                                 }
                             }
-                            bal2 = we::type::literal::control{};
+                            if (lhs.nb_prime ==1 and  rhs.nb_prime ==1){
+                                bal2.emplace_back(we::type::literal::control{});
+                                bal2.emplace_back(we::type::literal::control{});
+                            }
+                            else{
+                                if(lhs.nb_prime == 1 or rhs.nb_prime == 1)
+                                bal2.emplace_back(we::type::literal::control{});
+                            }
                         }
                         ]]>
                     </code>
@@ -193,12 +203,13 @@
             </defun>
             <connect-in port="lhs" place="place_left"/>
             <connect-in port="rhs" place="place_right"/>
+            <connect-in port="bal3" place="place_bal3"/>
             <connect-read port="implementation" place="place_implementation"/>
             <connect-read port="function_name" place="place_function_name_lift"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
-            <connect-out port="bal2" place="place_bal"/>
+            <connect-out-many port="bal2" place="place_bal"/>
             <connect-out port="out" place="place_mod_res1"/>
         </transition>
 
@@ -206,19 +217,19 @@
             <defun>
                 <in name="mod_res1" type="modular_data"/>
                 <in name="M1" type="unsigned long"/>
-                <out name="bal" type="control"/>
+                <!--<out name="bal" type="control"/>-->
                 <out name="out" type="modular_data"/>
                 <condition>
                     ${mod_res1.nb_prime} :ge: ${M1} 
                 </condition>
                 <expression>
                     ${out} := ${mod_res1};
-                    ${bal} := [];
+                    <!--${bal} := [];-->
                 </expression>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
             <connect-read port="M1" place="place_input_M1"/>
-            <connect-out port="bal" place="place_bal"/>
+           <!-- <connect-out port="bal" place="place_bal"/>-->
             <connect-out port="out" place="place_out"/>
         </transition>
 
