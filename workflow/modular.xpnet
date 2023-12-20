@@ -36,7 +36,6 @@
         </place>
 		<place name="place_bal1" type="control"/>
 		<place name="place_bal2" type="control"/>
-        <place name="place_bal3" type="bool"><token><value>false</value></token></place>
         <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
@@ -380,7 +379,6 @@
         
        <transition name="reconstest" inline="true">
             <include-function href="reconstest.xpnet"/>
-            <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
             <place-map virtual="place_one" real="place_test"/>
             <place-map virtual="place_rand_res" real="place_rand_res"/>

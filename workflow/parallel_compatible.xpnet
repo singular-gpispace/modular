@@ -1,6 +1,5 @@
 <defun name="parallel_compatible">
     <require key="worker" mandatory="true"/>
-    <tunnel name="place_bal3" type="bool" place="place_bal3"/>
     <tunnel name="place_result_farey" type="result_bool_type" place="place_result_farey"/>
     <tunnel name="place_one" type="modular_data" place="place_one"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
@@ -11,7 +10,6 @@
     <tunnel name="place_result_farey_afterTest" type="result_bool_testToken_type" place="place_result_farey_afterTest"/>
     
     <net>
-        <place name="place_bal3" type="bool" virtual="true"/>
         <place name="place_result_farey" type="result_bool_type" virtual="true"/>
         <place name="place_one" type="modular_data"  virtual="true"/>
         <place name="place_split_generators" type="string"/>
@@ -186,7 +184,6 @@
                 <in name="total_generator" type="unsigned long"/>
                 <in name="lift_info" type="result_bool_testToken_type"/>
                 <out name= "out" type="result_bool_testToken_type"/>
-                <inout name="bal3" type="bool"/>
                 <expression>
                     ${out.farey_lift} := ${lift_info.farey_lift};
                     ${out.chr_lift} := ${lift_info.chr_lift};
@@ -194,7 +191,6 @@
                     ${out.nb_prime} := ${lift_info.nb_prime};
                     ${out.hashlead} := ${lift_info.hashlead};
                     ${out.testToken} := ${lift_info.testToken};
-                    ${bal3} := false;
                 </expression>
                 <condition>
                     ${afterTest.nb_generator}:eq:${total_generator}
@@ -202,7 +198,6 @@
             </defun>
             <connect-in port="afterTest" place="place_afterTest"/>
             <connect-in port="total_generator" place="place_total_generator"/>
-            <connect-inout port="bal3" place="place_bal3"/>
             <connect-in port="lift_info" place="place_lift_info"/>
             <connect-out port="out" place="place_result_farey_afterTest"/>
         </transition>
