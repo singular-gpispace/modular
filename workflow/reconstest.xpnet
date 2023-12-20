@@ -1,6 +1,6 @@
 <defun name="reconstest">
     <require key="worker" mandatory="true"/>
-    <tunnel name="place_bal3" type="control" place="place_bal3"/>
+    <tunnel name="place_bal3" type="bool" place="place_bal3"/>
     <tunnel name="place_lifted_res" type="modular_data" place="place_lifted_res"/>
     <tunnel name="place_one" type="modular_data" place="place_one"/>
     <tunnel name="place_rand_res" type="result_bool_type" place="place_rand_res"/>
@@ -14,7 +14,7 @@
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
 
     <net>
-        <place name="place_bal3" type="control" virtual="true"/>
+        <place name="place_bal3" type="bool" virtual="true"/>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
         <place name="place_one" type="modular_data" virtual="true"/>
         <place name="place_rand_res" type="result_bool_type" virtual="true"/>
@@ -31,6 +31,7 @@
 
         <transition name="parallel_farey" inline="true">
             <include-function href="parallel_farey.xpnet"/>
+            <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
             <place-map virtual="place_result_farey" real="place_result_farey"/>
             <place-map virtual="place_function_name_farey" real="place_function_name_farey"/>

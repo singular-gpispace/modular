@@ -17,7 +17,6 @@
 	<in name="base_filename" type="string" place="place_base_filename"/>
 	<in name="input_bal1" type="long" place="place_input_bal1"/>
 	<in name="input_bal2" type="long" place="place_input_bal2"/>
-    <in name="input_bal3" type="long" place="place_input_bal3"/>
     <in name="input_M1" type="unsigned long" place="place_input_M1"/>
     <in name="input_M2" type="unsigned long" place="place_input_M2"/>
 	<out name="output" type="string" place="place_output"/>
@@ -28,7 +27,6 @@
 		<place name="place_prime" type="string"/>
 		<place name="place_input_bal1" type="long"/>
 		<place name="place_input_bal2" type="long"/>
-        <place name="place_input_bal3" type="long"/>
         <place name="place_input_M1" type="unsigned long"/>
         <place name="place_input_M2" type="unsigned long"/>
         <place name="place_eureka_group" type="string">
@@ -38,7 +36,7 @@
         </place>
 		<place name="place_bal1" type="control"/>
 		<place name="place_bal2" type="control"/>
-        <place name="place_bal3" type="control"/>
+        <place name="place_bal3" type="bool"><token><value>false</value></token></place>
         <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
@@ -67,29 +65,21 @@
             <defun>
                 <require key="worker" mandatory="true"/>
                 <in name="input_bal2" type="long"/>
-                <in name="input_bal3" type="long"/>
                 <out name="bal2" type="list"/>
-                <out name="bal3" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="init(input_bal2,input_bal3,bal2,bal3)">
+                    function="init(input_bal2,bal2)">
                     <code><![CDATA[
                 for (long i (0); i<input_bal2; ++i)
                 {
                     bal2.emplace_back(we::type::literal::control{});
                 }
 
-                for (long i (0); i<input_bal3; ++i)
-                {
-                    bal3.emplace_back(we::type::literal::control{});
-                }
                  ]]></code>
             </module>
         </defun>
         <connect-in port="input_bal2" place="place_input_bal2"/>
-        <connect-in port="input_bal3" place="place_input_bal3"/>
         <connect-out-many port="bal2" place="place_bal2"/>
-        <connect-out-many port="bal3" place="place_bal3"/>
         </transition>
 
         <transition name="count_bal">
@@ -348,7 +338,7 @@
         </transition>
 
        <transition name="lift" inline="true">
-            <include-function href="newlift.xpnet"/>
+            <include-function href="lift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
             <place-map virtual="place_function_name_lift" real="place_function_name_lift"/>
@@ -357,7 +347,6 @@
             <place-map virtual="place_implementation" real="place_implementation"/>
             <place-map virtual="place_input_M1" real="place_input_M1"/>
             <place-map virtual="place_bal" real="place_bal2"/>  
-            <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_eureka_group" real="place_eureka_group"/>
         </transition>
 
@@ -389,7 +378,7 @@
         </transition>
 
         
-        <transition name="reconstest" inline="true">
+       <transition name="reconstest" inline="true">
             <include-function href="reconstest.xpnet"/>
             <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
