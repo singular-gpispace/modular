@@ -104,6 +104,70 @@
             return(output);
        }
 
+
+       proc ImageRationalMap(token input, token in_prime)
+       {
+        LIB "elim.lib";
+        def phi = input.data[1];
+        int p = in_prime.data[1];
+        def I = input.data[2];
+        def br = basering;
+        def lbr = ringlist(br);
+        int n = nvars(br);
+        // number of variables of target polynomial ring, that is 7
+        int m = size(phi);
+        /*phi: P^(n-1) --> P^(m-1)*/
+        // make a polynomial ring for the graph with variables
+        // t(0)..t(n-1) and  x(0)..x(m-1)
+        list rl = ringlist(br);
+        rl[1] = p;
+        int k;
+        for(k = 0; k < n; k++)
+        {
+            rl[2][k+1] = "t("+string(k)+")";
+        }
+        for(k = 0; k < m; k++)
+        {
+            rl[2][k+n+1] = "x("+string(k)+")";
+        }
+        rl[3]= list(list("dp",1:n),list("dp",1:m),list("C",0));
+        def Rbig0 = ring(rl);
+        setring Rbig0;
+        // fetch I and phi to that new ring
+        ideal phi = fetch(br,phi);
+        ideal I = fetch(br,I);
+        // ideal of the graph;
+        ideal mi = maxideal(1);
+        ideal xv = mi[1..n];
+        ideal yv  = mi[n+1..n+m];
+        matrix HM[2][m] = concat(transpose(yv),transpose(phi));
+        option(redSB);
+        ideal graph = sat(I+minor(HM,2),phi)[1];
+        //Extracting the image from the graph
+        for(k = 1; k <= n; k++)
+        {
+            graph = subst(graph,xv[k],0);
+        }
+        graph = compress(graph);
+        //create the target ring
+        setring br;
+        list rl2 = rl[2];
+        rl[1] = 0;
+        rl[2] = list(rl2[n+1..n+m]);
+        rl[3]= list(list("dp",1:m),list("C",0));
+        def Rtarget = ring(rl);
+        setring Rtarget;
+        ideal image = imap(Rbig0,graph);
+        //write the result in a token
+        token output;
+        output.fieldnames = list("generators image","modulus","numberofprimes","leadmon");
+        output.data[1] = image;
+        output.data[2] = bigint(p);
+        output.data[3] = int(1);
+        output.data[4] = hashlead(image);
+        return(output);
+       }
+
        proc liftt (token left, token right)
        "USAGE: liftt(left, right); input token
        RETURN: an token output containing a lift of the two tokens left and right.
@@ -211,6 +275,10 @@
             token t;
             int i;
             int n = size(I);
+            if (n == 0)
+            {
+                n = 1;
+            }
             for(i=1; i<=n; i++)
             {
                 t.fieldnames = list("generator","modulus");

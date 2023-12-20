@@ -6,7 +6,7 @@
         {
             "label": "run_singular",
             "type": "shell",
-            "command": "cp /home/hbn/test/install_ROOT/share/examples/modulargp.lib $software_ROOT;source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;gspc-monitor --port 9876 & SINGULARPATH=$install_ROOT:$install_ROOT/share/examples Singular $software_ROOT/run_example.sing",
+            "command": "cp /home/hbn/test/install_ROOT/share/examples/modulargp.lib $software_ROOT;source /home/hbn/spack/share/spack/setup-env.sh;spack env activate  gp2306;gspc-monitor --port 9876 & SINGULARPATH=$install_ROOT:$install_ROOT/share/examples Singular $software_ROOT/run_image.sing",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
