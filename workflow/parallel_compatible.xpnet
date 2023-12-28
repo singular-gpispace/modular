@@ -42,12 +42,13 @@
                 <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
+                <out name="bal3" type="bool"/>
                 <out name="lift_info" type="result_bool_testToken_type"/>
                 <out name="total_generator" type="unsigned long"/>
                 <out name="generators" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="split_compatible(implementation,base_filename,needed_library,result_farey, function_name,lift_info,total_generator,generators,one)">
+                    function="split_compatible(implementation,base_filename,needed_library,result_farey, function_name,lift_info,total_generator,generators,bal3,one)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
@@ -69,6 +70,7 @@
                         {
                             generators.emplace_back(out.first[i]);
                         }
+                        bal3 = 1;
                         ]]>
                     </code>
                 </module>
@@ -79,6 +81,7 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="function_name" place="place_function_name_split"/>
+            <connect-out port="bal3" place="place_bal3"/>
             <connect-out port="lift_info" place="place_lift_info"/>
             <connect-out-many port="generators" place="place_split_generators"/>
             <connect-out port="total_generator" place="place_total_generator"/>

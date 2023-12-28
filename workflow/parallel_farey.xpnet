@@ -205,6 +205,7 @@
                 <in name="reconst" type="generator_data"/>
                 <in name="total_generator" type="unsigned long"/>
                 <in name="lift_info" type="chr_lift_info"/>
+                <out name="bal3" type="bool"/>
                 <out name= "out" type="result_bool_type"/>
                 <expression>
                     ${out.farey_lift} := ${reconst.data};
@@ -212,6 +213,7 @@
                     ${out.test} := false; 
                     ${out.nb_prime} := ${lift_info.nb_prime};
                     ${out.hashlead} := ${lift_info.hashlead};
+                    ${bal3} := false;
                 </expression>
                 <condition>
                     ${reconst.nb_generator}:eq:${total_generator}
@@ -220,6 +222,7 @@
             <connect-in port="reconst" place="place_reconstruction"/>
             <connect-in port="total_generator" place="place_total_generator"/>
             <connect-in port="lift_info" place="place_lift_info"/>
+            <connect-out port="bal3" place="place_bal3"/>
             <connect-out port="out" place="place_result_farey"/>
         </transition>
     </net>
