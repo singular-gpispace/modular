@@ -320,6 +320,7 @@ namespace
                                          INT_CMD,
                                          "long",
                                          "number of tokens on bal2"))
+ 
   , M1_value (require_argument<18, unsigned long> (args,
                                            INT_CMD,
                                            "int",

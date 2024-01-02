@@ -36,6 +36,7 @@
         </place>
 		<place name="place_bal1" type="control"/>
 		<place name="place_bal2" type="control"/>
+        <place name="place_bal3" type="bool"><token><value>false</value></token></place>
         <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
 		<place name="place_implementation" type="string"/>
 		<place name="place_mod_input" type="mod_input_data"/>
@@ -73,6 +74,7 @@
                 {
                     bal2.emplace_back(we::type::literal::control{});
                 }
+
                  ]]></code>
             </module>
         </defun>
@@ -221,6 +223,7 @@
                 <in name="function_name" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="bal2" type="control"/>
+                <in name="bal3" type="bool"/>
                 <in name="mod_input" type="mod_input_data"/>
                 <in name="base_filename" type="string"/>
                 <in name="eureka_group" type="string"/>
@@ -236,7 +239,7 @@
                     <cinclude href="boost/archive/binary_iarchive.hpp"/>
                     <cinclude href="boost/archive/binary_oarchive.hpp"/>
                     <code><![CDATA[
-                       // std::cout << " in singular_..._compute " <<  std::endl;
+                        //std::cout << " in singular_..._compute " <<  std::endl;
                         std::string const filename (fhg::util::scoped_dlhandle
                                                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                                                         .sym<decltype (filename_gen)> ("filename_gen")
@@ -279,7 +282,10 @@
                             bal1 = we::type::literal::control{};
                         }
                         ]]></code>
-                </module>
+                    </module>
+                <condition>
+                    ! ${bal3}
+                </condition>
             </defun>
             <connect-read port="implementation" place="place_implementation"/>
             <connect-read port="function_name" place="place_function_name_compute"/>
@@ -288,6 +294,7 @@
             <connect-in port="mod_input" place="place_mod_input"/>
             <connect-read port="eureka_group" place="place_eureka_group"/>
             <connect-in port="bal2" place="place_bal2"/>
+            <connect-read port="bal3" place="place_bal3"/>
             <connect-out port="mod_res1" place="place_mod_res1"/>
             <connect-out port="bal1" place="place_bal1"/>
         </transition>
@@ -376,8 +383,9 @@
         </transition>
 
         
-        <transition name="reconstest" inline="true">
+       <transition name="reconstest" inline="true">
             <include-function href="reconstest.xpnet"/>
+            <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
             <place-map virtual="place_one" real="place_test"/>
             <place-map virtual="place_rand_res" real="place_rand_res"/>

@@ -1,5 +1,6 @@
 <defun name="parallel_farey">
     <require key="worker" mandatory="true"/>
+    <tunnel name="place_bal3" type="bool" place="place_bal3"/>
     <tunnel name="place_lifted_res" type="modular_data" place="place_lifted_res"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
@@ -10,6 +11,7 @@
     <tunnel name="place_result_farey" type="result_bool_type" place="place_result_farey"/>
     
     <net>
+        <place name="place_bal3" type="bool" virtual="true"/>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
         <place name="place_split_generators" type="string"/>
         <place name="place_lift_info" type="chr_lift_info"/>
@@ -39,12 +41,13 @@
                 <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
+                <inout name="bal3" type="bool"/>
                 <out name="lift_info" type="chr_lift_info"/>
                 <out name="total_generator" type="unsigned long"/>
                 <out name="generators" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="split(implementation,base_filename,needed_library,in, function_name,lift_info,total_generator,generators)">
+                    function="split(implementation,base_filename,needed_library,in, function_name,lift_info,total_generator,generators,bal3)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
@@ -63,6 +66,7 @@
                         {
                             generators.emplace_back(out.first[i]);
                         }
+                        bal3 = 1;
                         ]]>
                     </code>
                 </module>
@@ -72,6 +76,7 @@
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="function_name" place="place_function_name_split"/>
+            <connect-inout port="bal3" place="place_bal3"/>
             <connect-out port="lift_info" place="place_lift_info"/>
             <connect-out-many port="generators" place="place_split_generators"/>
             <connect-out port="total_generator" place="place_total_generator"/>
@@ -200,6 +205,7 @@
                 <in name="reconst" type="generator_data"/>
                 <in name="total_generator" type="unsigned long"/>
                 <in name="lift_info" type="chr_lift_info"/>
+                <out name="bal3" type="bool"/>
                 <out name= "out" type="result_bool_type"/>
                 <expression>
                     ${out.farey_lift} := ${reconst.data};
@@ -207,6 +213,7 @@
                     ${out.test} := false; 
                     ${out.nb_prime} := ${lift_info.nb_prime};
                     ${out.hashlead} := ${lift_info.hashlead};
+                    ${bal3} := false;
                 </expression>
                 <condition>
                     ${reconst.nb_generator}:eq:${total_generator}
@@ -215,6 +222,7 @@
             <connect-in port="reconst" place="place_reconstruction"/>
             <connect-in port="total_generator" place="place_total_generator"/>
             <connect-in port="lift_info" place="place_lift_info"/>
+            <connect-out port="bal3" place="place_bal3"/>
             <connect-out port="out" place="place_result_farey"/>
         </transition>
     </net>

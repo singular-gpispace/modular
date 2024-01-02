@@ -155,13 +155,14 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
         pc.options.bal1 = #[1];
         pc.options.bal2 = #[2];
       }
+      
       else { //read bal1, bal2 and M1
-        if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
+        if (size(#) == 3  && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
           pc.options.bal1 = #[1];
           pc.options.bal2 = #[2];
           pc.options.M1 = #[3];
         }
-        else{ //read bal1, bal2, M1 and M2
+        else{ //read bal1, bal2,  M1 and M2
           if (size(#) == 4 && typeof(#[1])=="int" && typeof(#[2])=="int" && typeof(#[3])=="int" && typeof(#[4])=="int"){
             pc.options.bal1 = #[1];
             pc.options.bal2 = #[2];
@@ -169,7 +170,7 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
             pc.options.M2 = #[4];
           }
           else{// read bal1, bal2, M1, M2, and nbPrimes
-            if ( size(#) == 5 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int" ){
+            if ( size(#) == 5 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int"){
               pc.options.bal1 = #[1];
               pc.options.bal2 = #[2];
               pc.options.M1 = #[3];
@@ -180,7 +181,7 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
               ERROR("Wrong optional arguments");
             }
           }
-        }
+       }
       }
     }
   }
@@ -202,6 +203,79 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
   setring originalRing;
   def result = imap(ringResult,result); //copy the result to the basering
   return(result);
+}
+
+
+
+proc gspc_modular_image(ideal phi, ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
+{
+  
+  token input;
+  input.fieldnames = list("map","domain");
+  input.data[1] = phi;
+  input.data[2] = I;
+  list l = list(input);
+  configToken pc = configure_modular(gc);
+  pc.options.procCompute = "ImageRationalMap";
+  //read optional arguments
+  if (size(#) > 0)
+  {
+    //read bal1 value
+    if (size(#) == 1 && typeof(#[1]) == "int" )
+    {
+      pc.options.bal1 = #[1];
+    }
+    else{ //read bal1 and bal2
+      if (size(#) == 2 && typeof(#[1]) == "int" && typeof(#[2])=="int"){
+        pc.options.bal1 = #[1];
+        pc.options.bal2 = #[2];
+      }
+      
+      else { //read bal1, bal2, and M1
+        if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int"){
+          pc.options.bal1 = #[1];
+          pc.options.bal2 = #[2];
+          pc.options.M1 = #[4];
+        }
+        else{ //read bal1, bal2,   M1 and M2
+          if (size(#) == 4 && typeof(#[1])=="int" && typeof(#[2])=="int" && typeof(#[3])=="int" && typeof(#[4])=="int"  ){
+            pc.options.bal1 = #[1];
+            pc.options.bal2 = #[2];
+            pc.options.M1 = #[3];
+            pc.options.M2 = #[4];
+          }
+          else{// read bal1, bal2, M1, M2, and nbPrimes
+            if ( size(#) == 5 && typeof(#[1]) =="int" && typeof(#[2]) =="int" && typeof(#[3]) == "int" && typeof(#[4]) =="int" && typeof(#[5]) == "int"){
+              pc.options.bal1 = #[1];
+              pc.options.bal2 = #[2];
+              pc.options.M1 = #[3];
+              pc.options.M2 = #[4];
+              pc.options.nbPrimes = #[5];
+            } 
+            else{
+              ERROR("Wrong optional arguments");
+            }
+          }
+      }
+      }
+    }
+  }
+  intvec primeiv = primeList(I+phi, pc.options.nbPrimes);
+  int i;
+  list primelists;
+  token t;
+  for (i = 1; i <= pc.options.nbPrimes; i++)
+  {
+    t.fieldnames = list("int");
+    t.data = list(primeiv[i]);
+	  primelists[i] = t;
+  }
+  def re = gspc_modular(l,primelists, gc, pc);
+  def ringResult = re.r_data;
+  setring ringResult; //ring where the result is defined
+  ideal im = re.data[1];
+  export(im);
+  return(ringResult);
 }
 
 
