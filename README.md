@@ -8,7 +8,7 @@ This application  uses the Singular dynamic module implemented by Lukas Ristau f
 We demonstrate the practical application of the framework in computational algebra, specifically by computing Groebner bases in characteristic 0. 
 Additionally, in the field of birational geometry, we use the framework to compute the image of a rational map, also in characteristic 0. We highlight that the entirety or a part of this application can be used for a diverse range of problems, such as the  generic two-into-one machinery in the coordination layer.
 
-To use the framework, installing Singular, GPI-Space, along with their dependencies, and the project code is required. 
+To use the framework, installing Singular, GPI-Space, along with their dependencies, and the project code are required. 
 We offer two distinct installation methods. The preferred approach involves using the supercomputing package manager Spack, 
 which automates the handling of all dependencies. Alternatively, a manual installation of components is available,
 serving as anoption if the installation via Spack fails on the target system.
@@ -28,6 +28,60 @@ export software_ROOT=~/singular-gpispace
 export install_ROOT=~/singular-gpispace
 
 ```
+Note, this needs to be set again if you open a new terminal session (preferably set it automatically by adding the line to your .profile file).
 
+## Install Spack
+If Spack is not already present in the above directory, clone Spack from Github:
+```bash
+git clone https://github.com/spack/spack.git $software_ROOT/spack
+
+```
+We check out verison v0.21 of Spack (the current version):
+```bash
+cd $software_ROOT/spack
+git checkout releases/v0.21
+cd $software_ROOT
+
+```
+Spack requires a couple of standard system packages to be present. For example, on an Ubuntu machines they can be installed by the following commands (which typically require sudo privilege)
+
+```bash
+sudo apt update
+
+```
+```bash
+sudo apt install build-essential ca-certificates coreutils curl environment-modules gfortran git gpg lsb-release python3 python3-distutils python3-venv unzip zip
+
+```
+
+To be able to use spack from the command line, run the setup script:
+```bash
+. $software_ROOT/spack/share/spack/setup-env.sh
+
+```
+Note, this script needs to be executed again if you open a new terminal session (preferably set it automatically by adding the line to your .profile file).
+
+Finally, Spack needs to boostrap clingo.  This can be done by concretizing any
+spec, for example
+```bash
+spack spec zlib
+
+```
+
+Note: If you experience connection timeouts due to a slow internet connection you can set in the following file the variable `connect_timeout` to a larger value.
+```bash
+vim $software_ROOT/spack/etc/spack/defaults/config.yaml
+
+```
+
+### How to uninstall Spack
+Note that Spack can be uninstalled by just deleting its directory and its configuration files. Be CAREFUL to do that, since it will delete your Spack setup. Typically you do NOT want to do that now, so the code is commented out. It can be useful if your Spack installation is broken:
+
+```bash
+#cd
+#rm -rf $software_ROOT/spack/
+#rm -rf .spack
+
+```
 
 
