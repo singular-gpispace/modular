@@ -137,14 +137,25 @@ spack install
 Note, this may take quite a bit of time, when doing the initial installation, as it needs to build GPI-Space and Singular
 including dependencies. Installing further components of the framework or updating is then typically quick.
 
-## Load pfd-parallel
+## Load modular
 
 Once modular is installed, to use modular load the package via:
 ```bash
-spack load load
+spack load modular
 
 ```
-Note, that this command needs to be executed again if you open a new terminal session. In particular, the environment variable `PFD_INSTALL_DIR` is available only after executing this command.
+If modular is installed in an environment, run the following command to activate the environment:
+```bash
+spack env activate -p myenv
+
+```
+After usage of the package, we can deactivate the environment via the command:
+```bash
+spack env deactivate
+
+```
+
+Note, that this command needs to be executed again if you open a new terminal session. In particular, the environment variable `MODULAR_INSTALL_DIR` is available only after executing this command.
 
 ## Set up ssh
 
