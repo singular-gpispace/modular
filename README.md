@@ -5,4 +5,8 @@ This package offers a generic massively parrallel implementation for modular alg
 This application  uses the Singular dynamic module implemented by Lukas Ristau from  the repository
 [framework](https://github.com/singular-gpispace/framework)  with minor modification to trigger the framework directly from the Singular interpreter. Additionaly, we have made contribution to  the serialization of data type of Singular by automating the production of filenames and unifying  the data type  to be serialize.
 
+We demonstrate the practical application of the framework in computational algebra, specifically by computing Groebner bases in characteristic 0. 
+Additionally, in the field of birational geometry, we use the framework to compute the image of a rational map, also in characteristic 0. We highlight that the entirety or a part of this application can be used for a diverse range of problems, such as the  generic two-into-one machinery in the coordination layer.
+
+
 
