@@ -83,5 +83,89 @@ Note that Spack can be uninstalled by just deleting its directory and its config
 #rm -rf .spack
 
 ```
+## Install modular
 
+Once you have installed Spack, our package can be installed with just three lines of code.
+
+Clone the Singular/GPI-Space package repository into this directory:
+```bash
+git clone https://github.com/singular-gpispace/spack-packages.git $software_ROOT/spack-packages
+
+```
+
+Add the Singular/GPI-Space package repository to the Spack installation:
+```bash
+spack repo add $software_ROOT/spack-packages
+
+```
+
+Finally, install modular:
+```bash
+spack install modular
+
+```
+Optionaly, we can install the modular framework in a Spack environment by substituing the last line of code with the following commands.
+
+Create an environment:
+```bash
+spack env create myenv
+
+```
+Activate the environment:
+```bash
+spack env activate -p myenv
+
+```
+Add the abstract specs of modular to the environment:
+
+```bash
+spack add modular
+
+```
+
+Concretize the environment:
+```bash
+spack concretize
+
+```
+
+
+
+Note, this may take quite a bit of time, when doing the initial installation, as it needs to build GPI-Space and Singular
+including dependencies. Installing further components of the framework or updating is then typically quick.
+
+## Load pfd-parallel
+
+Once modular is installed, to use modular load the package via:
+```bash
+spack load load
+
+```
+Note, that this command needs to be executed again if you open a new terminal session. In particular, the environment variable `PFD_INSTALL_DIR` is available only after executing this command.
+
+## Set up ssh
+
+GPI-Space requires a working SSH environment with a password-less
+SSH-key when using the SSH RIF strategy. To ensure this, 
+leave the password field empty when generating your ssh keypair.
+
+By default, `${HOME}/.ssh/id_rsa` is used for authentication. If no such key exists,
+```bash
+ssh-keygen -t rsa -b 4096 -N '' -f "${HOME}/.ssh/id_rsa"
+
+```
+can be used to create one. 
+
+If you compute on your personal machine, there must run an ssh server. On an Ubuntu machine, the respective package can be installed by:
+
+```bash
+sudo apt install openssh-server
+
+```
+
+Your key has to be registered with the machine you want to compute on. On a cluster with shared home directory, this only has to be done on one machine. For example, if you compute on your personal machine, you can register the key with:
+```bash
+ssh-copy-id -f -i "${HOME}/.ssh/id_rsa" "${HOSTNAME}"
+
+```
 
