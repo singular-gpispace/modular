@@ -104,7 +104,7 @@ Finally, install modular:
 spack install modular
 
 ```
-Optionaly, we can install the modular framework in a Spack environment by substituing the last line of code with the following commands.
+Optionally, the modular framework can be installed in a Spack environment by replacing the last line of code with the following commands.
 
 Create an environment:
 ```bash
@@ -128,8 +128,11 @@ Concretize the environment:
 spack concretize
 
 ```
+Install the environment
+```bash
+spack install
 
-
+```
 
 Note, this may take quite a bit of time, when doing the initial installation, as it needs to build GPI-Space and Singular
 including dependencies. Installing further components of the framework or updating is then typically quick.
