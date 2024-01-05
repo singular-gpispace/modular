@@ -8,5 +8,26 @@ This application  uses the Singular dynamic module implemented by Lukas Ristau f
 We demonstrate the practical application of the framework in computational algebra, specifically by computing Groebner bases in characteristic 0. 
 Additionally, in the field of birational geometry, we use the framework to compute the image of a rational map, also in characteristic 0. We highlight that the entirety or a part of this application can be used for a diverse range of problems, such as the  generic two-into-one machinery in the coordination layer.
 
+To use the framework, installing Singular, GPI-Space, along with their dependencies, and the project code is required. 
+We offer two distinct installation methods. The preferred approach involves using the supercomputing package manager Spack, 
+which automates the handling of all dependencies. Alternatively, a manual installation of components is available,
+serving as anoption if the installation via Spack fails on the target system.
+
+
+# Installation using Spack
+Spack is a package manager specifically aimed at handling software installations in supercomputing environments, but
+usable on anything from a personal computer to an HPC cluster. It supports Linux and macOS (note that the Singular/GPI-Space
+framework and hence our package requires Linux).
+
+We will assume that the user has some directory path with read and
+write access. In the following, we assume this path is set as the environment variable
+`software_ROOT`, as well as `install_ROOT`:
+
+```bash
+export software_ROOT=~/singular-gpispace
+export install_ROOT=~/singular-gpispace
+
+```
+
 
 
