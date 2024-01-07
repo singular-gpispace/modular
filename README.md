@@ -225,3 +225,12 @@ On this machine, start the monitor, specifying a port number where the monitor w
 gspc-monitor --port 9876 &
 
 ```
+## Start Singular
+
+We start Singular in the directory where it will have direct access to all relevant directories we just created, telling it also where to find the libraries for our framework:
+
+```bash
+cd $software_ROOT
+SINGULARPATH="$MODULAR_INSTALL_DIR"  Singular
+
+```
