@@ -192,7 +192,7 @@ spack load modular
 
 ```
 ## Setup directories and example files
-First, we copy the needed library for the example into `software_ROOT`.
+First, we copy the needed library for the example into `software_ROOT` directory.
 ```bash
 cp $MODULAR_INSTALL_DIR/share/examples/modulargp.lib $software_ROOT
 
