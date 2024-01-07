@@ -188,6 +188,40 @@ If you start in a new terminal session (and did not configure your terminal to d
 ```bash
 export software_ROOT=~/singular-gpispace
 . $software_ROOT/spack/share/spack/setup-env.sh
-spack load pfd-parallel
+spack load modular
+
+```
+## Setup directories and example files
+We copy the needed library for the example into software_ROOT
+```bash
+cp $MODULAR_INSTALL_DIR/share/examples/modulargp.lib $software_ROOT
+
+```
+We create a nodefile, which contains the names of the nodes used for computations with our framework. In our example, it just contains the result of hostname.
+
+```bash
+hostname > $software_ROOT/nodefile
+
+```
+Moreover, we need a directory for temporary files, which should be accessible from all machines involved in the computation:
+
+```bash
+mkdir -p $software_ROOT/tempdir
+
+```
+## Start the monitor
+
+Optionally, but recommended: We start the GPI-Space Monitor to display computations in form of a Gantt diagram (to do so, you need an X-Server running).
+In case you do not want to use the monitor, you should not set in Singular the fields options.loghostfile and options.logport of the GPI-Space configuration token (see below). In order to use the GPI-Space Monitor, we need a loghostfile with the name of the machine running the monitor.
+
+```bash
+hostname > $software_ROOT/loghostfile
+
+```
+
+On this machine, start the monitor, specifying a port number where the monitor will receive information from GPI-Space. The same port has to be specified in Singular in the field options.logport.
+
+```bash
+gspc-monitor --port 9876 &
 
 ```
