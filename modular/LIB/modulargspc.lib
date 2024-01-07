@@ -207,7 +207,7 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
 
 
 
-proc gspc_modular_image(ideal phi, ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
+proc gspc_modimage(ideal phi, ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
 {
   
   token input;
