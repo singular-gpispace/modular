@@ -236,7 +236,7 @@ SINGULARPATH="$MODULAR_INSTALL_DIR"  Singular
 ```
 We will provide two examples of computation using the package. The first is for the computation of the image of a rational map. The second is for the computation of Groebner bases.
 
-##  Run example for computation of a rational map.
+##  Example for modular computation of the image of a rational map.
 In this example, we compute the image of a quintic plane curve by the the degree 5 Veronese embedding. In Singular, now do what follows below.
 
 ```bash
@@ -260,6 +260,6 @@ setring result;
 im;
 
 ```
-
+## Example for the modular computation of a Gröbner basis over the rationals
 
 
