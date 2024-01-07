@@ -182,4 +182,12 @@ Your key has to be registered with the machine you want to compute on. On a clus
 ssh-copy-id -f -i "${HOME}/.ssh/id_rsa" "${HOSTNAME}"
 
 ```
+# Example of how to use the modular package
+If you start in a new terminal session (and did not configure your terminal to do this automatically) make sure to set `software_ROOT` and run the `setup-env.sh` script. Make also sure to load the modular package in Spack. As discussed above this can be done by:
 
+```bash
+export software_ROOT=~/singular-gpispace
+. $software_ROOT/spack/share/spack/setup-env.sh
+spack load pfd-parallel
+
+```
