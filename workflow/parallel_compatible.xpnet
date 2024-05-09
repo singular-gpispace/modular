@@ -1,24 +1,25 @@
-<defun name="parallel_farey">
+<defun name="parallel_compatible">
     <require key="worker" mandatory="true"/>
     <tunnel name="place_bal3" type="bool" place="place_bal3"/>
-    <tunnel name="place_lifted_res" type="modular_data" place="place_lifted_res"/>
+    <tunnel name="place_result_farey" type="result_bool_type" place="place_result_farey"/>
+    <tunnel name="place_one" type="modular_data" place="place_one"/>
     <tunnel name="place_implementation" type="string" place="place_implementation"/>
     <tunnel name="place_base_filename" type="string" place="place_base_filename"/>
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
     <tunnel name="place_function_name_split" type="string" place="place_function_name_split"/>
-    <tunnel name="place_function_name_farey" type="string" place="place_function_name_farey"/>
-    <tunnel name="place_function_name_append" type="string" place="place_function_name_append"/>
-    <tunnel name="place_result_farey" type="result_bool_type" place="place_result_farey"/>
+    <tunnel name="place_function_name_compatible" type="string" place="place_function_name_compatible"/>
+    <tunnel name="place_result_farey_afterTest" type="result_bool_testToken_type" place="place_result_farey_afterTest"/>
     
     <net>
         <place name="place_bal3" type="bool" virtual="true"/>
-        <place name="place_lifted_res" type="modular_data" virtual="true"/>
+        <place name="place_result_farey" type="result_bool_type" virtual="true"/>
+        <place name="place_one" type="modular_data"  virtual="true"/>
         <place name="place_split_generators" type="string"/>
-        <place name="place_lift_info" type="chr_lift_info"/>
+        <place name="place_lift_info" type="result_bool_testToken_type"/>
         <place name="place_total_generator" type="unsigned long"/>
-        <place name="place_reconstruction" type="generator_data"/>
-        <place name="place_right" type="generator_data"/>
-        <place name="place_left" type="generator_data"/>
+        <place name="place_afterTest" type="generator_bool"/>
+        <place name="place_right" type="generator_bool"/>
+        <place name="place_left" type="generator_bool"/>
         <place name="place_up" type="control">
             <token>
                 <value>[]</value>
@@ -28,40 +29,43 @@
         <place name="place_implementation" type="string" virtual="true"/>
         <place name="place_base_filename" type="string" virtual="true"/>
         <place name="place_needed_library" type="string" virtual="true"/>
-        <place name="place_function_name_farey" type="string" virtual="true"/>
+        <place name="place_function_name_compatible" type="string" virtual="true"/>
         <place name="place_function_name_split" type="string" virtual="true"/>
-        <place name="place_function_name_append" type="string" virtual="true"/>
-        <place name="place_result_farey" type="result_bool_type" virtual="true"/>
+        <place name="place_result_farey_afterTest" type="result_bool_testToken_type" virtual="true"/>
 
         <transition name="split">
             <defun>
                 <require key="worker" mandatory="true"/>
-                <in name="in" type="modular_data"/>
+                <in name="result_farey" type="result_bool_type"/>
+                <in name="one" type="modular_data"/>
                 <in name="implementation" type="string"/>
                 <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
-                <inout name="bal3" type="bool"/>
-                <out name="lift_info" type="chr_lift_info"/>
+                <out name="bal3" type="bool"/>
+                <out name="lift_info" type="result_bool_testToken_type"/>
                 <out name="total_generator" type="unsigned long"/>
                 <out name="generators" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="split(implementation,base_filename,needed_library,in, function_name,lift_info,total_generator,generators,bal3)">
+                    function="split_compatible(implementation,base_filename,needed_library,result_farey, function_name,lift_info,total_generator,generators,bal3,one)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
-                        std::cout << "in singular _.._farey" << std::endl;
+                        std::cout << "in singular _.._compatible" << std::endl;
                         std::pair<std::vector<std::string>, unsigned long> out = fhg::util::scoped_dlhandle
                          (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
                          .sym<decltype (singular_modular_split)> ("singular_modular_split")
-                         ( in.data,function_name, needed_library,base_filename);
+                         ( result_farey.farey_lift,function_name, needed_library,base_filename);
                         total_generator = out.second;
-                        lift_info.chr_lift = in.data;
-                        lift_info.nb_prime = in.nb_prime;
-                        lift_info.hashlead = in.hashlead;
+                        lift_info.farey_lift = result_farey.farey_lift;
+                        lift_info.chr_lift = result_farey.chr_lift;
+                        lift_info.test = false;
+                        lift_info.nb_prime = result_farey.nb_prime;
+                        lift_info.hashlead = result_farey.hashlead;
+                        lift_info.testToken = one.data;
                         for(int i (0); i<out.first.size(); i++)
                         {
                             generators.emplace_back(out.first[i]);
@@ -71,18 +75,19 @@
                     </code>
                 </module>
             </defun>
-            <connect-in port="in" place="place_lifted_res"/>
+            <connect-in port="result_farey" place="place_result_farey"/>
+            <connect-in port="one" place="place_one"/>
             <connect-read port="implementation" place="place_implementation"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
             <connect-read port="function_name" place="place_function_name_split"/>
-            <connect-inout port="bal3" place="place_bal3"/>
+            <connect-out port="bal3" place="place_bal3"/>
             <connect-out port="lift_info" place="place_lift_info"/>
             <connect-out-many port="generators" place="place_split_generators"/>
             <connect-out port="total_generator" place="place_total_generator"/>
         </transition>
 
-        <transition name="farey">
+        <transition name="compatible">
             <defun>
                 <require key="worker" mandatory="true"/>
                 <in name="generator" type="string"/>
@@ -90,50 +95,51 @@
                 <in name="base_filename" type="string"/>
                 <in name="needed_library" type="string"/>
                 <in name="function_name" type="string"/>
-                <out name="out" type="generator_data"/>
+                <in name="lift_info" type="result_bool_testToken_type"/>
+                <out name="out" type="generator_bool"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="reconst(implementation,base_filename,needed_library,function_name,generator,out)">
+                    function="compatible(implementation,base_filename,needed_library,function_name,generator,out,lift_info)">
                     <cinclude href="share/include/modular_interface.hpp"/>
                     <cinclude href="util-generic/dynamic_linking.hpp"/>
                     <cinclude href="vector"/>
                     <cinclude href="iostream"/>
                     <code><![CDATA[
-                       // std::cout << "in singular_.._farey" << std::endl;
-                        std::pair<std::string, unsigned long> result = fhg::util::scoped_dlhandle
-                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                         .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
-                         ( generator,function_name, needed_library,base_filename);
-                        out.data = result.first;
-                        out.nb_generator=  result.second;
+                        //std::cout << "in singular_.._compati" << std::endl;
+                        out.test  = fhg::util::scoped_dlhandle
+                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+                            .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
+                            ( generator, lift_info.testToken,function_name, needed_library);
+                        out.nb_generator=  1;
                         ]]>
                     </code>
                 </module>
             </defun>
             <connect-in port="generator" place="place_split_generators"/>
-            <connect-out port="out" place="place_reconstruction"/>
+            <connect-read port="lift_info" place="place_lift_info"/>
             <connect-read port="implementation" place="place_implementation"/>
             <connect-read port="base_filename" place="place_base_filename"/>
             <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-read port="function_name" place="place_function_name_farey"/>
+            <connect-read port="function_name" place="place_function_name_compatible"/>
+            <connect-out port="out" place="place_afterTest"/>
         </transition>
 
         <transition name="right">
             <defun>
-                <in name="reconst" type="generator_data"/>
+                <in name="afterTest" type="generator_bool"/>
                 <in name="up" type="control"/>
                 <in name="total_generator" type="unsigned long"/>
                 <out name="down" type="control"/>
-                <out name="right" type="generator_data"/>
+                <out name="right" type="generator_bool"/>
                 <expression>
                     ${down} := ${up};
-                    ${right} := ${reconst};
+                    ${right} := ${afterTest};
                 </expression>
                 <condition>
-                    ${reconst.nb_generator} :lt: ${total_generator}
+                    ${afterTest.nb_generator} :lt: ${total_generator}
                 </condition>
             </defun>
-            <connect-in port="reconst" place="place_reconstruction"/>
+            <connect-in port="afterTest" place="place_afterTest"/>
             <connect-in port="up" place="place_up"/>
             <connect-read port="total_generator" place="place_total_generator"/>
             <connect-out port="down" place="place_down"/>
@@ -142,88 +148,66 @@
 
         <transition name="left">
             <defun>
-                <in name="reconst" type="generator_data"/>
+                <in name="afterTest" type="generator_bool"/>
                 <in name="down" type="control"/>
                 <in name="total_generator" type="unsigned long"/>
                 <out name="up" type="control"/>
-                <out name="left" type="generator_data"/>
+                <out name="left" type="generator_bool"/>
                 <expression>
                     ${up} := ${down};
-                    ${left} := ${reconst};
+                    ${left} := ${afterTest};
                 </expression>
                 <condition>
-                    ${reconst.nb_generator} :lt: ${total_generator}
+                    ${afterTest.nb_generator} :lt: ${total_generator}
                 </condition>
             </defun>
-            <connect-in port="reconst" place="place_reconstruction"/>
+            <connect-in port="afterTest" place="place_afterTest"/>
             <connect-in port="down" place="place_down"/>
             <connect-read port="total_generator" place="place_total_generator"/>
             <connect-out port="up" place="place_up"/>
             <connect-out port="left" place="place_left"/>
         </transition>
 
-        <transition name="append">
+        <transition name="combine">
             <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="left" type="generator_data"/>
-                <in name="right" type="generator_data"/>
-                <in name="implementation" type="string"/>
-                <in name="base_filename" type="string"/>
-                <in name="needed_library" type="string"/>
-                <in name="function_name" type="string"/>
-                <out name="out" type="generator_data"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="append(implementation,base_filename,needed_library,function_name,left,right,out)">
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-                    <cinclude href="vector"/>
-                    <cinclude href="iostream"/>
-                    <code><![CDATA[
-                       // std::cout << "in singular_.._append" << std::endl;
-                        std::string result = fhg::util::scoped_dlhandle
-                         (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                         .sym<decltype (singular_modular_append)> ("singular_modular_append")
-                         ( left.data,right.data,function_name, needed_library,base_filename);
-                        out.data = result;
-                        out.nb_generator= left.nb_generator + right.nb_generator;
-                        ]]>
-                    </code>
-                </module>
+                <in name="left" type="generator_bool"/>
+                <in name="right" type="generator_bool"/>
+                <out name="out" type="generator_bool"/>
+                <expression>
+                    ${out.test} := ${left.test} :and: ${right.test};
+                    ${out.nb_generator} := ${left.nb_generator} + ${right.nb_generator};
+                </expression>
             </defun>
             <connect-in port="left" place="place_left"/>
             <connect-in port="right" place="place_right"/>
-            <connect-out port="out" place="place_reconstruction"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-read port="function_name" place="place_function_name_append"/>
+            <connect-out port="out" place="place_afterTest"/>
         </transition>
 
         <transition name="extract_final">
             <defun>
-                <in name="reconst" type="generator_data"/>
+                <in name="afterTest" type="generator_bool"/>
                 <in name="total_generator" type="unsigned long"/>
-                <in name="lift_info" type="chr_lift_info"/>
-                <out name="bal3" type="bool"/>
-                <out name= "out" type="result_bool_type"/>
+                <in name="lift_info" type="result_bool_testToken_type"/>
+                <out name= "out" type="result_bool_testToken_type"/>
+                <inout name="bal3" type="bool"/>
                 <expression>
-                    ${out.farey_lift} := ${reconst.data};
+                    ${out.farey_lift} := ${lift_info.farey_lift};
                     ${out.chr_lift} := ${lift_info.chr_lift};
-                    ${out.test} := false; 
+                    ${out.test} := ${afterTest.test}; 
                     ${out.nb_prime} := ${lift_info.nb_prime};
                     ${out.hashlead} := ${lift_info.hashlead};
+                    ${out.testToken} := ${lift_info.testToken};
                     ${bal3} := false;
                 </expression>
                 <condition>
-                    ${reconst.nb_generator}:eq:${total_generator}
+                    ${afterTest.nb_generator}:eq:${total_generator}
                 </condition>
             </defun>
-            <connect-in port="reconst" place="place_reconstruction"/>
+            <connect-in port="afterTest" place="place_afterTest"/>
             <connect-in port="total_generator" place="place_total_generator"/>
+            <connect-inout port="bal3" place="place_bal3"/>
             <connect-in port="lift_info" place="place_lift_info"/>
-            <connect-out port="bal3" place="place_bal3"/>
-            <connect-out port="out" place="place_result_farey"/>
+            <connect-out port="out" place="place_result_farey_afterTest"/>
         </transition>
     </net>
 </defun>

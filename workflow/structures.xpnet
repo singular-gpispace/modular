@@ -38,4 +38,9 @@
         <field name="nb_generator" type="unsigned long"/>
     </struct>
 
+	<struct name="generator_bool">
+		<field name="test" type="bool"/>
+		<field name="nb_generator" type="unsigned long"/>
+	</struct>
+
 </structs>

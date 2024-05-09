@@ -252,16 +252,20 @@ idhdl symbol (std::string const& lib, std::string const& fun)
 }
 
 ScopedLeftv::ScopedLeftv (int c, void* data)
-: _ (static_cast<leftv> (omAlloc0Bin (sleftv_bin))) // TODO check result
+: _ (static_cast<leftv> (omAlloc0Bin (sleftv_bin)))
 {
   _->rtyp = c;
   _->data = data;
 }
   ScopedLeftv::ScopedLeftv (ScopedLeftv& parent, int c, void* data)
 : ScopedLeftv (c, data)
+
 {
   chained = true;
-  parent._->next = _;
+  if (parent._->next == NULL)
+    parent._->next = _;
+  else 
+    parent._->next->next = _;
 }
 ScopedLeftv::~ScopedLeftv()
 {

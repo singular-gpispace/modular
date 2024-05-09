@@ -1,5 +1,6 @@
 <defun name="reconstest">
     <require key="worker" mandatory="true"/>
+    <tunnel name="place_bal3" type="bool" place="place_bal3"/>
     <tunnel name="place_lifted_res" type="modular_data" place="place_lifted_res"/>
     <tunnel name="place_one" type="modular_data" place="place_one"/>
     <tunnel name="place_rand_res" type="result_bool_type" place="place_rand_res"/>
@@ -13,6 +14,7 @@
     <tunnel name="place_needed_library" type="string" place="place_needed_library"/>
 
     <net>
+        <place name="place_bal3" type="bool" virtual="true"/>
         <place name="place_lifted_res" type="modular_data" virtual="true"/>
         <place name="place_one" type="modular_data" virtual="true"/>
         <place name="place_rand_res" type="result_bool_type" virtual="true"/>
@@ -29,6 +31,7 @@
 
         <transition name="parallel_farey" inline="true">
             <include-function href="parallel_farey.xpnet"/>
+            <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
             <place-map virtual="place_result_farey" real="place_result_farey"/>
             <place-map virtual="place_function_name_farey" real="place_function_name_farey"/>
@@ -38,79 +41,19 @@
             <place-map virtual="place_base_filename" real="place_base_filename"/>
             <place-map virtual="place_needed_library" real="place_needed_library"/>
         </transition>
-        
-        <!--<transition name="farey">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="lifted_res" type="modular_data"/>
-                <in name="implementation" type="string"/>
-                <in name="base_filename" type="string"/>
-                <in name="function_name" type="string"/>
-                <in name="needed_library" type="string"/>
-                <out name="out" type="result_bool_type"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="farey(implementation,lifted_res,function_name,needed_library,base_filename,out)">
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-		            <cinclude href="iostream"/>
-                    <code><![CDATA[  
-			            std::cout <<  " in singular_..._farey "<< std::endl;
-                        std::cout << lifted_res.nb_prime << std::endl;
-                        out.farey_lift = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_farey)> ("singular_modular_farey")
-                                ( lifted_res.data,function_name, needed_library,base_filename);
-                        out.chr_lift = lifted_res.data;
-                        out.hashlead = lifted_res.hashlead;
-                        out.nb_prime = lifted_res.nb_prime;
-                        out.test = 0;
-                    ]]></code>
-                </module>
-            </defun>
-            <connect-in port="lifted_res" place="place_lifted_res"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="base_filename" place="place_base_filename"/>
-            <connect-read port="function_name" place="place_function_name_farey"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_result_farey"/>
-        </transition>-->
 
-        <transition name="compatible">
-            <defun>
-                <require key="worker" mandatory="true"/>
-                <in name="result_farey" type="result_bool_type"/>
-                <in name="one" type="modular_data"/>
-                <in name="implementation" type="string"/>
-                <in name="function_name" type="string"/>
-                <in name="needed_library" type="string"/>
-                <out name="out" type="result_bool_testToken_type"/>
-                <module name="singular_modular"
-                    require_function_unloads_without_rest="false"
-                    function="compatible(implementation,one,result_farey,function_name,needed_library,out)">
-                    <cinclude href="share/include/modular_interface.hpp"/>
-                    <cinclude href="util-generic/dynamic_linking.hpp"/>
-		            <cinclude href="iostream"/>
-                    <code><![CDATA[  
-			            std::cout <<  " in singular_..._compatible "<< std::endl;
-                        out.test  = fhg::util::scoped_dlhandle
-                                (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
-                                .sym<decltype (singular_modular_compatible)> ("singular_modular_compatible")
-                                ( result_farey.farey_lift, one.data,function_name, needed_library);
-                        out.farey_lift = result_farey.farey_lift;
-                        out.chr_lift = result_farey.chr_lift;
-                        out.hashlead = result_farey.hashlead;
-                        out.nb_prime = result_farey.nb_prime;
-                        out.testToken = one.data;
-                    ]]></code>
-                </module>
-            </defun>
-            <connect-in port="result_farey" place="place_result_farey"/>
-            <connect-in port="one" place="place_one"/>
-            <connect-read port="implementation" place="place_implementation"/>
-            <connect-read port="function_name" place="place_function_name_compatible"/>
-            <connect-read port="needed_library" place="place_needed_library"/>
-            <connect-out port="out" place="place_result_farey_afterTest"/>
+
+        <transition name="parallel_compatible" inline="true">
+            <include-function href="parallel_compatible.xpnet"/>
+            <place-map virtual="place_bal3" real="place_bal3"/>
+            <place-map virtual="place_result_farey" real="place_result_farey"/>
+            <place-map virtual="place_one" real="place_one"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_function_name_split" real="place_function_name_split"/>
+            <place-map virtual="place_function_name_compatible" real="place_function_name_compatible"/>
+            <place-map virtual="place_result_farey_afterTest" real="place_result_farey_afterTest"/>
         </transition>
 
         <transition name="Incompatible">

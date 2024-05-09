@@ -9,8 +9,9 @@ NO_NAME_MANGLING
 std::string filename_gen(std::string const&);
 
 NO_NAME_MANGLING
-std::pair<std::string,int> singular_modular_genNextPrime ( std::string const&
+std::pair<std::vector<std::string>,int> singular_modular_genNextPrime ( std::string const&
                                                             , int const&
+                                                            , long const&
                                                             , std::string const&
 															, std::string const&
 														    , std::string const&

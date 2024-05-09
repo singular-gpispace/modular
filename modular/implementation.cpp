@@ -10,8 +10,9 @@
 #include "singular_functions.hpp"
 NO_NAME_MANGLING
 
-std::pair<std::string, int> singular_modular_genNextPrime(std::string const& ideal_filename ,
+std::pair<std::vector<std::string>, int> singular_modular_genNextPrime(std::string const& ideal_filename ,
                                                           int const& lastprime,
+                                                          long const& m,
                                                           std::string const& function_name,
                                                           std::string const& needed_library,
                                                           std::string const& base_filename)
@@ -20,15 +21,21 @@ std::pair<std::string, int> singular_modular_genNextPrime(std::string const& ide
   load_singular_library(needed_library);
   std::pair<int,lists> I;
   std::string ids = worker();
+  std::vector<std::string> vec;
   I = deserialize(ideal_filename,ids);
   void* p =  (char*) (long) (lastprime);
+  void* M = (char*) (long) (m);
   ScopedLeftv args( I.first, lCopy(I.second));
 	ScopedLeftv arg(args,INT_CMD,p);
+  ScopedLeftv argss(args,INT_CMD,M);
   std::pair<int, lists>  out = call_user_proc(function_name, needed_library, args);
   lists u = (lists)out.second->m[3].Data();//ring.fieldnames-lists.fieldnames-ring.data-lists.data
-	int nextPrime = (int) (long)u->m[0].Data();
-  std::string out_filename = serialize(out.second,base_filename);
-  return {out_filename, nextPrime};
+  for(int i (0); i<lSize(u); i++)
+  {
+    vec.push_back(serialize((lists)u->m[i].Data(), base_filename));
+  } 
+	int nextPrime = (int) (long)u->m[lSize(u)].Data();
+  return {vec, nextPrime};
 
 }
 
