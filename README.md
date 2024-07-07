@@ -265,6 +265,5 @@ setring result;
 im;
 
 ```
-## Example for the modular computation of a Gröbner basis over the rationals
 
 
