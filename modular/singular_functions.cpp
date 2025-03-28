@@ -10,6 +10,70 @@
 const std::string STRUCT_NAME = "token";
 const std::string STRUCT_DESC = "list fieldnames, list data";
 
+
+void writePolySSI(poly P, std::string out_filename)
+{
+  si_link f  = ssi_open_for_write (out_filename);
+  sleftv data;
+  data.Init();
+  if (p_GetComp(P,currRing)==0)
+    data.rtyp = POLY_CMD;
+  else
+    data.rtyp = VECTOR_CMD;
+  data.data = (void*) P;
+  if (ssiWrite(f,&data))
+  {
+    throw std::runtime_error ("saving polynomial/vector to ssi failed");
+  }
+  ssi_close_and_remove (f);
+}
+
+poly readPolySSI(std::string filename, BOOLEAN delete_file)
+{
+  si_link f  = ssi_open_for_read (filename);
+  leftv data = ssiRead1(f);
+  if (data->rtyp != POLY_CMD && data->rtyp != VECTOR_CMD)
+  {
+    throw std::runtime_error ("reading polynomial/vector from ssi failed");
+  }
+  ssi_close_and_remove (f);
+  if(delete_file) {std::remove(filename.c_str());}
+  return (poly) data->data;
+}
+
+void writeIdealSSI(ideal I, std::string out_filename)
+{
+  si_link f  = ssi_open_for_write (out_filename);
+  sleftv data;
+  data.Init();
+  if (p_GetComp(I->m[0],currRing)==0)
+    data.rtyp = IDEAL_CMD;
+  else
+    data.rtyp = MODUL_CMD;
+  data.data = (void*) I;
+  if (ssiWrite(f,&data))
+  {
+    throw std::runtime_error ("saving ideal/module to ssi failed");
+  }
+  ssi_close_and_remove (f);
+}
+
+ideal readIdealSSI(std::string filename, BOOLEAN delete_file)
+{
+  si_link f  = ssi_open_for_read (filename);
+  leftv data = ssiRead1(f);
+
+  if (data->rtyp != IDEAL_CMD && data->rtyp != MODUL_CMD)
+  {
+    throw std::runtime_error ("reading ideal/module from ssi failed");
+  }
+  ssi_close_and_remove (f);
+  if(delete_file) {std::remove(filename.c_str());}
+  return (ideal) data->data;
+}
+
+
+
 void call_singular (std::string const& command)
 {
   int err = iiAllStart
@@ -22,22 +86,13 @@ void call_singular (std::string const& command)
 }
 
 void call_singular_and_discard (std::string const& command)
-{ 
+{
   SPrintStart();
   call_singular (command);
   char* result_ptr = SPrintEnd();
   omFree (result_ptr);
 }
 
-/*std::string filename_generator()
-{
-	std::string filename_command = "bigint a=random(1,10^9); bigint b = random(1,10^9); string filename = string(bigint(random(1,9))*10^9+a)+string(bigint(random(1,9))*10^9+b); return();";
-	call_singular_and_discard (filename_command);
-	idhdl filename_handle = ggetid ("filename");
-	std::string filename_string = IDSTRING(filename_handle);
-	call_singular_and_discard("kill filename; kill a; kill b; return();");
-	return filename_string;
-}*/
 
 std::string filename_generator()
 {
@@ -222,6 +277,21 @@ std::pair<int, lists> deserialize (std::string const& filename, std::string cons
 	ssi_close_and_remove (l);
 	return {type, lst};
 }
+std::pair<int, lists> deserialize (std::string const& filename, std::string const& ids, bool delete_file)
+{
+  std::cout << "deserializing " << filename << std::endl;
+	if (!(register_struct (STRUCT_NAME, STRUCT_DESC)))
+	{
+		 throw std::runtime_error (ids + ": could not register structs");
+	}
+	int type;
+	blackboxIsCmd (STRUCT_NAME.c_str(), type);
+	si_link l = ssi_open_for_read (filename);
+	lists lst = ssi_read_newstruct (l, STRUCT_NAME);
+	ssi_close_and_remove (l);
+  if(delete_file) {std::remove(filename.c_str());}
+	return {type, lst};
+}
 
 void load_singular_library (std::string const& library_name)
 {
@@ -264,7 +334,7 @@ ScopedLeftv::ScopedLeftv (int c, void* data)
   chained = true;
   if (parent._->next == NULL)
     parent._->next = _;
-  else 
+  else
     parent._->next->next = _;
 }
 ScopedLeftv::~ScopedLeftv()
@@ -322,7 +392,7 @@ std::pair<int, lists> call_user_proc (std::string const& function_name,
 
 std::pair<int, lists> call_user_proc (std::string const& function_name,
   std::string const& needed_library, ScopedLeftv& u_arg)
-{    
+{
   return proc<lists> (symbol (needed_library, function_name), u_arg);
 }
 std::string worker()

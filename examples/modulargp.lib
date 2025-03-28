@@ -13,11 +13,11 @@
        stdmodp(token,token)               computes a standard basis
                                            modulo p
        liftt(token, token)                lift the two modular result
-       farey(token)                       
-       compatible(token, token)           
+       farey(token)
+       compatible(token, token)
        compare(token, token)
 ";
-        
+
         proc genNextPrime(token input, int p, int m)
         {
             LIB "modstd.lib";
@@ -28,15 +28,15 @@
             int lastt;
             while( size(t.data) < m)
             {
-               
+
                 if(temp == 2)
                 {
                     if (size(t.data) == 0 ) {ERROR("no more primes");}
-                    else {break;} 
+                    else {break;}
                 }
                 temp = prime(temp-1);
                 if (primeTest(I,temp))
-                {   
+                {
                     t.fieldnames[size(t.fieldnames)+1] = "prime token";
                     tok.fieldnames = list("integer");
                     tok.data[1] = temp;
@@ -44,7 +44,7 @@
                 }
             }
             t.fieldnames[size(t.fieldnames)+1] = "last_prime";
-            lastt = tok.data[1];  
+            lastt = tok.data[1];
             t.data[size(t.data) +1]  = lastt;
             return(t);
         }
@@ -74,10 +74,10 @@
 
         proc stdmodp (token input, token in_prime)
             "USAGE: stdmodp(input, in_prime); input token
-            RETURN: an token output containing a standard basis 
+            RETURN: an token output containing a standard basis
                     output.generators of the ideal input.generators in a ring
                     with prescribed characteristic input.modulus
-            NOTE: The types token are defined . This procedure is 
+            NOTE: The types token are defined . This procedure is
                     intended to be called as a transition procedure inside the
                     worker process (that is, the "inner" instances of SINGULAR).
 "
@@ -92,7 +92,7 @@
             def I = imap(br,I);
             option(redSB);
             def J = std(I);
-            setring br;  
+            setring br;
             def J = fetch(rp,J);
             token output;
             output.fieldnames = list("generators","modulus",
@@ -174,7 +174,7 @@
        NOTE  : The types token are defined . This procedure is intended to
                be called as a transition procedure inside the worker process
                (that is, the "inner" instances of SINGULAR).
-"          
+"
        {
            def J = right.data[1];
            bigint p = right.data[2];
@@ -187,15 +187,15 @@
            output.fieldnames =
            list("generators","modulus","numberofprimes");
            output.data[1] = IJ;
-           output.data[2] = p*q;    
+           output.data[2] = p*q;
            output.data[3] = n+m;
            return(output);
        }
 
         proc fareyy (token liftedres)
-       "USAGE: fareyy(liftedres); 
+       "USAGE: fareyy(liftedres);
        RETURN: a token  containing a farey lift of the data in the token liftedres.
-"          
+"
         {
             def I = liftedres.data[1];
             bigint N = liftedres.data[2];
@@ -204,7 +204,7 @@
             def J = farey(I,N);
             system("--cpus",n);
             token t;
-            t.fieldnames = list("farey_lift","Nb_generators");
+            t.fieldnames = list("farey_lift","Nb_generators","transition_names","times");
             t.data[1] = J;
             t.data[2] = 1;
             return(t);
@@ -212,7 +212,7 @@
 
 
          proc compatible (token fareylift, token testToken)
-       "USAGE: compatible(token, token); 
+       "USAGE: compatible(token, token);
        RETURN: Test if any coefficient occuring in the data of fareylift is divisible by the characteristic p of the data in the testToken."
 
         {
@@ -227,7 +227,7 @@
         }
 
          proc compare (token fareylift, token testToken)
-       "USAGE: compare(token, token); 
+       "USAGE: compare(token, token);
        RETURN: Reduce the data of the farey lift modulo the characteristic of the testToken and check if they are equal."
 
        {
@@ -256,7 +256,7 @@
                     return(t);
                 }
             }*/
-            // test if J is in I 
+            // test if J is in I
             for (i = ncols(J); i > 0; i--)
             {
                 if (J[i] != I[i]) { setring(br); return(t); }
@@ -303,5 +303,7 @@
             out.fieldnames[1] = "generator";
             out.data[1] = K;
             out.data[2]=size(K);
+            out.data[3] = list("total_start_stop", "total_time",     "TRANSITION init (buchberger) TOTAL", "TRANSITION NF_of_spoly TOTAL", "reading ideals for Buchberger Test", "applying criteria in init transition (Buchberger test)", "reading ideal and kStrategy object (static)", "building s-polynomials", "reduction of s-polynomials", "PRODUCT CRITERION", "CHAIN CRITERION"); // transitions
+            out.data[4] = list(list(0,-2^31), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0), list(0,0,0)); // times
             return(out);
         }

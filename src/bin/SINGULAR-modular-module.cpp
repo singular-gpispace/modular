@@ -104,6 +104,7 @@ namespace
 			long bal2() const;
       unsigned long M1() const;
       unsigned long M2() const;
+      long do_BB_test() const;
 
       singular_modular::installation singPI() const;
       lists argList() const;
@@ -119,7 +120,7 @@ namespace
       std::string strategy;
       lists addargs_list;
 			std::size_t num_tasks;
-      
+
       std::string neededlibrary;
       std::string functionnamegennextprime;
       std::string functionnamecompute;
@@ -129,11 +130,12 @@ namespace
       std::string functionnameappend;
       std::string functionnamecompatible;
       std::string functionnamecompare;
-      
+
 			long bal1_value;
 			long bal2_value;
       unsigned long M1_value;
       unsigned long M2_value;
+      long do_BB_test_value;
       int out_token;
       std::string base_filename;
 
@@ -163,18 +165,22 @@ namespace
 
   unsigned long ArgumentState::M2() const {
     return M2_value;
-  } 
+  }
+
+  long ArgumentState::do_BB_test() const {
+    return do_BB_test_value;
+  }
 
 
   std::size_t ArgumentState::numTasks() const {
     return num_tasks;
   }
 
-  
+
  // std::string ArgumentState::tmpDir() const {
    // return tmpdir;
   //}
-  
+
 
   std::string ArgumentState::nodeFile() const {
     return nodefile;
@@ -191,7 +197,7 @@ namespace
   std::string ArgumentState::neededLibrary() const {
     return neededlibrary;
   }
-  
+
   std::string ArgumentState::functionNameGenNextPrime() const{
     return functionnamegennextprime;
   }
@@ -295,7 +301,7 @@ namespace
   , functionnamesplit (require_argument<11, char*> (args,
                                              STRING_CMD,
                                              "string",
-                                             "function name split"))                                         
+                                             "function name split"))
 	, functionnamefarey (require_argument<12, char*> (args,
                                            STRING_CMD,
                                            "string",
@@ -320,15 +326,19 @@ namespace
                                          INT_CMD,
                                          "long",
                                          "number of tokens on bal2"))
- 
+
   , M1_value (require_argument<18, unsigned long> (args,
                                            INT_CMD,
                                            "int",
                                            "value of M1"))
-  , M2_value (require_argument<19, unsigned long>(args,
+  , M2_value (require_argument<19, unsigned long> (args,
                                           INT_CMD,
                                           "int",
                                           "value of M2"))
+ , do_BB_test_value (require_argument<20, long> (args,
+                                         INT_CMD,
+                                         "long",
+                                         "number of tokens on do_BB_test (0 or 1)"))
 
   , out_token (fetch_token_value_from_sing_scope ("token"))
   , base_filename (tmpdir + "/")
@@ -401,7 +411,7 @@ try
 
   for (std::size_t i = 0; i < as.numTasks(); ++i)
   {
-    si_link l = ssi_open_for_write (as.baseFileName() 
+    si_link l = ssi_open_for_write (as.baseFileName()
       + "p"+std::to_string (i));
     ssi_write_newstruct (l, io_token,
       static_cast<lists> (as.pList()->m[i].data));
@@ -493,7 +503,7 @@ try
 			  values_on_ports.emplace ("primes", as.baseFileName()+"p" + std::to_string(j));
 		}
 		values_on_ports.emplace("input", as.baseFileName()+in_filename);
-    
+
     lists lastToken = static_cast<lists> (as.pList()->m[as.numTasks()-1].data);
     lists tokenvalue = (lists)lastToken->m[3].Data();//ring-lists-ring-lists
     values_on_ports.emplace("last_prime",(int) (long) tokenvalue->m[0].Data());
@@ -513,6 +523,7 @@ try
 		values_on_ports.emplace("input_bal2",as.bal2());
     values_on_ports.emplace("input_M1",as.M1());
     values_on_ports.emplace("input_M2", as.M2());
+    values_on_ports.emplace("input_do_BB_test", as.do_BB_test());
   std::multimap<std::string, pnet::type::value::value_type> result
     ( gspc::client (drts).put_and_run
       ( gspc::workflow (workflow)
@@ -525,6 +536,42 @@ catch (...)
   sggspc_print_current_exception (std::string ("in gpis_launch_with_workflow"));
   return std::nullopt;
 }
+
+
+  // types used by GPI-Space if you set the type of a place (or an "out-many" port) to "list", "set" or "map":
+  using GpiVariant = pnet::type::value::value_type;
+  using GpiStruct  = pnet::type::value::structured_type;
+  using GpiList    = std::list<GpiVariant>;
+  using GpiSet     = std::set<GpiVariant>;
+  using GpiMap     = std::map<GpiVariant,GpiVariant>;
+
+  // visitor functions to convert to proper lists, sets and maps:
+  template <typename T>
+  class variant_visitor : public boost::static_visitor<T&>
+  {
+  public:
+    T& operator() (T& data) const
+    {
+      return data;
+    }
+
+    template <typename U>
+    T& operator() (U&) const
+    {
+     static T instance{};
+     return instance;
+    }
+  };
+
+  inline GpiList& get_list(GpiVariant& v) {return boost::apply_visitor(variant_visitor<GpiList>(), v);}
+  inline GpiSet&  get_set (GpiVariant& v) {return boost::apply_visitor(variant_visitor<GpiSet >(), v);}
+  inline GpiMap&  get_map (GpiVariant& v) {return boost::apply_visitor(variant_visitor<GpiMap >(), v);}
+
+  inline GpiList const& get_list(GpiVariant  const& v) {return boost::apply_visitor(variant_visitor<GpiList const>(), v);}
+  inline GpiSet const&  get_set (GpiVariant  const& v) {return boost::apply_visitor(variant_visitor<GpiSet  const>(), v);}
+  inline GpiMap const&  get_map (GpiVariant  const& v) {return boost::apply_visitor(variant_visitor<GpiMap  const>(), v);}
+
+
 
 BOOLEAN sggspc_modular (leftv res, leftv args)
 try {
@@ -542,6 +589,93 @@ try {
   }
   std::string out = boost::get<std::string> (sm_result_it->second);
   std::pair<int, lists> entry (deserialize(out,"Extraction of result"));
+
+  // summarize runtimes:
+
+  lists transition_list = (lists) ((lists) (entry.second)->m[3].data)->m[2].data;
+  lists runtimes_list   = (lists) ((lists) (entry.second)->m[3].data)->m[3].data;
+  lists times_start_stop = (lists) (runtimes_list->m[0].data);
+  lists times_sum_total  = (lists) (runtimes_list->m[1].data);
+
+  long modular_start_time = 0L;
+  bool found_start = false;
+  for(std::multimap<std::string, pnet::type::value::value_type>::const_iterator it = result.value().begin(); it != result.value().end(); it++)
+  {
+    if( boost::get<std::string>(it->first) == "runtime")
+    {
+      GpiMap runtime = get_map(it->second);
+
+      GpiMap::const_iterator time_it;
+      for (time_it = runtime.begin(); time_it != runtime.end(); time_it++)
+      {
+        std::string transition = boost::get<std::string>(time_it->first);
+        if(transition==((std::string) "MODULAR START TIME")) {
+          modular_start_time = boost::get<long>(get_list(time_it->second).front()); // count start of init transition as beginning of the algorithm
+          found_start=true;
+          break;
+        }
+      }
+      if (found_start) {break;}
+    }
+  }
+
+  for(std::multimap<std::string, pnet::type::value::value_type>::const_iterator it = result.value().begin(); it != result.value().end(); it++)
+  {
+    if( boost::get<std::string>(it->first ) == "runtime")
+    {
+      GpiMap runtime = get_map(it->second);
+
+      GpiMap::const_iterator time_it;
+      for (time_it = runtime.begin(); time_it != runtime.end(); time_it++)
+      {
+        std::string transition = boost::get<std::string>(time_it->first);
+        GpiList times = get_list(time_it->second);
+        GpiList::const_iterator list_it = times.begin();
+        long start    = boost::get<long>(*list_it); list_it++;
+        long stop     = boost::get<long>(*list_it); list_it++;
+        long duration = boost::get<long>(*list_it); list_it++;
+        long count    = boost::get<long>(*list_it);
+
+        for(int ii=2; ii<=lSize(transition_list); ii++)
+        {
+          std::string transition_name = reinterpret_cast<char*> (transition_list->m[ii].data);
+          if(transition_name==transition)
+          {
+            lists times_sum = (lists) (runtimes_list->m[ii].data);
+
+            if(stop>=0) // for all timings:
+            {
+              times_sum->m[0].data = (void*) (char*)        ( ((long) times_sum->m[0].data) + duration);
+              times_sum->m[1].data = (void*) (char*)        ( ((long) times_sum->m[1].data) + count);
+              times_sum->m[2].data = (void*) (char*) std::max(((long) times_sum->m[2].data) , duration);
+
+              if(start>=0) // total timings of transitions:
+              {
+                times_sum_total->m[0].data = (void*) (char*)        ( ((long) times_sum_total->m[0].data) + duration);
+                times_sum_total->m[1].data = (void*) (char*)        ( ((long) times_sum_total->m[1].data) + count);
+                times_sum_total->m[2].data = (void*) (char*) std::max(((long) times_sum_total->m[2].data) , duration);
+
+                times_start_stop->m[1].data = (void*) (char*) std::max(((long) times_start_stop->m[1].data) , stop-modular_start_time); // count end of last activated transition as ending of the algorithm
+
+                if(transition==((std::string) "TRANSITION init (buchberger) TOTAL")) {
+                  times_start_stop->m[0].data = (void*) (char*) (start-modular_start_time); // count start of init transition as beginning of the verification algorithm (Buchberger Test)
+                }
+              }
+            }
+            else // for counts, like PC, CC
+            {
+              times_sum->m[0].data = (void*) (char*)        (-1L);
+              times_sum->m[1].data = (void*) (char*)        ( ((long) times_sum->m[1].data) + count);
+              times_sum->m[2].data = (void*) (char*)        (-1L);
+            }
+            break;
+          }
+        }
+      }
+    }
+  }
+
+
 
 	res->rtyp = entry.first;
 	res->data = entry.second;

@@ -1,0 +1,334 @@
+<defun name="buchberger">
+	<require key="worker" mandatory="true"/>
+	<tunnel name="place_input" type="string" place="place_input"/>
+	<tunnel name="place_output" type="string" place="place_output"/>
+	<tunnel name="place_implementation" type="string" place="place_implementation"/>
+	<tunnel name="place_base_filename" type="string" place="place_base_filename"/>
+	<tunnel name="place_needed_library" type="string" place="place_needed_library"/>
+	<tunnel name="place_do_BB_test" type="control" place="place_do_BB_test"/>
+	<tunnel name="place_runtime" type="map" place="place_runtime"/>
+
+	<net>
+		<place name="place_input" type="string" virtual="true"/>
+		<place name="place_output" type="string" virtual="true"/>
+		<place name="place_implementation" type="string" virtual="true"/>
+		<place name="place_base_filename" type="string" virtual="true"/>
+		<place name="place_needed_library" type="string" virtual="true"/>
+		<place name="place_do_BB_test" type="control" virtual="true"/>
+		<place name="place_runtime" type="map" virtual="true"/>
+		<place name="place_GB" type="string"/>
+		<place name="place_BB_test_fail" type="control"/>
+		<place name="place_started_indices" type="list"/>
+		<place name="place_BB_eureka_group" type="string">
+			<token>
+				<value>"DONE"</value>
+			</token>
+		</place>
+
+
+		<transition name="init">
+					<defun>
+						<require key="worker" mandatory="true"/>
+		       	<in name="base_filename" type="string"/>
+						<in name="needed_library" type="string"/>
+						<in name="implementation" type="string"/>
+						<in name="do_BB_test" type="control"/>
+						<in name="input" type="string"/>
+						<inout name="output" type="string"/>
+						<out name="started_indices" type="list"/>
+						<out name="GB" type="string"/>
+						<out name="runtime" type="map"/>
+						<module name="singular_modular"
+									  require_function_unloads_without_rest="false"
+									  function="function_init(runtime, base_filename, needed_library, output, started_indices, GB, implementation, input)">
+							<cinclude href="share/include/modular_interface.hpp"/>
+							<cinclude href="util-generic/dynamic_linking.hpp"/>
+							<cinclude href="boost/variant.hpp"/>
+							<cinclude href="iostream"/>
+							<cinclude href="chrono"/>
+							<cinclude href="boost/thread/thread.hpp"/>
+							<code><![CDATA[
+								long runtime_start = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								std::cout << "starting Buchberger Test (at time " << runtime_start << " ms)" << std::endl;
+
+
+
+								long start_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								std::pair<std::vector<std::vector<int>>,int> res = RESOLVE_INTERFACE_FUNCTION(implementation, singular_buchberger_get_M_and_max_j) (needed_library, base_filename, input, &GB, &output);
+								long stop_time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+							  runtime[(std::string) "reading ideals for Buchberger Test"] = GpiList({-1L, stop_time, stop_time-start_time, 1L});
+
+								// GB = res.second; handle by pointer
+								//int max_i = res.first;
+
+								std::vector<std::vector<int>> Mvec = res.first;
+								int max_j = res.second;
+
+
+								// jobs for reducing s-polynomials:
+
+								long runtime_start_criteria = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								// use M to test PC/CC:
+								long prodcrit_counter  = 0L;
+								long chaincrit_counter = 0L;
+
+								int r = Mvec.size();
+								int j=1;
+								for (std::vector<std::vector<int>>::iterator Mj=Mvec.begin(); j<=r; ++Mj, j++)
+								{
+									int i=1;
+									for (std::vector<std::vector<int>>::iterator Mi=Mvec.begin(); i<j; ++Mi, i++)
+									{
+										bool state = true;
+										std::vector<int> lcm_i_j = lcm(*Mi, *Mj);
+										if (test_PC(*Mi,*Mj)) // apply PC
+											{state = false; prodcrit_counter++;}
+										else // apply CC
+										{
+											int k=1;
+											for (std::vector<std::vector<int>>::iterator Mk=Mvec.begin(); k<=r; ++Mk, k++)
+											{
+												if(k!=i && k!=j)
+												{
+													if (test_CC(lcm_i_j, *Mi, *Mj, *Mk))
+													{
+														if(k<i)
+															{state = false; chaincrit_counter++; break;}
+														else { if(k<j)
+														{
+															std::vector<int> lcm_k_j = lcm(*Mk, *Mj);
+															if(!equal(lcm_k_j,lcm_i_j)) {state = false; chaincrit_counter++; break;}
+														}
+														else // (k>j)
+														{
+															std::vector<int> lcm_i_k = lcm(*Mi, *Mk);
+															std::vector<int> lcm_j_k = lcm(*Mj, *Mk);
+															if(!equal(lcm_i_k,lcm_i_j) && !equal(lcm_j_k,lcm_i_j)) {state = false; chaincrit_counter++; break;}
+														} }
+													}
+												}
+											}
+										}
+										if(state==true)
+										{
+											started_indices.emplace_back(GpiList({(int) i, (int) j}));
+										}
+									}
+								}
+								long runtime_stop_criteria = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								runtime[(std::string) "applying criteria in init transition (Buchberger test)"] = GpiList({-1L, runtime_stop_criteria, runtime_stop_criteria-runtime_start_criteria, 1L});
+
+								// jobs for reducing original ideal generators:
+								for(int j=1; j<=max_j; j++)
+								{
+									started_indices.emplace_back(GpiList({(int) j}));
+								}
+								std::cout << "STARTED REDUCTIONS for " << started_indices.size()-max_j << " s-polynomials and " << max_j << " original ideal generators, PRODUCT CRITERION:" << prodcrit_counter << ", CHAIN CRITERION: " << chaincrit_counter << std::endl;
+
+								long runtime_stop = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								runtime[(std::string) ("TRANSITION init (buchberger) TOTAL")] = GpiList({runtime_start, runtime_stop, runtime_stop-runtime_start, 1L});
+								runtime[(std::string) "PRODUCT CRITERION"] = GpiList({-1L, -1L, -1L,  prodcrit_counter});
+								runtime[(std::string) "CHAIN CRITERION"] = GpiList({-1L, -1L, -1L, chaincrit_counter});
+							]]></code>
+						</module>
+					</defun>
+					<connect-read port="base_filename" place="place_base_filename"/>
+					<connect-read port="needed_library" place="place_needed_library"/>
+					<connect-read port="implementation" place="place_implementation"/>
+					<connect-read port="input" place="place_input"/>
+					<connect-in port="do_BB_test" place="place_do_BB_test"/>
+					<connect-inout port="output" place="place_output"/>
+					<connect-out-many port="started_indices" place="place_started_indices"/>
+					<connect-out port="GB" place="place_GB"/>
+					<connect-out port="runtime" place="place_runtime"/>
+				</transition>
+
+
+			  <transition name="NF_of_spoly">
+					<defun>
+						<require key="worker" mandatory="true"/>
+						<in name="base_filename" type="string"/>
+						<in name="needed_library" type="string"/>
+						<in name="implementation" type="string"/>
+						<in name="GB" type="string"/>
+						<in name="input" type="string"/>
+						<in name="started_indices" type="list"/>
+						<out name="BB_test_fail" type="list"/>
+						<out name="runtime" type="map"/>
+						<in name="BB_eureka_group" type="string"/>
+						<out name="BB_eureka" type="set"/>
+						<module name="singular_modular"
+									  require_function_unloads_without_rest="false"
+									  function="function_NF_of_spoly(runtime, base_filename, needed_library, started_indices, BB_test_fail, BB_eureka_group, BB_eureka, GB, implementation, input)"
+										pass_context="true">
+							<eureka-group>${BB_eureka_group}</eureka-group>
+							<cinclude href="share/include/modular_interface.hpp"/>
+							<cinclude href="util-generic/dynamic_linking.hpp"/>
+							<cinclude href="boost/variant.hpp"/>
+							<cinclude href="iostream"/>
+							<cinclude href="chrono"/>
+							<cinclude href="fstream"/>
+							<cinclude href="boost/archive/binary_iarchive.hpp"/>
+							<cinclude href="boost/archive/binary_oarchive.hpp"/>
+							<cinclude href="boost/thread/thread.hpp"/>
+							<code><![CDATA[
+								long runtime_start = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+								std::string singular_function_name = "NF_of_spoly";
+
+								long runtime_start_static = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								static std::tuple<ideal,ideal,kStrategy> Fstrat = RESOLVE_INTERFACE_FUNCTION(implementation, singular_buchberger_get_Fstrat) (needed_library, base_filename, input, GB);
+								long runtime_stop_static = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+								runtime[(std::string) "reading ideal and kStrategy object (static)"] = GpiList({-1L, runtime_stop_static, runtime_stop_static-runtime_start_static, 1L});
+/*
+								std::string filename;
+								if(started_indices.size()==2) {filename = base_filename+"IO_"+std::to_string(boost::get<int>(started_indices.front()))+"_"+std::to_string(boost::get<int>(started_indices.back()));}
+								else                          {filename = base_filename+"IO_"+std::to_string(boost::get<int>(started_indices.front()));}
+
+
+								bool cancelled (false) ;
+								long runtime_start_outer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+		            _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
+		                ( [=]
+		                {
+											long runtime_start_inner = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+											std::ofstream of (filename,std::ios::binary);
+		                  boost::archive::binary_oarchive oa (of);
+
+											GpiList BB_test_fail_inner;
+											GpiMap runtime_inner;
+*/
+											bool silent = true;
+
+											fhg::util::scoped_dlhandle
+								                            (implementation, RTLD_GLOBAL | RTLD_NOW | RTLD_DEEPBIND)
+								                            .sym<decltype (singular_buchberger_compute_NF)> ("singular_buchberger_compute_NF")
+								                            (needed_library, base_filename, Fstrat, started_indices, &BB_test_fail, &runtime);
+
+/*
+
+											long runtime_stop_inner = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+											int k=0;
+											for (GpiList::iterator it=get_list(runtime_inner[(std::string) "reduction of s-polynomials"]).begin(); k<4; ++it, k++) {oa << boost::get<long>(*it);}
+											k=0;
+											for (GpiList::iterator it=get_list(runtime_inner[(std::string) "building s-polynomials"]).begin(); k<4; ++it, k++) {oa << boost::get<long>(*it);}
+											oa << -1L;    oa << runtime_stop_inner;    oa << runtime_stop_inner-runtime_start_inner;    oa << 1L;
+
+											int s = BB_test_fail_inner.size();
+											oa << s;
+
+										}
+		                , [&]
+		                {
+		                    cancelled = true;
+		                }
+		                , &drts::worker::on_signal_unexpected
+		                , [] (int exit_code)
+		                {
+		                    if (exit_code != 0)
+		                    {
+		                        drts::worker::on_exit_unexpected (exit_code);
+		                    }
+		                }
+		            );
+								long runtime_stop_outer = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+								if (!cancelled)
+		            {
+		                std::ifstream is (filename,std::ios::binary);
+		                boost::archive::binary_iarchive ia (is);
+
+										long tmp;
+										GpiList times;
+										for (int kk=0; kk<4; kk++) {ia >> tmp; times.emplace_back(tmp);}
+										runtime[(std::string) "reduction of s-polynomials"] = times;
+										GpiList times2;
+										for (int kk=0; kk<4; kk++) {ia >> tmp; times2.emplace_back(tmp);}
+										runtime[(std::string) "building s-polynomials"] = times2;
+										GpiList times3;
+										for (int kk=0; kk<4; kk++) {ia >> tmp; times3.emplace_back(tmp);}
+										runtime[(std::string) "runtime NF inner"] = times3;
+
+										int c;
+										ia >> c;
+
+										BB_eureka = GpiSet({});
+										if(c!=0)
+										{
+											BB_test_fail.emplace_back(CONTROL_TOKEN);
+											BB_eureka.insert(BB_eureka_group); // immediately cancel all other NF(spoly)-calculations using eureka
+										}
+*/
+										if (BB_test_fail.size()>0) {BB_eureka.insert(BB_eureka_group);} // immediately cancel all other NF(spoly)-calculations using eureka
+										long runtime_stop = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+										runtime[(std::string) ("TRANSITION "+singular_function_name+" TOTAL")] = GpiList({runtime_start, runtime_stop, runtime_stop-runtime_start, 1L});
+/*
+
+										runtime[(std::string) ("runtime NF outer")] = GpiList({-1L, runtime_stop_outer, runtime_stop_outer-runtime_start_outer, 1L});
+		            }
+								std::remove(filename.c_str());
+*/
+							]]></code>
+						</module>
+					</defun>
+					<connect-read port="base_filename" place="place_base_filename"/>
+					<connect-read port="needed_library" place="place_needed_library"/>
+					<connect-read port="implementation" place="place_implementation"/>
+					<connect-read port="GB" place="place_GB"/>
+					<connect-read port="BB_eureka_group" place="place_BB_eureka_group"/>
+					<connect-read port="input" place="place_input"/>
+					<connect-in port="started_indices" place="place_started_indices"/>
+					<connect-out-many port="BB_test_fail" place="place_BB_test_fail"/>
+					<connect-out port="runtime" place="place_runtime"/>
+					<connect-eureka port="BB_eureka"/>
+				</transition>
+
+
+				<transition name="abort_BB_test">
+					<defun>
+						<in name="base_filename" type="string"/>
+						<in name="needed_library" type="string"/>
+						<in name="implementation" type="string"/>
+						<in name="GB" type="string"/>
+						<in name="BB_test_fail" type="control"/>
+						<in name="BB_eureka_group" type="string"/>
+						<out name="BB_eureka" type="set"/>
+						<inout name="output" type="string"/>
+						<module name="singular_modular"
+										require_function_unloads_without_rest="false"
+										function="function_abortBB_test(base_filename, needed_library, GB, BB_test_fail, output, BB_eureka_group, BB_eureka, implementation)">
+							<cinclude href="share/include/modular_interface.hpp"/>
+							<cinclude href="util-generic/dynamic_linking.hpp"/>
+							<cinclude href="boost/variant.hpp"/>
+							<cinclude href="iostream"/>
+							<cinclude href="chrono"/>
+							<cinclude href="fstream"/>
+							<cinclude href="boost/archive/binary_iarchive.hpp"/>
+							<cinclude href="boost/archive/binary_oarchive.hpp"/>
+							<cinclude href="boost/thread/thread.hpp"/>
+							<code><![CDATA[
+
+								std::cout << "Buchberger Test FAILED" << std::endl;
+
+								RESOLVE_INTERFACE_FUNCTION(implementation, abort_BB_test) (needed_library, base_filename, &output);
+
+								BB_eureka = GpiSet({BB_eureka_group});
+
+							]]></code>
+						</module>
+					</defun>
+					<connect-read port="base_filename" place="place_base_filename"/>
+					<connect-read port="needed_library" place="place_needed_library"/>
+					<connect-read port="implementation" place="place_implementation"/>
+					<connect-read port="BB_eureka_group" place="place_BB_eureka_group"/>
+					<connect-in port="GB" place="place_GB"/>
+					<connect-in port="BB_test_fail" place="place_BB_test_fail"/>
+					<connect-inout port="output" place="place_output"/>
+					<connect-eureka port="BB_eureka"/>
+				</transition>
+
+	</net>
+</defun>

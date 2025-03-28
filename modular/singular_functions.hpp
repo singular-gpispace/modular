@@ -29,9 +29,14 @@ class ScopedLeftv
     ScopedLeftv& operator= (ScopedLeftv&&) = delete;
     leftv leftV() const;
   private:
-    leftv _;  
+    leftv _;
     bool chained = false;
 };
+
+void  writePolySSI(poly P, std::string out_filename);
+poly  readPolySSI(std::string filename, BOOLEAN delete_file);
+void  writeIdealSSI(ideal I, std::string out_filename);
+ideal readIdealSSI(std::string filename, BOOLEAN delete_file);
 
 void init_singular (std::string const&);
 void call_singular ( std::string const&);
@@ -57,4 +62,3 @@ std::pair<int, lists> call_user_proc (std::string const&,
                                       std::string const&,
                                       ScopedLeftv&);
 std::string worker();
-

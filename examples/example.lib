@@ -1,0 +1,129 @@
+LIB "modulargspc.lib";
+LIB "random.lib";
+LIB "modstd.lib";
+
+configToken gc = configure_gspc();
+gc.options.tmpdir = "/dev/shm/marcel/modular/tempdir";
+gc.options.tmpdir = "tempdir";
+
+gc.options.nodefile = "nodefile";
+gc.options.procspernode = 48;
+
+//gc.options.loghostfile = "loghostfile";
+//gc.options.logport = 3217;
+
+proc setcores(int n)
+{
+  gc.options.procspernode = n;
+}
+
+proc getcores()
+{
+  return(gc.options.procspernode);
+}
+
+//ring R=0,(t0,t1,t2),dp;
+//ideal I = t1^5+10*t1^4*t2+20*t1^3*t2^2+130*t1^2*t2^3-20*t1*t2^4+20*t2^5-2*t1^4*t0-40*t1^3*t2*t0-150*t1^2*t2^2*t0-90*t1*t2^3*t0-40*t2^4*t0+t1^3*t0^2+30*t1^2*t2*t0^2+110*t1*t2^2*t0^2+20*t2^3*t0^2;
+//I;
+//ideal phi = maxideal(3);
+//phi;
+proc comp(def I, def J) // compare-function for indexed types
+{
+  string t = typeof(I);
+  int i,n;
+  if(t!=typeof(J)) {return(0);}
+  if(t=="ideal" || t=="list" || t=="intvec" || t=="module")
+  {
+    n = size(I);
+    if(n != size(J)) {return(0);}
+    else {
+      for(i=1; i<=n; i++) {if(!comp(I[i],J[i])) {return(0);}}
+      return(1);
+    }
+  }
+  else {return (I==J);}
+}
+
+proc testModStd(ideal I, int ncores, int do_tests, int do_std)
+{
+  option(redSB);
+  system("--ticks-per-sec",1000);
+  if(do_tests) {printf("%ndoing Buchberger Tests: %n",0);}
+  else         {printf("%nWITHOUT Buchberger Test: %n",0);}
+
+  option(prot);
+  setcores(ncores);
+  int t1,t2,t3, i,j;
+  t1=rtimer;
+  def result, certificate, runtimes = gspc_modular_std(I, gc, do_tests, ncores-1, ((83*ncores) div 100)+1, ncores-1, ncores-1, 2*ncores-2);
+  t1=rtimer-t1;
+  printf("%nmodular std time: %s",t1);
+  if(do_tests) {printf("Buchberger Test:  %s%n",certificate,0);}
+  for(i=1; i<=size(result); i++) {result[i] = cleardenom(result[i]);}
+
+  if(do_tests)
+  {
+    bigint irl_time = runtimes[2][1][2]-runtimes[2][1][1];
+    //printf("starttime:                                  %s ms",  0);
+    //printf("starttime Buchberger Test:                  %s ms",  runtimes[2][1][1]);
+    //printf("stoptime:                                   %s ms",  runtimes[2][1][2]);
+    printf("runtime modular (stoptime - starttime):     %s ms",  runtimes[2][1][1],0);
+    printf("%nTIMINGS for verification (Buchberger Test):",0);
+    printf("runtime BB test (stoptime - starttime):     %s ms",  irl_time);       bigint runtimes_times_100 = runtimes[2][2][1]*100;
+    printf("cputime (added up over parallel processes): %s ms (%s%)", runtimes[2][2][1], runtimes_times_100 div irl_time);
+    printf("total number of transitions:                %s %n",       runtimes[2][2][2],0);
+    printf("max time of a single transition:            %s ms%n",     runtimes[2][2][3],0);
+    int j_max=0;
+    for(i=3; i<=size(runtimes[1]); i++) {j_max = max(j_max,size(runtimes[1][i]));}
+    string s;
+    for(i=3; i<=size(runtimes[1]); i++) {
+      s="";
+      for(j=size(runtimes[1][i]); j<=j_max; j++) {runtimes[1][i] = " "+runtimes[1][i];}
+      for(j=size(string(runtimes[2][i][1])); j<=8; j++) {s = " "+s;}
+      if (runtimes[2][i][1]==runtimes[2][i][3] && runtimes[2][i][1]==-1) //count
+        {printf(runtimes[1][i]+": %s"+s, runtimes[2][i][2]);}
+      else // timing
+        {printf(runtimes[1][i]+": %s"+s+" ms  (number: %s, max time: %s ms)", runtimes[2][i][1], runtimes[2][i][2], runtimes[2][i][3]);}
+    }
+  }
+
+
+  option(noprot);
+  system("--cpus", ncores);
+  if(do_tests) {
+    int TT = rtimer;
+    int ver = system("verifyGB",GmodStd);
+    TT = rtimer-TT;
+    printf("%nsystem('verifyGB', ...) time:      %s",TT);
+    printf("(result: %s)%n",ver,0);
+  }
+
+  t2=rtimer;
+  def GmodStd = modStd(I,do_tests);
+  t2=rtimer-t2;
+  printf("%nmodStd time:      %s",t2);
+  for(i=1; i<=size(GmodStd); i++) {GmodStd[i] = cleardenom(GmodStd[i]);}
+  printf("comparing: %s%n",comp(result,GmodStd),0);
+
+  if(do_std)
+  {
+    option(prot);
+    t3=rtimer;
+    def Gstd = std(I);
+    t3=rtimer-t3;
+    printf("%nstd time:         %s",t3);
+    for(i=1; i<=size(Gstd); i++) {Gstd[i] = cleardenom(Gstd[i]);}
+
+    printf("comparing: %s%n",comp(result,Gstd),0);
+    return(result,GmodStd,Gstd)
+  }
+  export(runtimes);
+  return(result,GmodStd);
+}
+
+//system("--random", 42); ring r = 0,x(1..7),dp; ideal I = randomid(maxideal(2),5);
+ring r = 0,x(0..8),dp; ideal I = katsura(8); ideal IH = homog(I,x(8));
+def G1,G2    = testModStd(IH, 6, 1, 0);
+//def G3,G4,G5 = testModStd(IH, 6, 0, 1);
+
+//system("--random",42); ring r=0,x(1..5),lp; ideal J = randomid(maxideal(4),5,20);

@@ -25,10 +25,10 @@ proc mod_init()
   LIB "modstd.lib";
   newstruct("configToken", "string tokentype, def options");
   newstruct("gspcConfigToken", "string tmpdir, string nodefile, int procspernode, string rifstrategy, string loghost, int logport, list addargs, string loghostfile");
-  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procSplit, string procFarey, string procAppend, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes");
+  newstruct("modularConfigToken", " string library, string procGenNextPrime, string procCompute, string procLift, string procSplit, string procFarey, string procAppend, string procCompatible, string procCompare, int bal1, int bal2, int M1, int M2, int nbPrimes, int doBBtest");
   newstruct("token", "list fieldnames, list data");
 }
- 
+
 proc configure_gspc()
 "USAGE: configure_gspc()
 RETURN: a configToken containing a gspcConfigToken with the standard configuration for GPI-Space
@@ -75,6 +75,7 @@ RETURN: a configToken containing a modularConfigToken with the standard
   ct.options.bal2 = nb_lines*gc.options.procspernode;
   ct.options.M1 = 10;
   ct.options.M2 = 40;
+  ct.options.doBBtest = 0;
   return(ct);
 }
 
@@ -129,19 +130,20 @@ RETURN: a configToken containing a modularConfigToken with the standard
   {
     loadlib = system("getenv", "PWD") + "/" + pc.options.library;
   }
-           def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procSplit, pc.options.procFarey,pc.options.procAppend, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2);
+    def sm_result = sggspc_modular(l, p,  tmpdir, gc.options.nodefile, gc.options.procspernode, gc.options.rifstrategy, gc.options.addargs, loadlib,pc.options.procGenNextPrime, pc.options.procCompute, pc.options.procLift, pc.options.procSplit, pc.options.procFarey,pc.options.procAppend, pc.options.procCompatible, pc.options.procCompare, pc.options.bal1, pc.options.bal2, pc.options.M1, pc.options.M2, pc.options.doBBtest);
     return(sm_result);
 }
 
-proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
+proc gspc_modular_std(ideal I, configToken gc, int do_BB_test, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
 {
-  
+
   token input;
   input.fieldnames = list("generators");
   input.data = list(I);
   list l = list(input);
   configToken pc = configure_modular(gc);
   pc.options.procCompute = "stdmodp";
+  pc.options.doBBtest = do_BB_test;
   //read optional arguments
   if (size(#) > 0)
   {
@@ -155,7 +157,7 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
         pc.options.bal1 = #[1];
         pc.options.bal2 = #[2];
       }
-      
+
       else { //read bal1, bal2 and M1
         if (size(#) == 3  && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int" ){
           pc.options.bal1 = #[1];
@@ -176,7 +178,7 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
               pc.options.M1 = #[3];
               pc.options.M2 = #[4];
               pc.options.nbPrimes = #[5];
-            } 
+            }
             else{
               ERROR("Wrong optional arguments");
             }
@@ -199,17 +201,22 @@ proc gspc_modular_std(ideal I, configToken gc, list #) //optional arguments: bal
   def originalRing = basering;
   def ringResult = re.r_data;
   setring ringResult; //ring where the result is defined
+  //print(re.fieldnames);
+  //print(re.data);
   def result = re.data[1];
+  int certificate = re.data[2];
+  list transition_names = re.data[3];
+  list times = re.data[4];
   setring originalRing;
   def result = imap(ringResult,result); //copy the result to the basering
-  return(result);
+  return(result,certificate,list(transition_names,times));
 }
 
 
 
 proc gspc_modimage(ideal phi, ideal I, configToken gc, list #) //optional arguments: bal1, bal2, M1, M2, nb_primes
 {
-  
+
   token input;
   input.fieldnames = list("map","domain");
   input.data[1] = phi;
@@ -230,7 +237,7 @@ proc gspc_modimage(ideal phi, ideal I, configToken gc, list #) //optional argume
         pc.options.bal1 = #[1];
         pc.options.bal2 = #[2];
       }
-      
+
       else { //read bal1, bal2, and M1
         if (size(#) == 3 && typeof(#[1]) =="int" && typeof(#[2]) == "int" && typeof(#[3]) == "int"){
           pc.options.bal1 = #[1];
@@ -251,7 +258,7 @@ proc gspc_modimage(ideal phi, ideal I, configToken gc, list #) //optional argume
               pc.options.M1 = #[3];
               pc.options.M2 = #[4];
               pc.options.nbPrimes = #[5];
-            } 
+            }
             else{
               ERROR("Wrong optional arguments");
             }
@@ -277,5 +284,3 @@ proc gspc_modimage(ideal phi, ideal I, configToken gc, list #) //optional argume
   export(im);
   return(ringResult);
 }
-
-

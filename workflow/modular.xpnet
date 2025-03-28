@@ -8,78 +8,99 @@
     <in name="function_name_compute" type="string" place="place_function_name_compute"/>
     <in name="function_name_lift" type="string" place="place_function_name_lift"/>
     <in name="function_name_split" type="string" place="place_function_name_split"/>
-	<in name="function_name_farey" type="string" place="place_function_name_farey"/>
+	  <in name="function_name_farey" type="string" place="place_function_name_farey"/>
     <in name="function_name_append" type="string" place="place_function_name_append"/>
     <in name="function_name_compatible" type="string" place="place_function_name_compatible"/>
     <in name="function_name_compare" type="string" place="place_function_name_compare"/>
     <in name="function_name_genNextPrime" type="string" place="place_function_name_genNextPrime"/>
-	<in name="needed_library" type="string" place="place_needed_library"/>
-	<in name="base_filename" type="string" place="place_base_filename"/>
-	<in name="input_bal1" type="long" place="place_input_bal1"/>
-	<in name="input_bal2" type="long" place="place_input_bal2"/>
+  	<in name="needed_library" type="string" place="place_needed_library"/>
+  	<in name="base_filename" type="string" place="place_base_filename"/>
+  	<in name="input_bal1" type="long" place="place_input_bal1"/>
+  	<in name="input_bal2" type="long" place="place_input_bal2"/>
     <in name="input_M1" type="unsigned long" place="place_input_M1"/>
     <in name="input_M2" type="unsigned long" place="place_input_M2"/>
-	<out name="output" type="string" place="place_output"/>
+    <in name="input_do_BB_test" type="long" place="place_input_do_BB_test"/>
+	  <out name="output" type="string" place="place_output"/>
+    <out name="runtime" type="map" place="place_runtime"/>
 
     <net>
         <place name="place_input" type="string"/>
         <place name="place_last_prime" type="int"/>
-		<place name="place_prime" type="string"/>
-		<place name="place_input_bal1" type="long"/>
-		<place name="place_input_bal2" type="long"/>
+	      <place name="place_prime" type="string"/>
+		    <place name="place_input_bal1" type="long"/>
+        <place name="place_input_bal2" type="long"/>
         <place name="place_input_M1" type="unsigned long"/>
         <place name="place_input_M2" type="unsigned long"/>
+        <place name="place_input_do_BB_test" type="long"/>
+        <place name="place_do_BB_test" type="control"/>
         <place name="place_eureka_group" type="string">
             <token>
                 <value>"DONE"</value>
             </token>
         </place>
-		<place name="place_bal1" type="control"/>
-		<place name="place_bal2" type="control"/>
+		    <place name="place_bal1" type="control"/>
+		    <place name="place_bal2" type="control"/>
         <place name="place_bal3" type="bool"><token><value>false</value></token></place>
         <place name="place_count_bal1" type="long"><token><value>0L</value></token></place>
-		<place name="place_implementation" type="string"/>
-		<place name="place_mod_input" type="mod_input_data"/>
-		<place name="place_function_name_compute" type="string"/>
-		<place name="place_function_name_lift" type="string"/>
+    		<place name="place_implementation" type="string"/>
+    		<place name="place_mod_input" type="mod_input_data"/>
+    		<place name="place_function_name_compute" type="string"/>
+    		<place name="place_function_name_lift" type="string"/>
         <place name="place_function_name_split" type="string"/>
-		<place name="place_function_name_farey" type="string"/>
+		    <place name="place_function_name_farey" type="string"/>
         <place name="place_function_name_append" type="string"/>
         <place name="place_function_name_compatible" type="string"/>
         <place name="place_function_name_compare" type="string"/>
         <place name="place_function_name_genNextPrime" type="string"/>
-		<place name="place_needed_library" type="string"/>
-		<place name="place_base_filename" type="string"/>
+		    <place name="place_needed_library" type="string"/>
+		    <place name="place_base_filename" type="string"/>
         <place name="place_output" type="string"/>
-		<place name="place_mod_res1" type="modular_data"/>
-		<place name="place_mod_res2" type="modular_data"/>
+		    <place name="place_mod_res1" type="modular_data"/>
+		    <place name="place_mod_res2" type="modular_data"/>
         <place name="place_mod_res3" type="modular_data"/>
         <place name="place_ct1" type="long"><token><value>0L</value></token></place>
-		<place name="place_test" type="modular_data"/>
-		<place name="place_accumulator" type="modular_data"/>
-		<place name="place_init_accumulator" type="string"><token><value>""</value></token></place>
-		<place name="place_lifted_res" type="modular_data"/>
-		<place name="place_rand_res" type="result_bool_type"/>
+    		<place name="place_test" type="modular_data"/>
+    		<place name="place_accumulator" type="modular_data"/>
+    		<place name="place_init_accumulator" type="string"><token><value>""</value></token></place>
+    		<place name="place_lifted_res" type="modular_data"/>
+    		<place name="place_rand_res" type="result_bool_type"/>
+        <place name="place_runtime" type="map"/>
 
         <transition name="init">
             <defun>
                 <require key="worker" mandatory="true"/>
                 <in name="input_bal2" type="long"/>
+                <in name="input_do_BB_test" type="long"/>
                 <out name="bal2" type="list"/>
+                <out name="do_BB_test" type="list"/>
+                <out name="runtime" type="list"/>
                 <module name="singular_modular"
                     require_function_unloads_without_rest="false"
-                    function="init(input_bal2,bal2)">
+                    function="init(input_bal2,bal2,input_do_BB_test,do_BB_test,runtime)">
+                    <cinclude href="share/include/modular_interface.hpp"/>
+                    <cinclude href="chrono"/>
                     <code><![CDATA[
+                long runtime_start = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
                 for (long i (0); i<input_bal2; ++i)
                 {
                     bal2.emplace_back(we::type::literal::control{});
                 }
+                if(input_do_BB_test!=0)
+                {
+                    do_BB_test.emplace_back(we::type::literal::control{});
+                    GpiMap rt;
+                    rt[(std::string) "MODULAR START TIME"] = GpiList({runtime_start, runtime_start, 0L, 0L});
+                    runtime.emplace_back(rt);
+                }
 
                  ]]></code>
             </module>
-        </defun>
-        <connect-in port="input_bal2" place="place_input_bal2"/>
-        <connect-out-many port="bal2" place="place_bal2"/>
+          </defun>
+          <connect-in port="input_bal2" place="place_input_bal2"/>
+          <connect-in port="input_do_BB_test" place="place_input_do_BB_test"/>
+          <connect-out-many port="bal2" place="place_bal2"/>
+          <connect-out-many port="do_BB_test" place="place_do_BB_test"/>
+          <connect-out-many port="runtime" place="place_runtime"/>
         </transition>
 
         <transition name="count_bal">
@@ -100,7 +121,6 @@
             <connect-inout port="counter" place="place_count_bal1"/>
         </transition>
 
-
         <transition name="genNextPrime">
             <defun>
                 <require key="worker" mandatory="true"/>
@@ -115,7 +135,7 @@
                 <in name="eureka_group" type="string"/>
                 <inout name="count_bal1" type="long"/>
                 <out name="prime" type="list"/>
-                <module name="singular_modular" require_function_unloads_without_rest="false" 
+                <module name="singular_modular" require_function_unloads_without_rest="false"
                 function="genNextPrime(input,last_prime,count_bal1,implementation,function_name,needed_library,base_filename,prime,m)" pass_context="true">
                 <eureka-group>${eureka_group}</eureka-group>
                 <cinclude href="share/include/modular_interface.hpp" />
@@ -134,7 +154,7 @@
                                                         .sym<decltype (filename_gen)> ("filename_gen")
                                                          (base_filename));
                         /*bool cancelled (false) ;
-                    
+
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
                                 {*/
@@ -151,7 +171,7 @@
                                         of << out.first[i] << " ";
                                     }
                                     of << out.second;
-                                    of.close(); 
+                                    of.close();
 
                                 /*}
                                 , [&]
@@ -164,7 +184,7 @@
                                     if (exit_code != 0)
                                     {
                                         drts::worker::on_exit_unexpected (exit_code);
-                                    }     
+                                    }
                                 }
                             );
                         if (!cancelled)
@@ -180,7 +200,7 @@
                                 prime.emplace_back(tmp);
                             }
                             is >> last_prime;
-                            
+
                        // }
                         ]]></code>
                 </module>
@@ -245,7 +265,7 @@
                                                         .sym<decltype (filename_gen)> ("filename_gen")
                                                          (base_filename));
                         bool cancelled (false) ;
-                    
+
                             _pnetc_context->execute_and_kill_on_cancel_DO_NOT_OUTPUT_TO_STANDARD_STREAMS_FROM_WITHIN
                                 ( [=]  // copy parameters
                                 {
@@ -269,7 +289,7 @@
                                     if (exit_code != 0)
                                     {
                                         drts::worker::on_exit_unexpected (exit_code);
-                                    }     
+                                    }
                                 }
                             );
                         if (!cancelled)
@@ -311,7 +331,7 @@
                     ${counter} := ${counter} mod 10L;
                 </expression>
                 <condition>
-                    ${counter} :lt: 9L 
+                    ${counter} :lt: 9L
                 </condition>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -333,7 +353,7 @@
                     ${bal} := [];
                 </expression>
                 <condition>
-                    ${counter} :eq: 9L 
+                    ${counter} :eq: 9L
                 </condition>
             </defun>
             <connect-in port="mod_res1" place="place_mod_res1"/>
@@ -342,7 +362,7 @@
             <connect-out port="extract_test" place="place_test"/>
         </transition>
 
-       <transition name="lift" inline="true">
+        <transition name="lift" inline="true">
             <include-function href="lift.xpnet"/>
             <place-map virtual="place_in" real="place_mod_res2"/>
             <place-map virtual="place_out" real="place_mod_res3"/>
@@ -351,7 +371,7 @@
             <place-map virtual="place_needed_library" real="place_needed_library"/>
             <place-map virtual="place_implementation" real="place_implementation"/>
             <place-map virtual="place_input_M1" real="place_input_M1"/>
-            <place-map virtual="place_bal" real="place_bal2"/>  
+            <place-map virtual="place_bal" real="place_bal2"/>
             <place-map virtual="place_eureka_group" real="place_eureka_group"/>
         </transition>
 
@@ -382,8 +402,7 @@
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
         </transition>
 
-        
-       <transition name="reconstest" inline="true">
+        <transition name="reconstest" inline="true">
             <include-function href="reconstest.xpnet"/>
             <place-map virtual="place_bal3" real="place_bal3"/>
             <place-map virtual="place_lifted_res" real="place_lifted_res"/>
@@ -437,5 +456,17 @@
             <connect-out port="output" place="place_output"/>
             <connect-eureka port="eureka"/>
         </transition>
+
+        <transition name="buchberger" inline="true">
+            <include-function href="buchberger.xpnet"/>
+            <place-map virtual="place_input" real="place_input"/>
+            <place-map virtual="place_output" real="place_output"/>
+            <place-map virtual="place_implementation" real="place_implementation"/>
+            <place-map virtual="place_base_filename" real="place_base_filename"/>
+            <place-map virtual="place_needed_library" real="place_needed_library"/>
+            <place-map virtual="place_do_BB_test" real="place_do_BB_test"/>
+            <place-map virtual="place_runtime" real="place_runtime"/>
+        </transition>
+
     </net>
 </defun>
