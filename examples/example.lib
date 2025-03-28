@@ -92,7 +92,7 @@ proc testModStd(ideal I, int ncores, int do_tests, int do_std)
   system("--cpus", ncores);
   if(do_tests) {
     int TT = rtimer;
-    int ver = system("verifyGB",GmodStd);
+    int ver = system("verifyGB",result);
     TT = rtimer-TT;
     printf("%nsystem('verifyGB', ...) time:      %s",TT);
     printf("(result: %s)%n",ver,0);
