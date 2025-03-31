@@ -3,14 +3,17 @@ LIB "random.lib";
 LIB "modstd.lib";
 
 configToken gc = configure_gspc();
-gc.options.tmpdir = "/dev/shm/marcel/modular/tempdir";
 gc.options.tmpdir = "tempdir";
 
 gc.options.nodefile = "nodefile";
 gc.options.procspernode = 48;
 
-//gc.options.loghostfile = "loghostfile";
-//gc.options.logport = 3217;
+// only needed if you use gspc-monitor:
+proc monitorON()
+{
+  gc.options.loghostfile = "loghostfile";
+  gc.options.logport = 3217;
+}
 
 proc setcores(int n)
 {
@@ -22,11 +25,6 @@ proc getcores()
   return(gc.options.procspernode);
 }
 
-//ring R=0,(t0,t1,t2),dp;
-//ideal I = t1^5+10*t1^4*t2+20*t1^3*t2^2+130*t1^2*t2^3-20*t1*t2^4+20*t2^5-2*t1^4*t0-40*t1^3*t2*t0-150*t1^2*t2^2*t0-90*t1*t2^3*t0-40*t2^4*t0+t1^3*t0^2+30*t1^2*t2*t0^2+110*t1*t2^2*t0^2+20*t2^3*t0^2;
-//I;
-//ideal phi = maxideal(3);
-//phi;
 proc comp(def I, def J) // compare-function for indexed types
 {
   string t = typeof(I);
@@ -44,7 +42,7 @@ proc comp(def I, def J) // compare-function for indexed types
   else {return (I==J);}
 }
 
-proc testModStd(ideal I, int ncores, int do_tests, int do_std)
+proc testModStd(ideal I, int ncores, int do_tests, int do_std, list #)
 {
   option(redSB);
   system("--ticks-per-sec",1000);
@@ -60,6 +58,8 @@ proc testModStd(ideal I, int ncores, int do_tests, int do_std)
   printf("%nmodular std time: %s",t1);
   if(do_tests) {printf("Buchberger Test:  %s%n",certificate,0);}
   for(i=1; i<=size(result); i++) {result[i] = cleardenom(result[i]);}
+  if (size(#)>0) {write("ssi:w MODULAR_RESULT_"+#[1]+"_"+string(ncores)+"_cores.ssi",list(I,result,certificate,runtimes));}
+  export(runtimes);
 
   if(do_tests)
   {
@@ -96,6 +96,7 @@ proc testModStd(ideal I, int ncores, int do_tests, int do_std)
     TT = rtimer-TT;
     printf("%nsystem('verifyGB', ...) time:      %s",TT);
     printf("(result: %s)%n",ver,0);
+    if (size(#)>0) {write("ssi:w MODULAR_RESULT_"+#[1]+"_"+string(ncores)+"_cores_SINGULAR_verifyGB.ssi",TT);}
   }
 
   t2=rtimer;
@@ -104,6 +105,8 @@ proc testModStd(ideal I, int ncores, int do_tests, int do_std)
   printf("%nmodStd time:      %s",t2);
   for(i=1; i<=size(GmodStd); i++) {GmodStd[i] = cleardenom(GmodStd[i]);}
   printf("comparing: %s%n",comp(result,GmodStd),0);
+  if ( do_tests && size(#)>0) {write("ssi:w MODULAR_RESULT_"+#[1]+"_"+string(ncores)+"_cores_SINGULAR_modStd_with_verify.ssi",   list(GmodStd,comp(result,GmodStd),t2));}
+  if (!do_tests && size(#)>0) {write("ssi:w MODULAR_RESULT_"+#[1]+"_"+string(ncores)+"_cores_SINGULAR_modStd_without_verify.ssi",list(GmodStd,comp(result,GmodStd),t2));}
 
   if(do_std)
   {
@@ -115,15 +118,16 @@ proc testModStd(ideal I, int ncores, int do_tests, int do_std)
     for(i=1; i<=size(Gstd); i++) {Gstd[i] = cleardenom(Gstd[i]);}
 
     printf("comparing: %s%n",comp(result,Gstd),0);
+    if (size(#)>0) {write("ssi:w MODULAR_RESULT_"+#[1]+"_"+string(ncores)+"_cores_SINGULAR_std.ssi",list(comp(result,Gstd),t3));}
     return(result,GmodStd,Gstd)
   }
-  export(runtimes);
   return(result,GmodStd);
 }
 
 //system("--random", 42); ring r = 0,x(1..7),dp; ideal I = randomid(maxideal(2),5);
 ring r = 0,x(0..8),dp; ideal I = katsura(8); ideal IH = homog(I,x(8));
-def G1,G2    = testModStd(IH, 6, 1, 0);
-//def G3,G4,G5 = testModStd(IH, 6, 0, 1);
+monitorON();
+def G1,G2    = testModStd(IH, 6, 1, 0, "katsura8hom_BBTEST");
+def G3,G4,G5 = testModStd(IH, 6, 0, 1, "katsura8hom_NOBBTEST");
 
 //system("--random",42); ring r=0,x(1..5),lp; ideal J = randomid(maxideal(4),5,20);

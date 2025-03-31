@@ -247,15 +247,13 @@ bool singular_modular_compare (std::string const& result_farey
 // for Buchberger test:
 
 NO_NAME_MANGLING
-std::pair<std::vector<std::vector<int>>,int> singular_buchberger_get_M_and_max_j( [[maybe_unused]] std::string const& singular_library_name,
-                                                                                  [[maybe_unused]] std::string const& base_filename,
-                                                                                  [[maybe_unused]] std::string const& input,
-                                                                                  [[maybe_unused]] std::string* GB,
-                                                                                  [[maybe_unused]] std::string* output)
+std::pair<std::vector<std::vector<int>>,int> singular_buchberger_get_M_and_max_j(std::string const& base_filename,
+                                                                                 std::string const& input,
+                                                                                 std::string* GB,
+                                                                                 std::string* output)
 {
   std::string ids = worker();
   init_singular (config::library().string());
-	//load_singular_library(singular_library_name);
 
   std::pair<int,void*> input_ideal = deserialize(input, ids);
   ideal F_in = (ideal) ((lists) (((lists) input_ideal.second)->m[3]).data)->m[0].data;
@@ -270,7 +268,6 @@ std::pair<std::vector<std::vector<int>>,int> singular_buchberger_get_M_and_max_j
     }
   }
 
-  //writeIdealSSI(F, base_filename+"GB_for_BB_test.ssi");
   ((lists) (((lists) output_ideal.second)->m[3]).data)->m[1].data = (void*) (char*) 1; // initialize certificate with "true", will be set to "false" if a reduction is non-zero
   (*output) = serialize((lists) output_ideal.second, base_filename);
 
@@ -293,15 +290,12 @@ std::pair<std::vector<std::vector<int>>,int> singular_buchberger_get_M_and_max_j
 }
 
 NO_NAME_MANGLING
-std::tuple<ideal,ideal,kStrategy> singular_buchberger_get_Fstrat( [[maybe_unused]] std::string const& singular_library_name,
-                                                                  [[maybe_unused]] std::string const& base_filename,
-                                                                  [[maybe_unused]] std::string const& input,
-                                                                  [[maybe_unused]] std::string const& GB)
+std::tuple<ideal,ideal,kStrategy> singular_buchberger_get_Fstrat(std::string const& input,
+                                                                 std::string const& GB)
 {
   std::string ids = worker();
 
   init_singular (config::library().string());
-	//load_singular_library(singular_library_name);
 
   std::pair<int,void*> input_ideal = deserialize(input, ids);
   ideal F_in = (ideal) ((lists) (((lists) input_ideal.second)->m[3]).data)->m[0].data;
@@ -335,7 +329,7 @@ std::tuple<ideal,ideal,kStrategy> singular_buchberger_get_Fstrat( [[maybe_unused
   strat->T = initT();
   strat->R = initR();
   strat->sevT = initsevT();
-  //- init local data struct.----------------------------------------
+  //- init local data struct -
   strat->P.ecart=0;
   strat->P.length=0;
   strat->P.pLength=0;
@@ -362,12 +356,10 @@ std::tuple<ideal,ideal,kStrategy> singular_buchberger_get_Fstrat( [[maybe_unused
 }
 
 NO_NAME_MANGLING
-void singular_buchberger_compute_NF( [[maybe_unused]] std::string const& singular_library_name,
-                                     [[maybe_unused]] std::string const& base_filename,
-                                     std::tuple<ideal,ideal,kStrategy> Fstrat,
-                                     GpiList const& started_indices,
-                                     GpiList* BB_test_fail,
-                                     GpiMap* runtime)
+void singular_buchberger_compute_NF(std::tuple<ideal,ideal,kStrategy> Fstrat,
+                                    GpiList const& started_indices,
+                                    GpiList* BB_test_fail,
+                                    GpiMap* runtime)
 {
   ideal F         = std::get<0>(Fstrat); // Gröbner basis
   ideal F_in      = std::get<1>(Fstrat); // original ideal generators
@@ -375,7 +367,6 @@ void singular_buchberger_compute_NF( [[maybe_unused]] std::string const& singula
 
 	//// start Singular and load the specified library ////
   init_singular (config::library().string());
-	//load_singular_library(singular_library_name);
 
   // calculate NF(spoly,F)
   long start_time,stop_time;
@@ -434,9 +425,8 @@ void singular_buchberger_compute_NF( [[maybe_unused]] std::string const& singula
 }
 
 NO_NAME_MANGLING
-void abort_BB_test([[maybe_unused]] std::string const& singular_library_name,
-                   [[maybe_unused]] std::string const& base_filename,
-                   [[maybe_unused]] std::string* output)
+void abort_BB_test(std::string const& base_filename,
+                   std::string* output)
 {
   std::string ids = worker();
   std::pair<int,void*> output_ideal = deserialize(*output, ids);
