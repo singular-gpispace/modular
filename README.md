@@ -13,6 +13,8 @@ We offer two distinct installation methods. The preferred approach involves usin
 which automates the handling of all dependencies. Alternatively, a manual installation of components is available,
 serving as anoption if the installation via Spack fails on the target system.
 
+Note that all of this is work in progress.
+
 
 # Installation using Spack
 Spack is a package manager specifically aimed at handling software installations in supercomputing environments, but
